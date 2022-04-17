@@ -1,9 +1,9 @@
 Pod::Spec.new do |spec| 
   spec.name         = "INCoreData"
-  spec.version      = "1.0.1"
+  spec.version      = "1.0.2"
   spec.summary      = "That library supports dynamic CoreData features."
   spec.homepage     = "https://github.com/indieSoftware/INCoreData"
-  spec.license      = 'MIT'
+  spec.license      = "MIT"
   spec.author       = { "Sven Korset" => "sven.korset@indie-software.com" }
   spec.ios.deployment_target = "14.0"
   spec.source       = { :git => "https://github.com/indieSoftware/INCoreData.git", :tag => "#{spec.version}" }

@@ -1,2 +1,6 @@
+
 # INCoreData
-General additions to simplify the usage of Core Data
+
+## Feature overview
+
+## Installation
