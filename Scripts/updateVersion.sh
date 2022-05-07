@@ -19,6 +19,6 @@ agvtool new-marketing-version $1
 sed -i '' "3s/.*/ spec.version = \"$1\" # auto-generated/" INCoreData.podspec
 # Replace the 4th line in the podspec to update the swift version read from the file.
 SWIFT_VERSION=$(<.swift-version)
-sed -i '' "4s/.*/ spec.swift_version = \"$SWIFT_VERSION\" # auto-generated/" INCoreData.podspec
+sed -i '' "4s/.*/ spec.swift_versions = \['$SWIFT_VERSION']\ # auto-generated/" INCoreData.podspec
 # Lint podspec to be sure everything is still valid.
-pod lib lint INCoreData.podspec
+pod spec lint INCoreData.podspec

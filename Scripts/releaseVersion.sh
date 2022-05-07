@@ -21,7 +21,6 @@ git tag $LIB_VERSION
 git push --tags
 # Verify podspec is passing validation.
 pod spec lint
-# Update pod.
-pod trunk push INCoreData.podspec
-# If updating fails because of an invalid session then run:
-# pod trunk register Sven.Korset@indie-software.com 'Sven Korset'
+# Push podspec. If the following push command will fail run that command before it:
+# pod repo add PrivateSpecs https://github.com/indieSoftware/PrivateSpecs.git
+pod repo push PrivateSpecs INCoreData.podspec --allow-warnings
