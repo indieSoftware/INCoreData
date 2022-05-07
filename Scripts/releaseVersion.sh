@@ -20,7 +20,7 @@ git tag $LIB_VERSION
 # Push tags.
 git push --tags
 # Verify podspec is passing validation.
-pod spec lint
+pod spec lint --allow-warnings
 # Push podspec. If the following push command will fail run that command before it:
 # pod repo add PrivateSpecs https://github.com/indieSoftware/PrivateSpecs.git
 pod repo push PrivateSpecs INCoreData.podspec --allow-warnings
