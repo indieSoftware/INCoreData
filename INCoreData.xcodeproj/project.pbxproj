@@ -22,6 +22,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		26713CEF283120CB008456E9 /* NSManagedObject+InContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */; };
+		26713CF1283123E3008456E9 /* PersistenceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF0283123E3008456E9 /* PersistenceStack.swift */; };
+		26713CF328312409008456E9 /* PersistenceStackLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF228312409008456E9 /* PersistenceStackLogic.swift */; };
+		26713CF52831248C008456E9 /* CoreDataManager+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF42831248C008456E9 /* CoreDataManager+Publisher.swift */; };
+		26713CF7283133A3008456E9 /* CoreDataManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF6283133A3008456E9 /* CoreDataManagerError.swift */; };
+		26713CF9283139E7008456E9 /* PersistenceStackInMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF8283139E7008456E9 /* PersistenceStackInMemory.swift */; };
+		26713CFB28314E84008456E9 /* CoreDataManagerLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CFA28314E84008456E9 /* CoreDataManagerLogic.swift */; };
 		26FCE6D327D1F9C600C229DA /* INCoreDataExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FCE6D227D1F9C600C229DA /* INCoreDataExampleApp.swift */; };
 		26FCE6D727D1F9C700C229DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26FCE6D627D1F9C700C229DA /* Assets.xcassets */; };
 		26FCE6DA27D1F9C700C229DA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26FCE6D927D1F9C700C229DA /* Preview Assets.xcassets */; };
@@ -31,10 +38,10 @@
 		26FCE6FD27D1FAD700C229DA /* INCoreData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 26FCE6E727D1FAD600C229DA /* INCoreData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		26FCE7A327D276BF00C229DA /* INCoreDataExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FCE79B27D276BF00C229DA /* INCoreDataExampleView.swift */; };
 		41980954330F1CBB38EA8773 /* Pods_INCoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81449F7F71630EA9DE31C59A /* Pods_INCoreData.framework */; };
-		532C387528062E6500B513B1 /* Example.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 532C387328062E6500B513B1 /* Example.xcdatamodeld */; };
+		532C387528062E6500B513B1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 532C387328062E6500B513B1 /* DataModel.xcdatamodeld */; };
 		5339E4A327FC1BD6009098C8 /* INCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5339E4A227FC1BD6009098C8 /* INCoreDataTests.swift */; };
 		534F5D842804616900DCB275 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534F5D832804616900DCB275 /* CoreData.framework */; };
-		534F5DC8280474A300DCB275 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534F5DC7280474A300DCB275 /* DataManager.swift */; };
+		534F5DC8280474A300DCB275 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534F5DC7280474A300DCB275 /* CoreDataManager.swift */; };
 		9A886A5C404411A5FADCA8C6 /* Pods_INCoreDataExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB55D7ABEC1132CCF782889E /* Pods_INCoreDataExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +85,13 @@
 
 /* Begin PBXFileReference section */
 		1D3CF85261265366D7A83882 /* Pods-INCoreData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INCoreData.debug.xcconfig"; path = "Target Support Files/Pods-INCoreData/Pods-INCoreData.debug.xcconfig"; sourceTree = "<group>"; };
+		26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+InContext.swift"; sourceTree = "<group>"; };
+		26713CF0283123E3008456E9 /* PersistenceStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStack.swift; sourceTree = "<group>"; };
+		26713CF228312409008456E9 /* PersistenceStackLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStackLogic.swift; sourceTree = "<group>"; };
+		26713CF42831248C008456E9 /* CoreDataManager+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Publisher.swift"; sourceTree = "<group>"; };
+		26713CF6283133A3008456E9 /* CoreDataManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerError.swift; sourceTree = "<group>"; };
+		26713CF8283139E7008456E9 /* PersistenceStackInMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStackInMemory.swift; sourceTree = "<group>"; };
+		26713CFA28314E84008456E9 /* CoreDataManagerLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerLogic.swift; sourceTree = "<group>"; };
 		26FCE6CF27D1F9C600C229DA /* INCoreDataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INCoreDataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26FCE6D227D1F9C600C229DA /* INCoreDataExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INCoreDataExampleApp.swift; sourceTree = "<group>"; };
 		26FCE6D627D1F9C700C229DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,7 +104,7 @@
 		532C387428062E6500B513B1 /* Example.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Example.xcdatamodel; sourceTree = "<group>"; };
 		5339E4A227FC1BD6009098C8 /* INCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INCoreDataTests.swift; sourceTree = "<group>"; };
 		534F5D832804616900DCB275 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
-		534F5DC7280474A300DCB275 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		534F5DC7280474A300DCB275 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		67BF383CCDD0E96374B9F2A1 /* Pods-INCoreDataExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INCoreDataExample.debug.xcconfig"; path = "Target Support Files/Pods-INCoreDataExample/Pods-INCoreDataExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81449F7F71630EA9DE31C59A /* Pods_INCoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_INCoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2E8259FAF6787CBFA87BD66 /* Pods-INCoreData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INCoreData.release.xcconfig"; path = "Target Support Files/Pods-INCoreData/Pods-INCoreData.release.xcconfig"; sourceTree = "<group>"; };
@@ -157,7 +171,7 @@
 				26FCE6D227D1F9C600C229DA /* INCoreDataExampleApp.swift */,
 				26FCE6D627D1F9C700C229DA /* Assets.xcassets */,
 				26FCE6D827D1F9C700C229DA /* Preview Content */,
-				532C387328062E6500B513B1 /* Example.xcdatamodeld */,
+				532C387328062E6500B513B1 /* DataModel.xcdatamodeld */,
 			);
 			path = INCoreDataExample;
 			sourceTree = "<group>";
@@ -191,7 +205,14 @@
 			isa = PBXGroup;
 			children = (
 				26FCE6E927D1FAD600C229DA /* INCoreData.h */,
-				534F5DC7280474A300DCB275 /* DataManager.swift */,
+				534F5DC7280474A300DCB275 /* CoreDataManager.swift */,
+				26713CF6283133A3008456E9 /* CoreDataManagerError.swift */,
+				26713CFA28314E84008456E9 /* CoreDataManagerLogic.swift */,
+				26713CF42831248C008456E9 /* CoreDataManager+Publisher.swift */,
+				26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */,
+				26713CF0283123E3008456E9 /* PersistenceStack.swift */,
+				26713CF228312409008456E9 /* PersistenceStackLogic.swift */,
+				26713CF8283139E7008456E9 /* PersistenceStackInMemory.swift */,
 			);
 			path = INCoreData;
 			sourceTree = "<group>";
@@ -500,7 +521,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				532C387528062E6500B513B1 /* Example.xcdatamodeld in Sources */,
+				532C387528062E6500B513B1 /* DataModel.xcdatamodeld in Sources */,
 				26FCE7A327D276BF00C229DA /* INCoreDataExampleView.swift in Sources */,
 				26FCE6D327D1F9C600C229DA /* INCoreDataExampleApp.swift in Sources */,
 			);
@@ -510,7 +531,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				534F5DC8280474A300DCB275 /* DataManager.swift in Sources */,
+				534F5DC8280474A300DCB275 /* CoreDataManager.swift in Sources */,
+				26713CFB28314E84008456E9 /* CoreDataManagerLogic.swift in Sources */,
+				26713CF7283133A3008456E9 /* CoreDataManagerError.swift in Sources */,
+				26713CEF283120CB008456E9 /* NSManagedObject+InContext.swift in Sources */,
+				26713CF9283139E7008456E9 /* PersistenceStackInMemory.swift in Sources */,
+				26713CF1283123E3008456E9 /* PersistenceStack.swift in Sources */,
+				26713CF52831248C008456E9 /* CoreDataManager+Publisher.swift in Sources */,
+				26713CF328312409008456E9 /* PersistenceStackLogic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,13 +936,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		532C387328062E6500B513B1 /* Example.xcdatamodeld */ = {
+		532C387328062E6500B513B1 /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				532C387428062E6500B513B1 /* Example.xcdatamodel */,
 			);
 			currentVersion = 532C387428062E6500B513B1 /* Example.xcdatamodel */;
-			path = Example.xcdatamodeld;
+			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
