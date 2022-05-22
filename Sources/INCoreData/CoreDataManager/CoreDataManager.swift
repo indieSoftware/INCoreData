@@ -1,6 +1,19 @@
 import CoreData
 import Foundation
 
+/**
+ A manager for CoreData.
+
+ The idea is to have two contexts managed by this manager.
+ One main context which runs on the main thread, is accessible by the UI
+ and towards which all queries goes.
+ And a second background context not accessible by outside of the manager.
+ The purpose of the hidden background context is to persist all changes done to the main context.
+ So, the main context itself is not persisting anything and
+ thus doesn't do such a heavy work on the main thread.
+ Instead it syncs itself into the background context which then
+ persists the changes asynchronously in the background.
+ */
 public protocol CoreDataManager {
 	/// This is the main MOC and acts as the "Single Source of Truth".
 	/// It will run on the main queue, however it's encouraged to create a new background context via `createNewContext`
@@ -20,15 +33,14 @@ public protocol CoreDataManager {
 	func createNewContext() -> NSManagedObjectContext
 
 	/**
-	 Saves the main context synchronously.
-
-	 No matter how many MOCs have been created, all changes will funnel through
-	 the main context and thus persist through this method.
+	 Saves the main context synchronously by syncing any changes to the hidden background context.
+	 After that a save request is queried for the background context to finally persist the changes.
 	 */
 	func persist()
 
 	/**
-	 Saves the content of the background context synchronously back into the main context and persists it.
+	 Saves the content of the background context synchronously back into the main context
+	 and requests the main context to persist it.
 
 	 - parameter backgroundContext: The background context which to save back to the main context.
 	 */

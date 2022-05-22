@@ -5,6 +5,8 @@ public extension NSManagedObject {
 	 Get an object from a desired context using the `objectID` which
 	 uniquely identifes the `NSManagedObject` through the peristent store.
 
+	 The object with the same ID has to exist in the given context.
+
 	 This method can be used to retrieve a managed object in the background context corresponding
 	 to the given object from the main context.
 
@@ -21,7 +23,7 @@ public extension NSManagedObject {
 	 */
 	func inContext(_ context: NSManagedObjectContext) -> Self {
 		guard let newObject = context.object(with: objectID) as? Self else {
-			fatalError("Unexpected object type received, not matching '\(String(describing: Self.self))'")
+			fatalError("None or unexpected object type received for '\(String(describing: Self.self))'")
 		}
 		return newObject
 	}

@@ -5,7 +5,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	/// The default name of a data model, currently "DataModel".
 	public static let defaultDataModelName = "DataModel"
 
-	/// The used persinstence stack.
+	/// The used persinstence stack which handles the main and the background context.
 	private var persistenceStack: PersistenceStack
 
 	/**

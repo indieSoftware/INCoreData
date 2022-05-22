@@ -135,6 +135,7 @@ class PersistenceStackLogic: PersistenceStack {
 		// The new context and the main MOC do not handle any persistances,
 		// it just funnels up to the private MOC which will do the persistance.
 		newContext.parent = mainContext
+		newContext.automaticallyMergesChangesFromParent = true
 
 		return newContext
 	}
