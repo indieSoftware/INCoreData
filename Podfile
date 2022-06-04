@@ -16,8 +16,21 @@ def development_pods
   pod 'SwiftFormat/CLI'
 end
 
+def lib_pods
+	# This library provides common functionalities for every iOS app.
+	# https://github.com/indieSoftware/INCommons
+	# License: MIT
+	pod 'INCommons'
+end
+
 target 'INCoreData' do
   development_pods
+	lib_pods
+end
+
+target 'INCoreDataTests' do
+	development_pods
+	lib_pods
 end
 
 target 'INCoreDataExample' do

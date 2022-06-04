@@ -5,7 +5,7 @@ protocol PersistenceStack {
 	var mainContext: NSManagedObjectContext { get }
 
 	/**
-	 Saves the main context synchronously.
+	 Saves the main context synchronously while the real data persistance happens in the background.
 	 */
 	func persist()
 

@@ -4,6 +4,7 @@
 disabled_rules: # rule identifiers to exclude from running
   - nesting
   - todo
+  - opening_brace
 
 line_length: 160 # instead of 120
 

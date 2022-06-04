@@ -2,7 +2,7 @@ import CoreData
 import Foundation
 
 public class CoreDataManagerLogic: CoreDataManager {
-	/// The default name of a data model, currently "DataModel".
+	/// The default name of a data model, equals "DataModel".
 	public static let defaultDataModelName = "DataModel"
 
 	/// The used persinstence stack which handles the main and the background context.
@@ -39,17 +39,35 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 - parameter bundle: The bundle where to find the data model. Default to the main bundle.
 	 - parameter completion: The completion handler which gets called when the in-memory store has been created
 	 and can be used.
+	 - parameter persistentStoreCoordinator: The created persistent store coordinator.
+	 - parameter mainContext: The created main context.
+	 - parameter privateContext: The created private background context.
+	 - parameter container: The created container.
 	 */
 	public init(
 		dataModelName: String = defaultDataModelName,
 		bundle: Bundle = .main,
-		completion: @escaping () -> Void
+		completion: @escaping (
+			_ persistentStoreCoordinator: NSPersistentStoreCoordinator,
+			_ mainContext: NSManagedObjectContext,
+			_ privateContext: NSManagedObjectContext,
+			_ container: NSPersistentContainer
+		) -> Void
 	) {
 		persistenceStack = PersistenceStackLogic(
 			dataModelName: dataModelName,
 			bundle: bundle,
 			completion: completion
 		)
+	}
+
+	/**
+	 Alternative initializer to assign a persistence stack directly, i.e. for UnitTests.
+
+	 - parameter persistenceStack: The persistence stack to use, i.e. a mock.
+	 */
+	init(persistenceStack: PersistenceStack) {
+		self.persistenceStack = persistenceStack
 	}
 
 	public var mainContext: NSManagedObjectContext {

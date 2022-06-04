@@ -49,9 +49,8 @@ class PersistenceStackLogic: PersistenceStack {
 		localMainMoc.parent = privateContext
 		mainContext = localMainMoc
 
-		// It's unknown how long it will take to create the store
-		// because of potential migrations and we don't want to block the UI,
-		// so we do this on a background queue.
+		// It might take some time to create the store because of potential migrations,
+		// therefore, do this on a background queue.
 		DispatchQueue.global().async { [self] in
 			// Make sure the folder for the SQLite database exists.
 			do {

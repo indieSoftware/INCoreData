@@ -42,6 +42,9 @@ public protocol CoreDataManager {
 	 Saves the content of the background context synchronously back into the main context
 	 and requests the main context to persist it.
 
+	 The background context's parent has to be the `mainContext`.
+	 This is automatically the case when `createNewContext` is used to create the background context.
+
 	 - parameter backgroundContext: The background context which to save back to the main context.
 	 */
 	func persist(fromBackgroundContext backgroundContext: NSManagedObjectContext) throws

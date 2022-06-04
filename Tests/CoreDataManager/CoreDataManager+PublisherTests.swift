@@ -14,6 +14,11 @@ class CoreDataManager_PublisherTests: XCTestCase {
 		tearDown()
 		subscriptions.removeAll()
 	}
+
+	// MARK: - publisher for object
+
+	// MARK: - publisher for type
+
 	/*
 	 /// OnChange / Update
 	 func testUpdateOnChangeProperty() {

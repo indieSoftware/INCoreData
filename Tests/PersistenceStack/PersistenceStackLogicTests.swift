@@ -4,63 +4,43 @@ import XCTest
 
 class PersistenceStackLogicTests: XCTestCase {
 	var persistenceStack: PersistenceStackLogic!
-	var persistentStoreCoordinator: NSPersistentStoreCoordinator!
 	var mainContext: NSManagedObjectContext!
 	var privateContext: NSManagedObjectContext!
-	var container: NSPersistentContainer!
 
 	override func setUp() {
 		super.setUp()
 
-		let testModel = testModel()
-		container = NSPersistentContainer(name: "InMemoryTestContainer", managedObjectModel: testModel)
-		persistentStoreCoordinator = container.persistentStoreCoordinator
-
-		let description = NSPersistentStoreDescription()
-		description.type = NSInMemoryStoreType
-		container.persistentStoreDescriptions = [description]
-
-		privateContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-		privateContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-		mainContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-		mainContext.parent = privateContext
-
-		persistenceStack = PersistenceStackLogic(
-			persistentStoreCoordinator: persistentStoreCoordinator,
-			mainConext: mainContext,
-			privateContext: privateContext
-		)
-
-		// The properites are set up, but not ready to use, yet.
-		// For that each test method has first to call 'setUpContainer()'
-		// and wait for the completion handler to fire.
-	}
-
-	/**
-	 Loads the persistent store of the container.
-	 Needs to be called in each test method before using the test properites.
-	 */
-	private func setUpContainer() {
 		let setupExpectation = expectation(description: "setupExpectation")
-		container.loadPersistentStores { _, error in
-			if let error = error {
-				fatalError("Failed to setup in memory store \(error.localizedDescription)")
+		persistenceStack = PersistenceStackLogic(
+			dataModelName: "TestModel",
+			bundle: Bundle(for: Self.self),
+			completion: { _, mainContext, privateContext, _ in
+				self.mainContext = mainContext
+				self.privateContext = privateContext
+				setupExpectation.fulfill()
 			}
-			setupExpectation.fulfill()
-		}
+		)
 		waitForExpectations(timeout: 1)
 	}
 
-	// MARK: - init
+	override func tearDown() {
+		super.tearDown()
 
-	func testModelGetsMigratedOnInit() {}
+		persistenceStack = nil
+		mainContext = nil
+		privateContext = nil
+	}
+
+	// MARK: - mainContext
+
+	func testMainContextIsReturned() {
+		let result = persistenceStack.mainContext
+		XCTAssertIdentical(result, mainContext)
+	}
 
 	// MARK: - persist
 
 	func testBackgroundAndMainContextGetPersisted() throws {
-		setUpContainer()
-
 		// Sanity check that nothing is pending on the contexts and it's empty.
 		XCTAssertFalse(mainContext.hasChanges)
 		XCTAssertFalse(privateContext.hasChanges)
@@ -102,8 +82,6 @@ class PersistenceStackLogicTests: XCTestCase {
 	}
 
 	func testPersistMethodDoesNotChangeAnythingOnUnchangedContext() throws {
-		setUpContainer()
-
 		// Sanity check that nothing is pending on the contexts and it's empty.
 		XCTAssertFalse(mainContext.hasChanges)
 		XCTAssertFalse(privateContext.hasChanges)
@@ -126,8 +104,6 @@ class PersistenceStackLogicTests: XCTestCase {
 	// MARK: - createNewContext
 
 	func testNewContextWithMainAsParentGetsReturned() throws {
-		setUpContainer()
-
 		// Sanity check that the contexts is empty.
 		XCTAssertEqual(0, try mainContext.fetch(Foo.fetchRequest()).count)
 
@@ -149,9 +125,7 @@ class PersistenceStackLogicTests: XCTestCase {
 	}
 
 	func testNewObjectGetsPassedToNewContext() throws {
-		setUpContainer()
-
-		// Sanity check that the contexts is empty.
+		// Sanity check that the context is empty.
 		XCTAssertEqual(0, try mainContext.fetch(Foo.fetchRequest()).count)
 
 		// Method under test.

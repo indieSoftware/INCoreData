@@ -3,38 +3,89 @@ import CoreData
 import XCTest
 
 class CoreDataManagerTests: XCTestCase {
-	/*
-	 func testThatAdditionalContextParentIsMainContext() {
-	 	let coreDataManager = CoreDataManager(persistenceStack: PersistenceStack())
-	 	let backgroundContext = coreDataManager.getAdditionalContext()
+	var coreDataManager: CoreDataManager!
+	var persistenceStackMock: PersistenceStackMock!
 
-	 	XCTAssertEqual(backgroundContext.parent, coreDataManager.mainContext)
-	 }
+	override func setUp() {
+		super.setUp()
 
-	 func testThatObjectsArePushedToPrivateContextFromMain() throws {
-	 	let coreDataManager = CoreDataManager(persistenceStack: PersistenceStack())
-	 	let project = createDigitalPrintsProject(inContext: coreDataManager.mainContext)
+		let setupExpectation = expectation(description: "setupExpectation")
+		persistenceStackMock = PersistenceStackMock()
+		persistenceStackMock.initialize {
+			setupExpectation.fulfill()
+		}
+		waitForExpectations(timeout: 1)
+		coreDataManager = CoreDataManagerLogic(persistenceStack: persistenceStackMock)
+	}
 
-	 	let fetchRequest: NSFetchRequest<DigitalPrintsProject> = DigitalPrintsProject.fetchRequest()
-	 	let projectInMainContext = try coreDataManager.mainContext.fetch(fetchRequest).first
-	 	XCTAssertEqual(project.objectID, projectInMainContext?.objectID)
+	override func tearDown() {
+		super.tearDown()
 
-	 	let projectInPrivateContext = try coreDataManager.mainContext.fetch(fetchRequest).first
-	 	XCTAssertEqual(project.objectID, projectInPrivateContext?.objectID)
-	 }
+		persistenceStackMock = nil
+		coreDataManager = nil
+	}
 
-	 func testThatObjectsArePushedToMainContextFromBackroundContext() throws {
-	 	let coreDataManager = CoreDataManager(persistenceStack: PersistenceStack())
-	 	let backgroundContext = coreDataManager.getAdditionalContext()
+	// MARK: - mainContext
 
-	 	let project = createDigitalPrintsProject(inContext: backgroundContext)
+	func testMainContextIsReturned() {
+		let mainContextExpectation = expectation(description: "mainContextExpectation")
+		persistenceStackMock.mainContextMock = {
+			mainContextExpectation.fulfill()
+			return NSManagedObjectContext(.mainQueue) // any context, doesn't matter
+		}
 
-	 	let fetchRequest: NSFetchRequest<DigitalPrintsProject> = DigitalPrintsProject.fetchRequest()
-	 	let projectInMainContext = try coreDataManager.mainContext.fetch(fetchRequest).first
-	 	XCTAssertEqual(project.objectID, projectInMainContext?.objectID)
+		_ = coreDataManager.mainContext
 
-	 	let projectInPrivateContext = try backgroundContext.fetch(fetchRequest).first
-	 	XCTAssertEqual(project.objectID, projectInPrivateContext?.objectID)
-	 }
-	 */
+		waitForExpectations(timeout: 1)
+	}
+
+	// MARK: - createNewContext
+
+	func testCreateNewContext() {
+		let createNewContextExpectation = expectation(description: "createNewContextExpectation")
+		persistenceStackMock.createNewContextMock = {
+			createNewContextExpectation.fulfill()
+			return NSManagedObjectContext(.mainQueue) // any context, doesn't matter
+		}
+
+		_ = coreDataManager.createNewContext()
+
+		waitForExpectations(timeout: 1)
+	}
+
+	// MARK: - persist
+
+	func testPersist() {
+		let persistExpectation = expectation(description: "persistExpectation")
+		persistenceStackMock.persistMock = {
+			persistExpectation.fulfill()
+		}
+
+		coreDataManager.persist()
+
+		waitForExpectations(timeout: 1)
+	}
+
+	// MARK: - persistFromBackgroundContext
+
+	func testPersistFromBackgroundContext() throws {
+		let persistExpectation = expectation(description: "persistExpectation")
+		persistenceStackMock.persistMock = {
+			persistExpectation.fulfill()
+		}
+
+		let backgroundContext = coreDataManager.createNewContext()
+
+		// Insert new object to the main context.
+		let newObject = Foo(context: backgroundContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 1
+		backgroundContext.insert(newObject)
+		XCTAssertTrue(backgroundContext.hasChanges)
+
+		try coreDataManager.persist(fromBackgroundContext: backgroundContext)
+
+		waitForExpectations(timeout: 1)
+		XCTAssertFalse(backgroundContext.hasChanges)
+	}
 }

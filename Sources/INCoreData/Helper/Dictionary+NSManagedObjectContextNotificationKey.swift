@@ -1,7 +1,7 @@
 import CoreData
 
 // TODO: Needs fine-tuning, see https://www.donnywals.com/responding-to-changes-in-a-managed-object-context/
-public extension Dictionary where Key == AnyHashable {
+extension Dictionary where Key == AnyHashable {
 	/**
 	 Retrieves the `NSManagedObject`s from a `userInfo` dictionary depending on the
 	 `NSManagedObjectContext.NotificationKey`.
