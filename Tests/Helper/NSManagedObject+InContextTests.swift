@@ -9,7 +9,7 @@ class NSManagedObject_InContextTests: XCTestCase {
 
 		let setupExpectation = expectation(description: "setupExpectation")
 		coreDataManager = CoreDataManagerLogic(
-			dataModelName: "TestModel",
+			dataModelName: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			completion: { _, _, _, _ in
 				setupExpectation.fulfill()

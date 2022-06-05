@@ -12,7 +12,7 @@ class PersistenceStackLogicTests: XCTestCase {
 
 		let setupExpectation = expectation(description: "setupExpectation")
 		persistenceStack = PersistenceStackLogic(
-			dataModelName: "TestModel",
+			dataModelName: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			completion: { _, mainContext, privateContext, _ in
 				self.mainContext = mainContext

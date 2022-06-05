@@ -47,7 +47,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	public init(
 		dataModelName: String = defaultDataModelName,
 		bundle: Bundle = .main,
-		completion: @escaping (
+		completion: @escaping ( // TODO: Do we really need all these information to be public?
 			_ persistentStoreCoordinator: NSPersistentStoreCoordinator,
 			_ mainContext: NSManagedObjectContext,
 			_ privateContext: NSManagedObjectContext,

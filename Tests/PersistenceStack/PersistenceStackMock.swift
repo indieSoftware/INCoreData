@@ -16,7 +16,7 @@ class PersistenceStackMock: PersistenceStack {
 
 	/// The in-memory stack used by this mock to provide a main context back.
 	lazy var persistenceStackInMemory = PersistenceStackLogic(
-		dataModelName: "TestModel",
+		dataModelName: TestModel.name,
 		bundle: Bundle(for: Self.self),
 		completion: { _, mainContext, _, _ in
 			self.mainContextInMemory = mainContext
