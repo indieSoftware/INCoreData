@@ -64,348 +64,437 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 
 		waitForExpectations(timeout: 1)
 	}
-	/*
-	    func testUpdatePublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated, .inserted, .deleted]
-	        let newTitle = "FooBar"
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .updated)
-	            XCTAssertEqual(managedObjectChange.object.title, newTitle)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+	func testUpdatePublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated, .inserted, .deleted]
+		let newTitle = "FooBar"
 
-	        fooObject.title = newTitle
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .updated)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.title, newTitle)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		fooObject.title = newTitle
 
-	    func testUpdateNotPublishedOnObjectChangedWhenNotListeningForUpdates() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.deleted, .inserted]
-	        let newTitle = "FooBar"
+		waitForExpectations(timeout: 1)
+	}
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        publishExpectation.isInverted = true
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+	func testUpdateNotPublishedOnObjectChangedWhenNotListeningForUpdates() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.deleted, .inserted]
+		let newTitle = "FooBar"
 
-	        fooObject.title = newTitle
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		fooObject.title = newTitle
 
-	    func testUpdatePublishedOnObjectChangedWhenRelationshipSet() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
+		waitForExpectations(timeout: 1)
+	}
 
-	        // Add new object for relationship
-	        let barObject = Bar(context: coreDataManager.mainContext)
-	        barObject.name = UUID().uuidString
-	        coreDataManager.persist()
+	func testUpdateNotPublishedOnObjectChangedWhenNotListeningForCorrectType() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
+		let newTitle = "FooBar"
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .updated)
-	            XCTAssertEqual(managedObjectChange.object.barRelationship?.count, 1)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Bar.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        fooObject.addToBarRelationship(barObject)
+		fooObject.title = newTitle
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    func testUpdatePublishedOnObjectChangedWhenRelationshipNSSetSet() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
+	func testUpdatePublishedOnObjectChangedWhenRelationshipSet() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
 
-	        // Add new object for relationship
-	        let barObject = Bar(context: coreDataManager.mainContext)
-	        barObject.name = UUID().uuidString
-	        coreDataManager.persist()
+		// Add new object for relationship
+		let barObject = Bar(context: coreDataManager.mainContext)
+		barObject.name = UUID().uuidString
+		coreDataManager.persist()
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .updated)
-	            XCTAssertEqual(managedObjectChange.object.barRelationship?.count, 1)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .updated)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.barRelationship?.count, 1)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        fooObject.addToBarRelationship([barObject])
+		fooObject.addToBarRelationship(barObject)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    func testUpdatePublishedOnObjectChangedWhenRelationshipRemoved() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
+	func testUpdatePublishedOnObjectChangedWhenRelationshipNSSetSet() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
 
-	        // Add new object for relationship
-	        let barObject = Bar(context: coreDataManager.mainContext)
-	        barObject.name = UUID().uuidString
-	        fooObject.addToBarRelationship(barObject)
-	        coreDataManager.persist()
-	        XCTAssertEqual(fooObject.barRelationship?.count, 1)
+		// Add new object for relationship
+		let barObject = Bar(context: coreDataManager.mainContext)
+		barObject.name = UUID().uuidString
+		coreDataManager.persist()
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .updated)
-	            XCTAssertEqual(managedObjectChange.object.barRelationship?.count, 0)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .updated)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.barRelationship?.count, 1)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        barObject.fooRelationship = nil
+		fooObject.addToBarRelationship([barObject])
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    func testUpdatePublishedOnObjectChangedWhenSavingChangesOnBackgrdoundContext() throws {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
-	        let newTitle = "FooBar"
+	func testUpdatePublishedOnObjectChangedWhenRelationshipRemoved() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
 
-	        let backgroundContext = coreDataManager.createNewContext()
-	        let fooOnBackground = fooObject.inContext(backgroundContext)
+		// Add new object for relationship
+		let barObject = Bar(context: coreDataManager.mainContext)
+		barObject.name = UUID().uuidString
+		fooObject.addToBarRelationship(barObject)
+		coreDataManager.persist()
+		XCTAssertEqual(fooObject.barRelationship?.count, 1)
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .updated)
-	            XCTAssertEqual(managedObjectChange.object.title, newTitle)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .updated)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.barRelationship?.count, 0)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        fooOnBackground.title = newTitle
-	        try backgroundContext.save()
+		barObject.fooRelationship = nil
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    func testNoUpdatePublishedOnObjectChangedWhenNotSavingChangesOnBackgrdoundContext() throws {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
-	        let newTitle = "FooBar"
+	func testUpdatePublishedOnObjectChangedWhenSavingChangesOnBackgrdoundContext() throws {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
+		let newTitle = "FooBar"
 
-	        let backgroundContext = coreDataManager.createNewContext()
-	        let fooOnBackground = fooObject.inContext(backgroundContext)
+		let backgroundContext = coreDataManager.createNewContext()
+		let fooOnBackground = fooObject.inContext(backgroundContext)
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        publishExpectation.isInverted = true
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .updated)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.title, newTitle)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        fooOnBackground.title = newTitle
-	        // no backgroundContext.save()
+		fooOnBackground.title = newTitle
+		try backgroundContext.save()
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    // MARK: - inserted
+	func testNoUpdatePublishedOnObjectChangedWhenNotSavingChangesOnBackgrdoundContext() throws {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
+		let newTitle = "FooBar"
 
-	    func testInsertedPublishedOnObjectChanged() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.inserted]
+		let backgroundContext = coreDataManager.createNewContext()
+		let fooOnBackground = fooObject.inContext(backgroundContext)
 
-	        // Prepare new object.
-	        let newObject = Foo(context: coreDataManager.mainContext)
-	        newObject.title = UUID().uuidString
-	        newObject.number = 2
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: newObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .inserted)
-	            XCTAssertEqual(managedObjectChange.object.objectID, newObject.objectID)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		fooOnBackground.title = newTitle
+		// no backgroundContext.save()
 
-	        coreDataManager.mainContext.insert(newObject)
+		waitForExpectations(timeout: 1)
+	}
 
-	        waitForExpectations(timeout: 1)
-	    }
+	// MARK: - inserted
 
-	    func testInsertedNotPublishedOnObjectChangedWhenNotListeningForInsertion() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
+	func testInsertedPublishedOnObjectChanged() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.inserted]
 
-	        // Prepare new object.
-	        let newObject = Foo(context: coreDataManager.mainContext)
-	        newObject.title = UUID().uuidString
-	        newObject.number = 2
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        publishExpectation.isInverted = true
-	        coreDataManager.publisher(
-	            managedObject: newObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .inserted)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.objectID, newObject.objectID)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        coreDataManager.mainContext.insert(newObject)
+		coreDataManager.mainContext.insert(newObject)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    func testInsertedPublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.deleted, .updated, .inserted]
+	func testInsertedNotPublishedOnObjectChangedWhenNotListeningForInsertion() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = []
 
-	        // Prepare new object.
-	        let newObject = Foo(context: coreDataManager.mainContext)
-	        newObject.title = UUID().uuidString
-	        newObject.number = 2
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: newObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .inserted)
-	            XCTAssertEqual(managedObjectChange.object.objectID, newObject.objectID)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        coreDataManager.mainContext.insert(newObject)
+		coreDataManager.mainContext.insert(newObject)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    // MARK: - deleted
+	func testInsertedNotPublishedOnObjectChangedWhenNotListeningForCorrectType() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.inserted]
 
-	    func testDeletedPublishedOnObjectChanged() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.deleted]
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .deleted)
-	            XCTAssertEqual(managedObjectChange.object.objectID, self.fooObject.objectID)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Bar.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        coreDataManager.mainContext.delete(fooObject)
+		coreDataManager.mainContext.insert(newObject)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		waitForExpectations(timeout: 1)
+	}
 
-	    func testDeletedNotPublishedOnObjectChangedWhenNotListeningForDeletion() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.updated]
+	func testInsertedPublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.deleted, .updated, .inserted]
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        publishExpectation.isInverted = true
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
 
-	        coreDataManager.mainContext.delete(fooObject)
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .inserted)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.objectID, newObject.objectID)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
 
-	        waitForExpectations(timeout: 1)
-	    }
+		coreDataManager.mainContext.insert(newObject)
 
-	    func testDeletedPublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
-	        let notificationType = ManagedNotification.objectChanged
-	        let changeTypes: [ChangeType] = [.deleted, .updated, .inserted]
+		waitForExpectations(timeout: 1)
+	}
 
-	        let publishExpectation = expectation(description: "publishExpectation")
-	        coreDataManager.publisher(
-	            managedObject: fooObject,
-	            context: coreDataManager.mainContext,
-	            notificationType: notificationType,
-	            changeTypes: changeTypes
-	        )
-	        .sink(receiveValue: { managedObjectChange in
-	            XCTAssertEqual(managedObjectChange.type, .deleted)
-	            XCTAssertEqual(managedObjectChange.object.objectID, self.fooObject.objectID)
-	            publishExpectation.fulfill()
-	        })
-	        .store(in: &subscriptions)
+	// MARK: - deleted
 
-	        coreDataManager.mainContext.delete(fooObject)
+	func testDeletedPublishedOnObjectChanged() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.deleted]
 
-	        waitForExpectations(timeout: 1)
-	    }
-	 */
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .deleted)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.objectID, self.fooObject.objectID)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		coreDataManager.mainContext.delete(fooObject)
+
+		waitForExpectations(timeout: 1)
+	}
+
+	func testDeletedNotPublishedOnObjectChangedWhenNotListeningForDeletion() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		coreDataManager.mainContext.delete(fooObject)
+
+		waitForExpectations(timeout: 1)
+	}
+
+	func testDeletedNotPublishedOnObjectChangedWhenNotListeningForCorrectType() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.deleted]
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObjectType: Bar.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		coreDataManager.mainContext.delete(fooObject)
+
+		waitForExpectations(timeout: 1)
+	}
+
+	func testDeletedPublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.deleted, .updated, .inserted]
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			XCTAssertEqual(managedObjectsChange.type, .deleted)
+			XCTAssertEqual(managedObjectsChange.objects.count, 1)
+			let changedObject = managedObjectsChange.objects[0]
+			XCTAssertEqual(changedObject.objectID, self.fooObject.objectID)
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		coreDataManager.mainContext.delete(fooObject)
+
+		waitForExpectations(timeout: 1)
+	}
 }

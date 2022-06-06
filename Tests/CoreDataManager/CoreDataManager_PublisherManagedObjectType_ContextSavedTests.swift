@@ -104,4 +104,68 @@ class CoreDataManager_PublisherManagedObjectType_ContextSavedTests: XCTestCase {
 		// Verify that all three changes have been emitted (updated, inserted and deleted).
 		XCTAssertEqual(changeTypes, publishedChanges)
 	}
+
+	func testOnlyRegisteredEventsArePublishedOnContextSaved() {
+		let notificationType = ManagedNotification.contextSaved
+		let changeTypes: [ChangeType] = [.updated, .inserted]
+		let newTitle = "FooBar"
+
+		// Add an object to delete.
+		let deleteObject = Foo(context: coreDataManager.mainContext)
+		deleteObject.title = UUID().uuidString
+		deleteObject.number = 2
+		coreDataManager.mainContext.insert(deleteObject)
+		coreDataManager.persist()
+
+		// Prepare object to insert.
+		let insertObject = Foo(context: coreDataManager.mainContext)
+		insertObject.title = UUID().uuidString
+		insertObject.number = 2
+
+		var publishedChanges = [ChangeType]()
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.expectedFulfillmentCount = 2
+		coreDataManager.publisher(
+			managedObjectType: Foo.self,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { managedObjectsChange in
+			publishedChanges.append(managedObjectsChange.type)
+			// Verify each change.
+			switch managedObjectsChange.type {
+			case .deleted:
+				XCTFail("We are not registerd of delete events!")
+			case .inserted:
+				XCTAssertEqual(managedObjectsChange.objects.count, 1)
+				let changedObject = managedObjectsChange.objects[0]
+				XCTAssertEqual(changedObject.objectID, insertObject.objectID)
+			case .updated:
+				XCTAssertEqual(managedObjectsChange.objects.count, 1)
+				let changedObject = managedObjectsChange.objects[0]
+				XCTAssertEqual(changedObject.objectID, self.fooObject.objectID)
+			}
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		// Delete (negative test)
+		coreDataManager.mainContext.delete(deleteObject)
+
+		// Update
+		fooObject.title = newTitle
+
+		// Insert
+		coreDataManager.mainContext.insert(insertObject)
+
+		// Perform changes which emits the events to the publisher.
+		coreDataManager.persist()
+
+		waitForExpectations(timeout: 1)
+
+		// Verify that all three changes have been emitted (updated, inserted and deleted).
+		XCTAssertEqual(changeTypes, publishedChanges)
+	}
 }

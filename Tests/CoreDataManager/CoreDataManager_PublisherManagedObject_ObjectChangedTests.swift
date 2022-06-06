@@ -110,6 +110,35 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		waitForExpectations(timeout: 1)
 	}
 
+	func testUpdateNotPublishedOnObjectChangedWhenNotListeningForCorrectInstance() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.updated]
+		let newTitle = "FooBar"
+
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
+		coreDataManager.mainContext.insert(newObject)
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObject: newObject,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		fooObject.title = newTitle
+
+		waitForExpectations(timeout: 1)
+	}
+
 	func testUpdatePublishedOnObjectChangedWhenRelationshipSet() {
 		let notificationType = ManagedNotification.objectChanged
 		let changeTypes: [ChangeType] = [.updated]
@@ -283,7 +312,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testInsertedNotPublishedOnObjectChangedWhenNotListeningForInsertion() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ChangeType] = []
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -294,6 +323,33 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: newObject,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		coreDataManager.mainContext.insert(newObject)
+
+		waitForExpectations(timeout: 1)
+	}
+
+	func testInsertedNotPublishedOnObjectChangedWhenNotListeningForCorrectInstance() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.inserted]
+
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObject: fooObject,
 			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
@@ -369,6 +425,34 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: fooObject,
+			context: coreDataManager.mainContext,
+			notificationType: notificationType,
+			changeTypes: changeTypes
+		)
+		.sink(receiveValue: { _ in
+			publishExpectation.fulfill()
+		})
+		.store(in: &subscriptions)
+
+		coreDataManager.mainContext.delete(fooObject)
+
+		waitForExpectations(timeout: 1)
+	}
+
+	func testDeletedNotPublishedOnObjectChangedWhenNotListeningForCorrectInstance() {
+		let notificationType = ManagedNotification.objectChanged
+		let changeTypes: [ChangeType] = [.deleted]
+
+		// Prepare new object.
+		let newObject = Foo(context: coreDataManager.mainContext)
+		newObject.title = UUID().uuidString
+		newObject.number = 2
+		coreDataManager.mainContext.insert(newObject)
+
+		let publishExpectation = expectation(description: "publishExpectation")
+		publishExpectation.isInverted = true
+		coreDataManager.publisher(
+			managedObject: newObject,
 			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
