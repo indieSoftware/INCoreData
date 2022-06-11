@@ -41,7 +41,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSaved() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -65,7 +65,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated, .deleted, .inserted]
+		let changeTypes: [ManagedObjectChangeType] = ManagedObjectChangeType.allCases
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -89,7 +89,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdateNotPublishedOnContextSavedWhenNotListeningForUpdates() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.deleted, .inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted, .inserted]
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -112,7 +112,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdateNotPublishedOnContextSavedWhenPersistNotCalled() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -135,7 +135,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSaveWhenRelationshipSet() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
@@ -163,7 +163,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSaveWhenRelationshipNSSetSet() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
@@ -191,7 +191,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSaveWhenRelationshipRemoved() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
@@ -220,7 +220,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSavedWhenPersistingBackgroundContext() throws {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let backgroundContext = coreDataManager.createNewContext()
@@ -247,7 +247,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testUpdateNotPublishedOnContextSavedWhenNotPersistingBackgroundContext() throws {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let backgroundContext = coreDataManager.createNewContext()
@@ -275,7 +275,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testInsertedPublishedOnContextSaved() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.inserted]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -303,7 +303,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testInsertedNotPublishedOnContextSavedWhenNotPersist() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.inserted]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -330,7 +330,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testInsertedPublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.inserted, .deleted, .updated]
+		let changeTypes: [ManagedObjectChangeType] = [.inserted, .deleted, .updated]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -360,7 +360,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testDeletedPublishedOnContextSaved() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.deleted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted]
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -383,7 +383,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testDeletedNotPublishedOnContextSavedWhenNotPersist() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.deleted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted]
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		publishExpectation.isInverted = true
@@ -407,7 +407,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 
 	func testDeletedPublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ChangeType] = [.updated, .deleted, .inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.updated, .deleted, .inserted]
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(

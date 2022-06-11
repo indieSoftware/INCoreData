@@ -2,6 +2,7 @@ import CoreData
 
 /// The notification emitted by a managed object.
 public struct ManagedNotification {
+	/// The raw value of the corresponding notification name used for accessing the notification info dictionary.
 	let name: Notification.Name
 }
 

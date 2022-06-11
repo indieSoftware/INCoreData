@@ -41,7 +41,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdatePublishedOnObjectChanged() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -64,7 +64,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdatePublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated, .inserted, .deleted]
+		let changeTypes: [ManagedObjectChangeType] = ManagedObjectChangeType.allCases
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -87,7 +87,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdateNotPublishedOnObjectChangedWhenNotListeningForUpdates() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.deleted, .inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted, .inserted]
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -109,7 +109,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdateNotPublishedOnObjectChangedWhenNotListeningForCorrectInstance() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		// Prepare new object.
@@ -137,7 +137,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdatePublishedOnObjectChangedWhenRelationshipSet() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
@@ -164,7 +164,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdatePublishedOnObjectChangedWhenRelationshipNSSetSet() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
@@ -191,7 +191,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdatePublishedOnObjectChangedWhenRelationshipRemoved() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
@@ -220,7 +220,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testUpdatePublishedOnObjectChangedWhenSavingChangesOnBackgrdoundContext() throws {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let backgroundContext = coreDataManager.createNewContext()
@@ -247,7 +247,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testNoUpdatePublishedOnObjectChangedWhenNotSavingChangesOnBackgrdoundContext() throws {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
 		let backgroundContext = coreDataManager.createNewContext()
@@ -275,7 +275,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testInsertedPublishedOnObjectChanged() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.inserted]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -302,7 +302,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testInsertedNotPublishedOnObjectChangedWhenNotListeningForInsertion() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = []
+		let changeTypes: [ManagedObjectChangeType] = []
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -328,7 +328,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testInsertedNotPublishedOnObjectChangedWhenNotListeningForCorrectInstance() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.inserted]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -354,7 +354,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testInsertedPublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.deleted, .updated, .inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted, .updated, .inserted]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -383,7 +383,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testDeletedPublishedOnObjectChanged() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.deleted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted]
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -405,7 +405,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testDeletedNotPublishedOnObjectChangedWhenNotListeningForDeletion() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.updated]
+		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		publishExpectation.isInverted = true
@@ -426,7 +426,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testDeletedNotPublishedOnObjectChangedWhenNotListeningForCorrectInstance() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.deleted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted]
 
 		// Prepare new object.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -453,7 +453,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 	func testDeletedPublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ChangeType] = [.deleted, .updated, .inserted]
+		let changeTypes: [ManagedObjectChangeType] = [.deleted, .updated, .inserted]
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(

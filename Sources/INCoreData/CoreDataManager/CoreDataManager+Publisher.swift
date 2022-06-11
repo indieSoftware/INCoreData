@@ -5,17 +5,18 @@ public extension CoreDataManager {
 	/**
 	 Returns a publisher which emits events for changes on a managed object.
 
-	 The managed objects must have a managed object context assigned.
-
 	 - parameter managedObject: The object for which to listen for changes.
+	 The managed objects must have a managed object context assigned.
 	 - parameter notificationType: The type of notification (change or save) to listen for.
-	 - parameter changeTypes: The type of change (insert, delete, update) to listen for.
+	 - parameter changeTypes: The type of change (insert, delete, update) to listen for,
+	 e.g. "`ManagedObjectChangeType.allCases`".
+	 Only changes matching the provided types will trigger a published event.
 	 - returns: The publisher.
 	 */
 	func publisher<ManagedObjectType: NSManagedObject>(
 		managedObject: ManagedObjectType,
 		notificationType: ManagedNotification,
-		changeTypes: [ChangeType]
+		changeTypes: [ManagedObjectChangeType]
 	) -> AnyPublisher<ManagedObjectChange<ManagedObjectType>, Never> {
 		guard let context = managedObject.managedObjectContext else {
 			preconditionFailure("Managed object has no context")
@@ -28,7 +29,7 @@ public extension CoreDataManager {
 				// Process only notifications for the change types we are interested in.
 				for changeType in changeTypes {
 					// The notification's userInfo contains all managed objects of the specific change type,
-					if let objects = notification.userInfo?[changeType.rawValue] as? Set<NSManagedObject>,
+					if let objects = notification.userInfo?[changeType.notificationKey] as? Set<NSManagedObject>,
 					   // but we are only interested in one managed object
 					   objects.contains(where: { $0.objectID == managedObject.objectID }),
 					   // and when we can retrieve an updated version from the context.
@@ -48,18 +49,23 @@ public extension CoreDataManager {
 	/**
 	 Returns a publisher which emits events for changes on any object of a specifc type of a managed object inside of a given context.
 
-	 - parameter managedObjectType: The type of managed object for which to listen for changes.
+	 Each change type will trigger a seperate event, but an event may contain multiple changes of the same type.
+
+	 - parameter managedObjectType: The type of the managed object for which to listen for changes.
 	 - parameter context: The context on which to listen for the changes.
 	 - parameter notificationType: The type of notification (change or save) to listen for.
-	 - parameter changeTypes: The type of change (insert, delete, update) to listen for.
-	 The provided order is repsected when emitting new events when multiple change types are applied at once.
+	 - parameter changeTypes: The type of change (insert, delete, update) to listen for,
+	 e.g. "`ManagedObjectChangeType.allCases`".
+	 Only changes matching the provided types will trigger a published event.
+	 The provided order is repsected when emitting new events when multiple change types are applied at once,
+	 i.e. when using `ManagedNotification.contextSaved` as the notification type.
 	 - returns: The publisher.
 	 */
 	func publisher<ManagedObjectType: NSManagedObject>(
-		managedObjectType _: ManagedObjectType.Type, // TODO: Is this really needed?
+		managedObjectType _: ManagedObjectType.Type,
 		context: NSManagedObjectContext,
 		notificationType: ManagedNotification,
-		changeTypes: [ChangeType]
+		changeTypes: [ManagedObjectChangeType]
 	) -> AnyPublisher<ManagedObjectsChange<ManagedObjectType>, Never> {
 		NotificationCenter.default
 			// The publisher emits the notifications of the context.
@@ -69,7 +75,7 @@ public extension CoreDataManager {
 				// We are only interested in specific change types.
 				changeTypes.compactMap { type -> ManagedObjectsChange<ManagedObjectType>? in
 					// The changed objects are provided in a set for each change type.
-					guard let changes = notification.userInfo?[type.rawValue] as? Set<NSManagedObject> else {
+					guard let changes = notification.userInfo?[type.notificationKey] as? Set<NSManagedObject> else {
 						return nil
 					}
 
@@ -96,30 +102,4 @@ public extension CoreDataManager {
 			}
 			.eraseToAnyPublisher()
 	}
-}
-
-/// The published event when a managed object might change.
-public struct ManagedObjectChange<ManagedObjectType: NSManagedObject> {
-	/// The managed object which has been changed.
-	let object: ManagedObjectType
-	/// The type of change.
-	let type: ChangeType
-}
-
-/// The published event when multiple managed objects might change.
-public struct ManagedObjectsChange<ManagedObjectType: NSManagedObject> {
-	/// The managed objects which have been changed.
-	let objects: [ManagedObjectType]
-	/// The type of change.
-	let type: ChangeType
-}
-
-// TODO: Make a struct of this
-public enum ChangeType: String, Equatable {
-	/// An object has been added to a context.
-	case inserted // NSManagedObjectContext.NotificationKey.insertedObjects.rawValue
-	/// An object has been deleted from a context.
-	case deleted // deletedObjects
-	/// An object has been modified / changed.
-	case updated // updatedObjects
 }
