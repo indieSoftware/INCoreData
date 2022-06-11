@@ -47,7 +47,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -71,7 +70,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -96,7 +94,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -125,7 +122,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: newObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -151,7 +147,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -179,7 +174,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -209,7 +203,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -236,7 +229,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -265,7 +257,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -294,7 +285,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: newObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -323,7 +313,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: newObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -350,7 +339,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -376,7 +364,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: newObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -401,7 +388,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -425,7 +411,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -453,7 +438,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
 			managedObject: newObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -474,7 +458,6 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
 			managedObject: fooObject,
-			context: coreDataManager.mainContext,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)

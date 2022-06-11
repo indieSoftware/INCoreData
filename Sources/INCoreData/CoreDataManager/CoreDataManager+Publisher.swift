@@ -5,19 +5,22 @@ public extension CoreDataManager {
 	/**
 	 Returns a publisher which emits events for changes on a managed object.
 
+	 The managed objects must have a managed object context assigned.
+
 	 - parameter managedObject: The object for which to listen for changes.
-	 - parameter context: The context of the managed object.
 	 - parameter notificationType: The type of notification (change or save) to listen for.
 	 - parameter changeTypes: The type of change (insert, delete, update) to listen for.
 	 - returns: The publisher.
 	 */
 	func publisher<ManagedObjectType: NSManagedObject>(
 		managedObject: ManagedObjectType,
-		context: NSManagedObjectContext, // TODO: Is this really needed?
 		notificationType: ManagedNotification,
 		changeTypes: [ChangeType]
 	) -> AnyPublisher<ManagedObjectChange<ManagedObjectType>, Never> {
-		NotificationCenter.default
+		guard let context = managedObject.managedObjectContext else {
+			preconditionFailure("Managed object has no context")
+		}
+		return NotificationCenter.default
 			// The publisher emits the notification of the context.
 			.publisher(for: notificationType.name, object: context)
 			// Map the notification to the desired event and ignore nil values.
