@@ -14,7 +14,7 @@ class CoreDataManagerTests: XCTestCase {
 		persistenceStackMock.initialize {
 			setupExpectation.fulfill()
 		}
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 		coreDataManager = CoreDataManagerLogic(persistenceStack: persistenceStackMock)
 	}
 
@@ -36,7 +36,7 @@ class CoreDataManagerTests: XCTestCase {
 
 		_ = coreDataManager.mainContext
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	// MARK: - createNewContext
@@ -50,7 +50,7 @@ class CoreDataManagerTests: XCTestCase {
 
 		_ = coreDataManager.createNewContext()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	// MARK: - persist
@@ -63,7 +63,7 @@ class CoreDataManagerTests: XCTestCase {
 
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	// MARK: - persistFromBackgroundContext
@@ -85,7 +85,7 @@ class CoreDataManagerTests: XCTestCase {
 
 		try coreDataManager.persist(fromBackgroundContext: backgroundContext)
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 		XCTAssertFalse(backgroundContext.hasChanges)
 	}
 }

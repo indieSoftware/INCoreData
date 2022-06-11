@@ -15,7 +15,7 @@ class NSManagedObject_InContextTests: XCTestCase {
 				setupExpectation.fulfill()
 			}
 		)
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	override func tearDown() {

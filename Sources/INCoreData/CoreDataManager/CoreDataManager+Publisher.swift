@@ -102,4 +102,61 @@ public extension CoreDataManager {
 			}
 			.eraseToAnyPublisher()
 	}
+
+	/**
+	 Returns a publisher which emits events for changes on any object of a specifc type of a managed object inside of a given context.
+
+	 Each notification will result in a single event emitted, even when multiple different types of changes have applied.
+	 Only events of the notification type `contextSaved` are published.
+
+	 - parameter managedObjectType: The type of the managed object for which to listen for changes.
+	 - parameter context: The context on which to listen for the changes.
+	 - parameter changeTypes: The type of change (insert, delete, update) to listen for,
+	 e.g. "`ManagedObjectChangeType.allCases`".
+	 Only changes matching the provided types will be passed to the published event.
+	 The provided order is repsected when emitting new events when multiple change types are applied at once.
+	 - returns: The publisher.
+	 */
+	func publisher<ManagedObjectType: NSManagedObject>(
+		managedObjectType _: ManagedObjectType.Type,
+		context: NSManagedObjectContext,
+		changeTypes: [ManagedObjectChangeType]
+	) -> AnyPublisher<[ManagedObjectsChange<ManagedObjectType>], Never> {
+		NotificationCenter.default
+			// The publisher emits the notifications of the context.
+			.publisher(for: ManagedNotification.contextSaved.name, object: context)
+			// Map the notification to the desired single event.
+			.compactMap { notification -> [ManagedObjectsChange<ManagedObjectType>] in
+				// We are only interested in specific change types.
+				changeTypes.compactMap { type -> ManagedObjectsChange<ManagedObjectType>? in
+					// The changed objects are provided in a set for each change type.
+					guard let changes = notification.userInfo?[type.notificationKey] as? Set<NSManagedObject> else {
+						return nil
+					}
+
+					// Retrieve all objects corresponding to that change.
+					let objects = changes
+						// We are only interested in objects of a specific type
+						.filter { object in
+							// A cast is an expansive call, therefore, look for the entity first.
+							object.entity == ManagedObjectType.entity()
+						}
+						// and when we can retrieve an updated version from the context.
+						.compactMap { object in
+							context.object(with: object.objectID) as? ManagedObjectType
+						}
+					// No changes in object types we are interested in?
+					guard !objects.isEmpty else {
+						return nil
+					}
+					// Return the objects and its change type.
+					return ManagedObjectsChange(objects: objects, type: type)
+				}
+			}
+			// Ignore empty events.
+			.filter { managedObjectsChanges in
+				!managedObjectsChanges.isEmpty
+			}
+			.eraseToAnyPublisher()
+	}
 }

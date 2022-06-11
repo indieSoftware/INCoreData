@@ -19,7 +19,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 				setupExpectation.fulfill()
 			}
 		)
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 
 		// Add initial object to the main context.
 		let newObject = Foo(context: coreDataManager.mainContext)
@@ -33,7 +33,6 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 	override func tearDown() {
 		super.tearDown()
 		subscriptions.removeAll()
-
 		coreDataManager = nil
 	}
 
@@ -60,7 +59,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooObject.title = newTitle
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdatePublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
@@ -84,7 +83,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooObject.title = newTitle
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdateNotPublishedOnContextSavedWhenNotListeningForUpdates() {
@@ -107,7 +106,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooObject.title = newTitle
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdateNotPublishedOnContextSavedWhenPersistNotCalled() {
@@ -130,7 +129,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooObject.title = newTitle
 		// No persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdatePublishedOnContextSaveWhenRelationshipSet() {
@@ -158,7 +157,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooObject.addToBarRelationship(barObject)
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdatePublishedOnContextSaveWhenRelationshipNSSetSet() {
@@ -186,7 +185,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooObject.addToBarRelationship([barObject])
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdatePublishedOnContextSaveWhenRelationshipRemoved() {
@@ -215,7 +214,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		barObject.fooRelationship = nil
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdatePublishedOnContextSavedWhenPersistingBackgroundContext() throws {
@@ -242,7 +241,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooOnBackground.title = newTitle
 		try coreDataManager.persist(fromBackgroundContext: backgroundContext)
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testUpdateNotPublishedOnContextSavedWhenNotPersistingBackgroundContext() throws {
@@ -268,7 +267,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		fooOnBackground.title = newTitle
 		// no persist(fromBackgroundContext: backgroundContext)
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	// MARK: - inserted
@@ -298,7 +297,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		coreDataManager.mainContext.insert(newObject)
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testInsertedNotPublishedOnContextSavedWhenNotPersist() {
@@ -325,7 +324,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		coreDataManager.mainContext.insert(newObject)
 		// no persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testInsertedPublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
@@ -353,7 +352,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		coreDataManager.mainContext.insert(newObject)
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	// MARK: - deleted
@@ -378,7 +377,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		coreDataManager.mainContext.delete(fooObject)
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testDeletedNotPublishedOnContextSavedWhenNotPersist() {
@@ -402,7 +401,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		coreDataManager.mainContext.delete(fooObject)
 		// no persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	func testDeletedPublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
@@ -425,6 +424,6 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		coreDataManager.mainContext.delete(fooObject)
 		coreDataManager.persist()
 
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 }

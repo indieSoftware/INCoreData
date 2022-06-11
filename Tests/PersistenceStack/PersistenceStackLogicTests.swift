@@ -20,7 +20,7 @@ class PersistenceStackLogicTests: XCTestCase {
 				setupExpectation.fulfill()
 			}
 		)
-		waitForExpectations(timeout: 1)
+		waitForExpectations()
 	}
 
 	override func tearDown() {
