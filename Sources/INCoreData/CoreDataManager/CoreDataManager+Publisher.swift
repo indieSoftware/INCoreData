@@ -33,7 +33,7 @@ public extension CoreDataManager {
 				// Process only notifications for the change types we are interested in.
 				for changeType in changeTypes {
 					// The notification's userInfo contains all managed objects of the specific change type,
-					if let objects = notification.userInfo?[changeType.notificationKey] as? Set<NSManagedObject>,
+					if let objects = notification.managedObjects(changeType: changeType),
 					   // but we are only interested in one managed object
 					   objects.contains(where: { $0.objectID == managedObject.objectID }),
 					   // and when we can retrieve an updated version from the context.
@@ -84,9 +84,9 @@ public extension CoreDataManager {
 			// Map the notification to the desired events, but emit an event for each change type.
 			.flatMap { notification in
 				// We are only interested in specific change types.
-				changeTypes.compactMap { type -> ManagedObjectsChange<ManagedObjectType>? in
+				changeTypes.compactMap { changeType -> ManagedObjectsChange<ManagedObjectType>? in
 					// The changed objects are provided in a set for each change type.
-					guard let changes = notification.userInfo?[type.notificationKey] as? Set<NSManagedObject> else {
+					guard let changes = notification.managedObjects(changeType: changeType) else {
 						return nil
 					}
 
@@ -106,7 +106,7 @@ public extension CoreDataManager {
 						return nil
 					}
 					// Publish the objects and its change type.
-					return ManagedObjectsChange(objects: objects, type: type)
+					return ManagedObjectsChange(objects: objects, type: changeType)
 				}
 				// Publish each change type separately.
 				.publisher
@@ -146,9 +146,9 @@ public extension CoreDataManager {
 			// Map the notification to the desired single event.
 			.compactMap { notification -> [ManagedObjectsChange<ManagedObjectType>] in
 				// We are only interested in specific change types.
-				changeTypes.compactMap { type -> ManagedObjectsChange<ManagedObjectType>? in
+				changeTypes.compactMap { changeType -> ManagedObjectsChange<ManagedObjectType>? in
 					// The changed objects are provided in a set for each change type.
-					guard let changes = notification.userInfo?[type.notificationKey] as? Set<NSManagedObject> else {
+					guard let changes = notification.managedObjects(changeType: changeType) else {
 						return nil
 					}
 
@@ -168,7 +168,7 @@ public extension CoreDataManager {
 						return nil
 					}
 					// Return the objects and its change type.
-					return ManagedObjectsChange(objects: objects, type: type)
+					return ManagedObjectsChange(objects: objects, type: changeType)
 				}
 			}
 			// Ignore empty events.
