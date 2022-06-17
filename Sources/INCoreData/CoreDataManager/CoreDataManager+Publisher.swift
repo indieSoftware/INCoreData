@@ -5,6 +5,10 @@ public extension CoreDataManager {
 	/**
 	 Returns a publisher which emits events for changes on a managed object.
 
+	 For example, when registered for changes on object instance A then
+	 an event is triggered either when a change on the instance A has been performed or
+	 after A's context has been saved, depending on the notification type provided.
+
 	 - parameter managedObject: The object for which to listen for changes.
 	 The managed objects must have a managed object context assigned.
 	 - parameter notificationType: The type of notification (change or save) to listen for.
@@ -50,6 +54,12 @@ public extension CoreDataManager {
 	 Returns a publisher which emits events for changes on any object of a specifc type of a managed object inside of a given context.
 
 	 Each change type will trigger a seperate event, but an event may contain multiple changes of the same type.
+
+	 For example, when registered for changes on any object instance of type A then
+	 an event is triggered either when a change on an instance of A has been performed or
+	 after the context has been saved, depending on the notification type provided.
+	 However, when also listening for insertions or deletions then they will emit their own events,
+	 so one event only has one type of change.
 
 	 - parameter managedObjectType: The type of the managed object for which to listen for changes.
 	 - parameter context: The context on which to listen for the changes.
@@ -108,6 +118,12 @@ public extension CoreDataManager {
 
 	 Each notification will result in a single event emitted, even when multiple different types of changes have applied.
 	 Only events of the notification type `contextSaved` are published.
+
+	 This is similar to `publisher(managedObjectType:, context:, notificationType:, changeTypes:)`,
+	 but here the notification type is always `contextSaved` and all changes will be summarized into a single event.
+	 That means when new instances have been inserted and others have been deleted,
+	 then this will lead to only one event which contains all changes for both,
+	 the insertions and deletions.
 
 	 - parameter managedObjectType: The type of the managed object for which to listen for changes.
 	 - parameter context: The context on which to listen for the changes.

@@ -9,11 +9,13 @@ public class CoreDataManagerLogic: CoreDataManager {
 	private var persistenceStack: PersistenceStack
 
 	/**
-	 Initializes the mananger.
+	 Main initializer for this mananger.
 
-	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file.
-	 - parameter bundle: The bundle where to find the data model.
+	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file, e.g. "DataModel".
+	 - parameter bundle: The bundle where to find the data model, e.g. "main".
 	 - parameter storeFolder: The relative folder path where to persist the store.
+	 Usually this will be a new sub-folder in the documents folder.
+	 The folder doesn't have to exist and will be created automatically.
 	 - parameter completion: The completion block which will be called on the main thread
 	 when the stack has been initialized and any data model potentially migrated.
 	 The returned `Result` will indicate a success when the model could be created or a failure with the error.

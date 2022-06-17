@@ -52,7 +52,7 @@ class PersistenceStackLogic: PersistenceStack {
 		// It might take some time to create the store because of potential migrations,
 		// therefore, do this on a background queue.
 		DispatchQueue.global().async { [self] in
-			// Make sure the folder for the SQLite database exists.
+			// Make sure the folder for the SQLite database exists and create it first if necessary.
 			do {
 				try FileManager.default.createDirectory(
 					at: storeFolder,
