@@ -60,7 +60,10 @@ class PersistenceStackLogic: PersistenceStack {
 					attributes: nil
 				)
 			} catch {
-				Self.performCallback(completion, result: .failure(.storeFolderCouldNotBeCreated(path: storeFolder.absoluteString)))
+				Self.performCallback(
+					completion,
+					result: .failure(.storeFolderCouldNotBeCreated(path: storeFolder.absoluteString))
+				)
 				return
 			}
 

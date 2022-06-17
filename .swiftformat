@@ -2,7 +2,7 @@
 
 # Rules
 # https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
---maxwidth 160
+--maxwidth 120
 --enable isEmpty
 --indent tab 
 --tabwidth 4

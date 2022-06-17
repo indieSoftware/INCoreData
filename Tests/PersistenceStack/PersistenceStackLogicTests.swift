@@ -72,13 +72,21 @@ class PersistenceStackLogicTests: XCTestCase {
 		XCTAssertEqual(1, foosInMainContext.count)
 		let fooInMainContext = try XCTUnwrap(foosInMainContext.first)
 		XCTAssertEqual(newObject.title, fooInMainContext.title)
-		XCTAssertEqual(newObject.objectID, fooInMainContext.objectID, "The persisted object ID should match the one from the stack where it is saved")
+		XCTAssertEqual(
+			newObject.objectID,
+			fooInMainContext.objectID,
+			"The persisted object ID should match the one from the stack where it is saved"
+		)
 
 		let foosInPrivateContext = try privateContext.fetch(Foo.fetchRequest())
 		XCTAssertEqual(1, foosInPrivateContext.count)
 		let fooInPrivateContext = try XCTUnwrap(foosInPrivateContext.first)
 		XCTAssertEqual(newObject.title, fooInPrivateContext.title)
-		XCTAssertNotEqual(newObject.objectID, fooInPrivateContext.objectID, "Different contexts have different IDs for their objects")
+		XCTAssertNotEqual(
+			newObject.objectID,
+			fooInPrivateContext.objectID,
+			"Different contexts have different IDs for their objects"
+		)
 	}
 
 	func testPersistMethodDoesNotChangeAnythingOnUnchangedContext() throws {
