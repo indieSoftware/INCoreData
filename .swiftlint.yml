@@ -1,18 +1,37 @@
 # https://github.com/realm/SwiftLint
-# https://github.com/realm/SwiftLint/blob/master/Rules.md
+# https://realm.github.io/SwiftLint/rule-directory.html
 
-disabled_rules: # rule identifiers to exclude from running
+disabled_rules:
   - nesting
   - todo
-  - opening_brace
 
-line_length: 160 # instead of 120
+opt_in_rules:
+  - force_unwrapping
+  - convenience_type
+  - empty_count
+  - empty_string
+  - fatal_error_message
+  - file_name
+  - first_where
+  - modifier_order
+  - toggle_bool
+  - fallthrough
+  - identical_operands
+  - joined_default_parameter
+  - overridden_super_call
+
+line_length: 120
+file_length: 400
+function_body_length: 40
 
 type_name:
   min_length:
     error: 3 # error instead of warning
   max_length:
     error: 40 # error instead of warning
+  allowed_symbols: 
+    - "_" # Allow for Previews and UnitTests
+
 identifier_name:
   excluded:
     - id

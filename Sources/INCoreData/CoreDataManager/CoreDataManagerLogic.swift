@@ -11,7 +11,8 @@ public class CoreDataManagerLogic: CoreDataManager {
 	/**
 	 Main initializer for this mananger.
 
-	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file, e.g. "DataModel".
+	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file,
+	 e.g. "DataModel".
 	 - parameter bundle: The bundle where to find the data model, e.g. "main".
 	 - parameter storeFolder: The relative folder path where to persist the store.
 	 Usually this will be a new sub-folder in the documents folder.

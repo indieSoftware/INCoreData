@@ -38,7 +38,7 @@ public extension CoreDataManager {
 					   objects.contains(where: { $0.objectID == managedObject.objectID }),
 					   // and when we can retrieve an updated version from the context.
 					   let object = context.object(with: managedObject.objectID) as? ManagedObjectType
-					{
+					{ // swiftlint:disable:this opening_brace
 						// Publish the object and its change type,
 						// ignore the other change types because only one can be triggered at the same time.
 						return ManagedObjectChange(object: object, type: changeType)
@@ -51,7 +51,8 @@ public extension CoreDataManager {
 	}
 
 	/**
-	 Returns a publisher which emits events for changes on any object of a specifc type of a managed object inside of a given context.
+	 Returns a publisher which emits events for changes on any object
+	 of a specifc type of a managed object inside of a given context.
 
 	 Each change type will trigger a seperate event, but an event may contain multiple changes of the same type.
 
@@ -114,7 +115,8 @@ public extension CoreDataManager {
 	}
 
 	/**
-	 Returns a publisher which emits events for changes on any object of a specifc type of a managed object inside of a given context.
+	 Returns a publisher which emits events for changes on any object
+	 of a specifc type of a managed object inside of a given context.
 
 	 Each notification will result in a single event emitted, even when multiple different types of changes have applied.
 	 Only events of the notification type `contextSaved` are published.

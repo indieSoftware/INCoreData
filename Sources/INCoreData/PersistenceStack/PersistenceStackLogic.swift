@@ -79,12 +79,17 @@ class PersistenceStackLogic: PersistenceStack {
 				)
 				Self.performCallback(completion, result: .success(()))
 			} catch {
-				Self.performCallback(completion, result: .failure(.persistentStoreCouldNotBeCreated(path: databaseUrl.absoluteString)))
+				Self.performCallback(
+					completion,
+					result: .failure(.persistentStoreCouldNotBeCreated(path: databaseUrl.absoluteString))
+				)
 			}
 		}
 	}
 
-	private static func performCallback(_ callback: @escaping (Result<Void, CoreDataManagerError>) -> Void, result: Result<Void, CoreDataManagerError>) {
+	private static func performCallback(
+		_ callback: @escaping (Result<Void, CoreDataManagerError>) -> Void, result: Result<Void, CoreDataManagerError>
+	) {
 		DispatchQueue.main.async {
 			callback(result)
 		}
