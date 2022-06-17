@@ -1,28 +1,27 @@
 import CoreData
 
-public struct ManagedObjectChangeType: Equatable {
-	let notificationKey: String
-}
-
-extension ManagedObjectChangeType: CaseIterable {
-	public static let allCases: [ManagedObjectChangeType] = [
-		.inserted,
-		.deleted,
-		.updated
-	]
-}
-
-public extension ManagedObjectChangeType {
+// This is not a struct to have a compile-time hint when not exchausive
+// and to get automatically a case iterable conformance.
+// An option set will not work well because it prevents the associated value
+// of the notification key.
+public enum ManagedObjectChangeType: Equatable, CaseIterable {
 	/// An object has been added to a context.
-	static let inserted = ManagedObjectChangeType(
-		notificationKey: NSManagedObjectContext.NotificationKey.insertedObjects.rawValue
-	)
+	case inserted
 	/// An object has been deleted from a context.
-	static let deleted = ManagedObjectChangeType(
-		notificationKey: NSManagedObjectContext.NotificationKey.deletedObjects.rawValue
-	)
+	case deleted
 	/// An object has been modified / changed.
-	static let updated = ManagedObjectChangeType(
-		notificationKey: NSManagedObjectContext.NotificationKey.updatedObjects.rawValue
-	)
+	case updated
+
+	/// The `NSManagedObjectContext.NotificationKey`'s raw value used
+	/// to retrieve the managed objects from a notification's userInfo dictionary.
+	var notificationKey: String {
+		switch self {
+		case .inserted:
+			return NSManagedObjectContext.NotificationKey.insertedObjects.rawValue
+		case .deleted:
+			return NSManagedObjectContext.NotificationKey.deletedObjects.rawValue
+		case .updated:
+			return NSManagedObjectContext.NotificationKey.updatedObjects.rawValue
+		}
+	}
 }
