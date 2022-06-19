@@ -6,10 +6,23 @@ public class CoreDataManagerLogic: CoreDataManager {
 	public static let defaultDataModelName = "DataModel"
 
 	/// The used persinstence stack which handles the main and the background context.
-	private var persistenceStack: PersistenceStack
+	private var persistenceStack: PersistenceStack?
 
 	/**
-	 Main initializer for this mananger.
+	 Default initializer of the manager which does nothing.
+
+	 Before using the manager the `setup` method must be called once.
+	 */
+	public init() {}
+
+	/**
+	 Sets up this mananger with a persistence stack on disk.
+
+	 This must be called exactly once and before calling any other methods of the manager.
+	 Calling this method will create the necessary folders and files for persistence and
+	 potentially migrate any previous stores if necessary.
+	 That might take some unpredictable time, so call this method in the life-cycle of the app
+	 when it's appropriate for the user to wait for some time, i.e. when showing a splash screen.
 
 	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file,
 	 e.g. "DataModel".
@@ -21,12 +34,13 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 when the stack has been initialized and any data model potentially migrated.
 	 The returned `Result` will indicate a success when the model could be created or a failure with the error.
 	 */
-	public init(
+	public func setup(
 		dataModelName: String = defaultDataModelName,
 		bundle: Bundle = .main,
 		storeFolder: URL,
 		completion: @escaping (Result<Void, CoreDataManagerError>) -> Void
 	) {
+		precondition(persistenceStack == nil, "This method should only be called once")
 		persistenceStack = PersistenceStackLogic(
 			dataModelName: dataModelName,
 			bundle: bundle,
@@ -36,7 +50,12 @@ public class CoreDataManagerLogic: CoreDataManager {
 	}
 
 	/**
-	 Alternative initializer to use an in-memory persistence stack, i.e. for UnitTests.
+	 Alternative initializer to use an in-memory persistence stack
+	 suitable for Previews or UnitTests of apps using this library.
+
+	 This initializer already sets up the manager, therefore, calling `setup` is not necessary and even forbidden.
+	 It should only be used to inject an in-memory manager.
+	 It's not intended to use this for productive code.
 
 	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file.
 	 - parameter bundle: The bundle where to find the data model. Default to the main bundle.
@@ -47,7 +66,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 - parameter privateContext: The created private background context.
 	 - parameter container: The created container.
 	 */
-	public init(
+	public convenience init(
 		dataModelName: String = defaultDataModelName,
 		bundle: Bundle = .main,
 		completion: @escaping (
@@ -57,6 +76,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 			_ container: NSPersistentContainer
 		) -> Void
 	) {
+		self.init()
 		persistenceStack = PersistenceStackLogic(
 			dataModelName: dataModelName,
 			bundle: bundle,
@@ -65,7 +85,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	}
 
 	/**
-	 Alternative initializer to assign a persistence stack directly, i.e. for UnitTests.
+	 Alternative initializer to assign a persistence stack directly, i.e. for UnitTests of this module.
 
 	 - parameter persistenceStack: The persistence stack to use, i.e. a mock.
 	 */
@@ -74,15 +94,24 @@ public class CoreDataManagerLogic: CoreDataManager {
 	}
 
 	public var mainContext: NSManagedObjectContext {
-		persistenceStack.mainContext
+		guard let persistenceStack = persistenceStack else {
+			preconditionFailure("'setup' hasn't been called")
+		}
+		return persistenceStack.mainContext
 	}
 
 	public func createNewContext() -> NSManagedObjectContext {
-		persistenceStack.createNewContext()
+		guard let persistenceStack = persistenceStack else {
+			preconditionFailure("'setup' hasn't been called")
+		}
+		return persistenceStack.createNewContext()
 	}
 
 	public func persist() {
-		persistenceStack.persist()
+		guard let persistenceStack = persistenceStack else {
+			preconditionFailure("'setup' hasn't been called")
+		}
+		return persistenceStack.persist()
 	}
 
 	public func persist(fromBackgroundContext backgroundContext: NSManagedObjectContext) throws {

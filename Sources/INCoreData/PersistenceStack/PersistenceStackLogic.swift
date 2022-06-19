@@ -4,7 +4,7 @@ class PersistenceStackLogic: PersistenceStack {
 	/// The coordinator which is used for binding the main MOC with the persistent store.
 	private let persistentStoreCoordinator: NSPersistentStoreCoordinator
 
-	/// This is MOC which will run on a private queue so that any saves don't block the UI.
+	/// This is a MOC which will run on a private queue so that any saves don't block the UI.
 	/// The MOC's responsibility is to handle all presistances, no matter how many other MOCs were created.
 	private let privateContext: NSManagedObjectContext
 
