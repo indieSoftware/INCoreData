@@ -67,7 +67,7 @@ class CoreDataManager_PublisherManagedObjectType_ContextSavedTests: XCTestCase {
 
 	func testUpdatePublishedOnContextSavedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.contextSaved
-		let changeTypes: [ManagedObjectChangeType] = ManagedObjectChangeType.allCases
+		let changeTypes: [ManagedObjectChangeType] = .allCases
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")

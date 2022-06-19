@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>INCoreData  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="INCoreData  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+          INCoreData
+        </a>
+         (94% documented)
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/indieSoftware/INCoreData">
+            <img class="header-icon" src="img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">INCoreData Reference</a>
+      <img class="carat" src="img/carat.png" alt=""/>
+      INCoreData  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CoreDataManagerError.html">CoreDataManagerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/NSManagedObject.html">NSManagedObject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CoreDataManager.html">CoreDataManager</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ManagedNotification.html">ManagedNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ManagedObjectChange.html">ManagedObjectChange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ManagedObjectsChange.html">ManagedObjectsChange</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            
+            <h1 id='incoredata' class='heading'>INCoreData</h1>
+
+<p>A helper library to work with CoreData.</p>
+
+<p>Good resources for the general usage of CoreData:</p>
+
+<ul>
+<li><a href="https://www.advancedswift.com/core-data-background-fetch-save-create">https://www.advancedswift.com/core-data-background-fetch-save-create</a></li>
+</ul>
+<h2 id='feature-overview' class='heading'>Feature overview</h2>
+
+<p>The main class is <code><a href="Protocols/CoreDataManager.html">CoreDataManager</a></code> which provides a manager to access the main context, get new background contexts and to persist any changes.</p>
+
+<p>The idea is to have a main context which works on the main thread as the single source of truth.
+However, for persisting any changes the main context only saves its changes to a background context which is then responsible for persisting the changes.
+That prevents the main thread of being blocked when persisting changes, because that will be then outsourced to the background context.</p>
+
+<p>When creating new contexts via <code>createNewContext</code> then they will be linked to the main context so that it&rsquo;s easy to apply some changes on a background thread and then push them back to the main context via <code>persist(fromBackgroundContext:)</code> when finished processing. </p>
+<h2 id='example-of-usage' class='heading'>Example of usage</h2>
+
+<p><a href="https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md">Examples how to use INCoreData</a></p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-06-19)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>

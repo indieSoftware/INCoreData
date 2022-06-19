@@ -66,7 +66,7 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 
 	func testUpdatePublishedOnObjectChangedWhenListeningAlsoForOtherChanges() {
 		let notificationType = ManagedNotification.objectChanged
-		let changeTypes: [ManagedObjectChangeType] = ManagedObjectChangeType.allCases
+		let changeTypes: [ManagedObjectChangeType] = .allCases
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")

@@ -66,7 +66,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 	}
 
 	func testUpdatePublishedWhenListeningAlsoForOtherChanges() {
-		let changeTypes: [ManagedObjectChangeType] = ManagedObjectChangeType.allCases
+		let changeTypes: [ManagedObjectChangeType] = .allCases
 		let newTitle = "FooBar"
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -459,7 +459,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 	// MARK: - Multi-changes
 
 	func testUpdatedInsertedAndDeletedPublished() {
-		let changeTypes: [ManagedObjectChangeType] = ManagedObjectChangeType.allCases.shuffled()
+		let changeTypes: [ManagedObjectChangeType] = .allCases.shuffled()
 		let newTitle = "FooBar"
 
 		// Add an object to delete.

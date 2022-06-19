@@ -16,4 +16,7 @@ That prevents the main thread of being blocked when persisting changes, because 
 
 When creating new contexts via `createNewContext` then they will be linked to the main context so that it's easy to apply some changes on a background thread and then push them back to the main context via `persist(fromBackgroundContext:)` when finished processing. 
 
-## Installation
+## Example of usage
+
+[Examples how to use INCoreData](https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md)
+

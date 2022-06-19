@@ -28,3 +28,10 @@ public enum ManagedObjectChangeType: Equatable, CaseIterable {
 		}
 	}
 }
+
+public extension Array where Element == ManagedObjectChangeType {
+	/// A shorthand accessor for `ManagedObjectChangeType.allCases`
+	/// to simplify the parameter for `changeTypes: [ManagedObjectChangeType]`
+	/// so that it's possible to directly pass `changeTypes: .allCases`.
+	static var allCases: Self { Element.allCases }
+}

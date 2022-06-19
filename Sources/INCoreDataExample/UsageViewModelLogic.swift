@@ -13,7 +13,7 @@ class UsageViewModelLogic: UsageViewModel {
 		manager.publisher(
 			managedObjectType: Item.self, // Listen for changes related to any Item
 			context: manager.mainContext, // happening on the main context
-			changeTypes: ManagedObjectChangeType.allCases // and for any type of change (insert, delete and update)
+			changeTypes: .allCases // and for any type of change (insert, delete and update)
 		)
 		.sink { [weak self] (_: [ManagedObjectsChange<Item>]) in
 			// We can now inspect all changes via objectsChanges, but instead we simply reload all data.
