@@ -21,4 +21,4 @@ sed -i '' "3s/.*/ spec.version = \"$1\" # auto-generated/" INCoreData.podspec
 SWIFT_VERSION=$(<.swift-version)
 sed -i '' "4s/.*/ spec.swift_versions = \['$SWIFT_VERSION']\ # auto-generated/" INCoreData.podspec
 # Lint podspec to be sure everything is still valid.
-pod spec lint INCoreData.podspec --allow-warnings
+pod lib lint INCoreData.podspec
