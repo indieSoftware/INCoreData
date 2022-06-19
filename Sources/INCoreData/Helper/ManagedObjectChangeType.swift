@@ -2,8 +2,11 @@ import CoreData
 
 // This is not a struct to have a compile-time hint when not exchausive
 // and to get automatically a case iterable conformance.
-// An option set will not work well because it prevents the associated value
-// of the notification key.
+// An option set will not work well either, because it wouldn't provide
+// any real benefit, but would require a raw value which still
+// wouldn't match the associated notification key, so we would end up
+// again with a switch branch for the mapping and a custom case iterable
+// implementation.
 public enum ManagedObjectChangeType: Equatable, CaseIterable {
 	/// An object has been added to a context.
 	case inserted
