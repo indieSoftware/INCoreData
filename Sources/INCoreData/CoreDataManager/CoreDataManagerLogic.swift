@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import INCommons
 
 public class CoreDataManagerLogic: CoreDataManager {
 	/// The default name of a data model, equals "DataModel".
@@ -8,12 +9,22 @@ public class CoreDataManagerLogic: CoreDataManager {
 	/// The used persinstence stack which handles the main and the background context.
 	private var persistenceStack: PersistenceStack?
 
+	/// Indicates whether to use an in-memory persistence stack or not.
+	private let useInMemoryStack: Bool
+
 	/**
-	 Default initializer of the manager which does nothing.
+	 Default initializer of the manager. Call `setup` afterwards.
 
 	 Before using the manager the `setup` method must be called once.
+
+	 When using an instance for previews
+
+	 - parameter useInMemory: Pass true to use an in-memory persistence stack for this manager
+	 suitable for Previews and UnitTests,  rather than a "real" one. Defaults to `false`.
 	 */
-	public init() {}
+	public init(useInMemory: Bool = false) {
+		useInMemoryStack = useInMemory
+	}
 
 	/**
 	 Sets up this mananger with a persistence stack on disk.
@@ -23,6 +34,9 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 potentially migrate any previous stores if necessary.
 	 That might take some unpredictable time, so call this method in the life-cycle of the app
 	 when it's appropriate for the user to wait for some time, i.e. when showing a splash screen.
+
+	 When the init method's parameter `useInMemory` was set to `true`
+	 then an in-memory persistence stack will be created instead.
 
 	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file,
 	 e.g. "DataModel".
@@ -41,12 +55,22 @@ public class CoreDataManagerLogic: CoreDataManager {
 		completion: @escaping (Result<Void, CoreDataManagerError>) -> Void
 	) {
 		precondition(persistenceStack == nil, "This method should only be called once")
-		persistenceStack = PersistenceStackLogic(
-			dataModelName: dataModelName,
-			bundle: bundle,
-			storeFolder: storeFolder,
-			completion: completion
-		)
+		if useInMemoryStack {
+			persistenceStack = PersistenceStackLogic(
+				dataModelName: dataModelName,
+				bundle: bundle,
+				completion: { _, _, _, _ in
+					completion(Result.success(()))
+				}
+			)
+		} else {
+			persistenceStack = PersistenceStackLogic(
+				dataModelName: dataModelName,
+				bundle: bundle,
+				storeFolder: storeFolder,
+				completion: completion
+			)
+		}
 	}
 
 	/**
@@ -54,7 +78,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 suitable for Previews or UnitTests of apps using this library.
 
 	 This initializer already sets up the manager, therefore, calling `setup` is not necessary and even forbidden.
-	 It should only be used to inject an in-memory manager.
+	 It should only be used for injecting an in-memory manager to tests or Previews.
 	 It's not intended to use this for productive code.
 
 	 - parameter dataModelName: The name of the CoreData model which is the file name of the `xcdatamodeld` file.
@@ -76,7 +100,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 			_ container: NSPersistentContainer
 		) -> Void
 	) {
-		self.init()
+		self.init(useInMemory: true)
 		persistenceStack = PersistenceStackLogic(
 			dataModelName: dataModelName,
 			bundle: bundle,
@@ -90,6 +114,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 - parameter persistenceStack: The persistence stack to use, i.e. a mock.
 	 */
 	init(persistenceStack: PersistenceStack) {
+		useInMemoryStack = true
 		self.persistenceStack = persistenceStack
 	}
 
