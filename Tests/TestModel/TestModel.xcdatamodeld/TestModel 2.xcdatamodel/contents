@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Bar" representedClassName="Bar" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="fooRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Foo" inverseName="barRelationship" inverseEntity="Foo"/>
+    </entity>
+    <entity name="Foo" representedClassName="Foo" syncable="YES" codeGenerationType="class">
+        <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" elementID="oldToNewNumber"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="barRelationship" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bar" inverseName="fooRelationship" inverseEntity="Bar"/>
+    </entity>
+    <elements>
+        <element name="Foo" positionX="3553.89453125" positionY="-273.80859375" width="128" height="73"/>
+        <element name="Bar" positionX="3607.8828125" positionY="-107.87109375" width="128" height="59"/>
+    </elements>
+</model>

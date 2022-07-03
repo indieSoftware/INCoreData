@@ -1,6 +1,0 @@
-
-# INCoreData
-
-## Feature overview
-
-## Installation
