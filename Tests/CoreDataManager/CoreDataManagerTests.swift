@@ -39,6 +39,19 @@ class CoreDataManagerTests: XCTestCase {
 		waitForExpectations()
 	}
 
+	// MARK: - persistMainContext
+
+	func testPersist() {
+		let persistExpectation = expectation(description: "persistExpectation")
+		persistenceStackMock.persistMock = {
+			persistExpectation.fulfill()
+		}
+
+		coreDataManager.persistMainContext()
+
+		waitForExpectations()
+	}
+
 	// MARK: - createNewContext
 
 	func testCreateNewContext() {
@@ -53,20 +66,7 @@ class CoreDataManagerTests: XCTestCase {
 		waitForExpectations()
 	}
 
-	// MARK: - persist
-
-	func testPersist() {
-		let persistExpectation = expectation(description: "persistExpectation")
-		persistenceStackMock.persistMock = {
-			persistExpectation.fulfill()
-		}
-
-		coreDataManager.persist()
-
-		waitForExpectations()
-	}
-
-	// MARK: - persistFromBackgroundContext
+	// MARK: - persistBackgroundContext
 
 	func testPersistFromBackgroundContext() throws {
 		let persistExpectation = expectation(description: "persistExpectation")
@@ -83,7 +83,7 @@ class CoreDataManagerTests: XCTestCase {
 		backgroundContext.insert(newObject)
 		XCTAssertTrue(backgroundContext.hasChanges)
 
-		try coreDataManager.persist(fromBackgroundContext: backgroundContext)
+		try coreDataManager.persist(backgroundContext: backgroundContext)
 
 		waitForExpectations()
 		XCTAssertFalse(backgroundContext.hasChanges)
