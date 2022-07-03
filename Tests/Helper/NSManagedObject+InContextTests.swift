@@ -34,7 +34,7 @@ class NSManagedObject_InContextTests: XCTestCase {
 		newObject.title = UUID().uuidString
 		newObject.number = 1
 		mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let backgroundContext = coreDataManager.createNewContext()
 

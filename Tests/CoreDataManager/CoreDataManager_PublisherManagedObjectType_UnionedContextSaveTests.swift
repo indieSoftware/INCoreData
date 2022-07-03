@@ -26,7 +26,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		newObject.title = UUID().uuidString
 		newObject.number = 1
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 		fooObject = newObject
 	}
 
@@ -60,7 +60,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -87,7 +87,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -109,7 +109,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -142,7 +142,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -162,7 +162,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -173,7 +173,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -193,7 +193,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		fooObject.addToBarRelationship([barObject])
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -205,7 +205,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
 		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -225,7 +225,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		barObject.fooRelationship = nil
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -255,7 +255,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		fooOnBackground.title = newTitle
-		try coreDataManager.persist(fromBackgroundContext: backgroundContext)
+		try coreDataManager.persist(backgroundContext: backgroundContext)
 
 		waitForExpectations()
 	}
@@ -313,7 +313,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -370,7 +370,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -398,7 +398,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.delete(fooObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -451,7 +451,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.delete(fooObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -467,7 +467,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		deleteObject.title = UUID().uuidString
 		deleteObject.number = 2
 		coreDataManager.mainContext.insert(deleteObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		// Prepare object to insert.
 		let insertObject = Foo(context: coreDataManager.mainContext)
@@ -500,7 +500,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		coreDataManager.mainContext.delete(deleteObject)
 		coreDataManager.mainContext.insert(insertObject)
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -514,7 +514,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		deleteObject.title = UUID().uuidString
 		deleteObject.number = 2
 		coreDataManager.mainContext.insert(deleteObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		// Prepare object to insert.
 		let insertObject = Foo(context: coreDataManager.mainContext)
@@ -563,7 +563,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		coreDataManager.mainContext.insert(insertObject)
 		coreDataManager.mainContext.insert(insertObject2)
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}

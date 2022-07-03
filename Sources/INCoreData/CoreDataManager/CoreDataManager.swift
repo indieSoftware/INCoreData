@@ -22,6 +22,12 @@ public protocol CoreDataManager {
 	var mainContext: NSManagedObjectContext { get }
 
 	/**
+	 Saves the main context synchronously by syncing any changes to the hidden background context.
+	 After that a save request is queried for the background context to finally persist the changes.
+	 */
+	func persistMainContext()
+
+	/**
 	 Creates a new managed object context of the main context.
 	 The new MOC is intended to be used on a background thread.
 
@@ -33,19 +39,14 @@ public protocol CoreDataManager {
 	func createNewContext() -> NSManagedObjectContext
 
 	/**
-	 Saves the main context synchronously by syncing any changes to the hidden background context.
-	 After that a save request is queried for the background context to finally persist the changes.
-	 */
-	func persist()
-
-	/**
 	 Saves the content of the background context synchronously back into the main context
 	 and requests the main context to persist it.
 
 	 The background context's parent has to be the `mainContext`.
 	 This is automatically the case when `createNewContext` is used to create the background context.
+	 Has to be called on the same thread where the new context has been created.
 
 	 - parameter backgroundContext: The background context which to save back to the main context.
 	 */
-	func persist(fromBackgroundContext backgroundContext: NSManagedObjectContext) throws
+	func persist(backgroundContext: NSManagedObjectContext) throws
 }

@@ -26,7 +26,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		newObject.title = UUID().uuidString
 		newObject.number = 1
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 		fooObject = newObject
 	}
 
@@ -57,7 +57,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -81,7 +81,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -104,7 +104,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		fooObject.title = newTitle
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -139,7 +139,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -155,7 +155,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -167,7 +167,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -183,7 +183,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		fooObject.addToBarRelationship([barObject])
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -196,7 +196,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
 		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -212,7 +212,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		barObject.fooRelationship = nil
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -239,7 +239,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		fooOnBackground.title = newTitle
-		try coreDataManager.persist(fromBackgroundContext: backgroundContext)
+		try coreDataManager.persist(backgroundContext: backgroundContext)
 
 		waitForExpectations()
 	}
@@ -295,7 +295,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -350,7 +350,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -375,7 +375,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.delete(fooObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}
@@ -422,7 +422,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		.store(in: &subscriptions)
 
 		coreDataManager.mainContext.delete(fooObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		waitForExpectations()
 	}

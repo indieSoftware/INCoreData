@@ -68,6 +68,6 @@ class UsageViewModelLogic: UsageViewModel {
 	}
 
 	func persistItems() {
-		manager.persist()
+		manager.persistMainContext()
 	}
 }

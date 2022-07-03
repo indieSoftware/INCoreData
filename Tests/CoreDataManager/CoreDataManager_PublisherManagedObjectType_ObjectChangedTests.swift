@@ -26,7 +26,7 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 		newObject.title = UUID().uuidString
 		newObject.number = 1
 		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 		fooObject = newObject
 	}
 
@@ -143,7 +143,7 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -173,7 +173,7 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 		// Add new object for relationship
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -204,7 +204,7 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 		let barObject = Bar(context: coreDataManager.mainContext)
 		barObject.name = UUID().uuidString
 		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persist()
+		coreDataManager.persistMainContext()
 		XCTAssertEqual(fooObject.barRelationship?.count, 1)
 
 		let publishExpectation = expectation(description: "publishExpectation")

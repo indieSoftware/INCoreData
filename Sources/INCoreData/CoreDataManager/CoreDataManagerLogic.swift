@@ -125,6 +125,13 @@ public class CoreDataManagerLogic: CoreDataManager {
 		return persistenceStack.mainContext
 	}
 
+	public func persistMainContext() {
+		guard let persistenceStack = persistenceStack else {
+			preconditionFailure("'setup' hasn't been called")
+		}
+		return persistenceStack.persist()
+	}
+
 	public func createNewContext() -> NSManagedObjectContext {
 		guard let persistenceStack = persistenceStack else {
 			preconditionFailure("'setup' hasn't been called")
@@ -132,16 +139,11 @@ public class CoreDataManagerLogic: CoreDataManager {
 		return persistenceStack.createNewContext()
 	}
 
-	public func persist() {
-		guard let persistenceStack = persistenceStack else {
-			preconditionFailure("'setup' hasn't been called")
-		}
-		return persistenceStack.persist()
-	}
-
-	public func persist(fromBackgroundContext backgroundContext: NSManagedObjectContext) throws {
+	public func persist(backgroundContext: NSManagedObjectContext) throws {
 		precondition(backgroundContext.parent == mainContext)
-		try backgroundContext.save()
-		persist()
+		if backgroundContext.hasChanges {
+			try backgroundContext.save()
+		}
+		persistMainContext()
 	}
 }
