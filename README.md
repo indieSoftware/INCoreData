@@ -4,6 +4,7 @@ A helper library to work with CoreData.
 
 Good resources for the general usage of CoreData:
 
+- [https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html)
 - [https://www.advancedswift.com/core-data-background-fetch-save-create](https://www.advancedswift.com/core-data-background-fetch-save-create)
 
 ## Feature overview
