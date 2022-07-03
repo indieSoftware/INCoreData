@@ -52,6 +52,7 @@
 		268D4FDC2855049A003B18C8 /* XCTestCase+waitForExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D4FDB2855049A003B18C8 /* XCTestCase+waitForExpectation.swift */; };
 		26B6B080284BCE22005C0F66 /* PersistenceStackMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B6B07E284BCB5A005C0F66 /* PersistenceStackMock.swift */; };
 		26B6B083284BD867005C0F66 /* NSManagedObject+InContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B6B082284BD867005C0F66 /* NSManagedObject+InContextTests.swift */; };
+		26F42BEA28716B0300FB6251 /* CoreDataManager_RaceConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F42BE928716B0300FB6251 /* CoreDataManager_RaceConditionTests.swift */; };
 		26FCE6D327D1F9C600C229DA /* INCoreDataExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FCE6D227D1F9C600C229DA /* INCoreDataExampleApp.swift */; };
 		26FCE6D727D1F9C700C229DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26FCE6D627D1F9C700C229DA /* Assets.xcassets */; };
 		26FCE6DA27D1F9C700C229DA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26FCE6D927D1F9C700C229DA /* Preview Assets.xcassets */; };
@@ -138,6 +139,8 @@
 		268D4FDB2855049A003B18C8 /* XCTestCase+waitForExpectation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+waitForExpectation.swift"; sourceTree = "<group>"; };
 		26B6B07E284BCB5A005C0F66 /* PersistenceStackMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStackMock.swift; sourceTree = "<group>"; };
 		26B6B082284BD867005C0F66 /* NSManagedObject+InContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+InContextTests.swift"; sourceTree = "<group>"; };
+		26F42BE928716B0300FB6251 /* CoreDataManager_RaceConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager_RaceConditionTests.swift; sourceTree = "<group>"; };
+		26F42BEB2871D37800FB6251 /* docu */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docu; sourceTree = "<group>"; };
 		26FCE6CF27D1F9C600C229DA /* INCoreDataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INCoreDataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26FCE6D227D1F9C600C229DA /* INCoreDataExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INCoreDataExampleApp.swift; sourceTree = "<group>"; };
 		26FCE6D627D1F9C700C229DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -253,6 +256,7 @@
 		26FCE6C627D1F9C600C229DA = {
 			isa = PBXGroup;
 			children = (
+				26F42BEB2871D37800FB6251 /* docu */,
 				26FCE70B27D2137300C229DA /* README.md */,
 				26FCE6E027D1FA1D00C229DA /* Sources */,
 				26FCE6E127D1FA1D00C229DA /* Tests */,
@@ -338,6 +342,7 @@
 				262791C5284C90A40097EF45 /* CoreDataManager_PublisherManagedObjectType_ObjectChangedTests.swift */,
 				262791C9284CE1890097EF45 /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift */,
 				268D4FD92854FF00003B18C8 /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift */,
+				26F42BE928716B0300FB6251 /* CoreDataManager_RaceConditionTests.swift */,
 			);
 			path = CoreDataManager;
 			sourceTree = "<group>";
@@ -744,6 +749,7 @@
 				26759FEE283A292700CCC571 /* PersistenceStackLogicTests.swift in Sources */,
 				26B6B080284BCE22005C0F66 /* PersistenceStackMock.swift in Sources */,
 				26759FE3283A26EB00CCC571 /* TestModel.xcdatamodeld in Sources */,
+				26F42BEA28716B0300FB6251 /* CoreDataManager_RaceConditionTests.swift in Sources */,
 				5339E4A327FC1BD6009098C8 /* CoreDataManagerTests.swift in Sources */,
 				26B6B083284BD867005C0F66 /* NSManagedObject+InContextTests.swift in Sources */,
 				26759FDE283A24F000CCC571 /* CoreDataManager_PublisherManagedObject_ObjectChangedTests.swift in Sources */,
