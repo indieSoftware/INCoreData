@@ -52,16 +52,16 @@ class CoreDataManagerTests: XCTestCase {
 		waitForExpectations()
 	}
 
-	// MARK: - createNewContext
+	// MARK: - createBackgroundContext
 
-	func testCreateNewContext() {
+	func testCreateBackgroundContext() {
 		let createNewContextExpectation = expectation(description: "createNewContextExpectation")
 		persistenceStackMock.createNewContextMock = {
 			createNewContextExpectation.fulfill()
 			return NSManagedObjectContext(.mainQueue) // any context, doesn't matter
 		}
 
-		_ = coreDataManager.createNewContext()
+		_ = coreDataManager.createBackgroundContext()
 
 		waitForExpectations()
 	}
@@ -74,7 +74,7 @@ class CoreDataManagerTests: XCTestCase {
 			persistExpectation.fulfill()
 		}
 
-		let backgroundContext = coreDataManager.createNewContext()
+		let backgroundContext = coreDataManager.createBackgroundContext()
 
 		// Insert new object to the main context.
 		let newObject = Foo(context: backgroundContext)

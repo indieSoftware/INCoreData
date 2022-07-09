@@ -109,7 +109,7 @@ class PersistenceStackLogicTests: XCTestCase {
 		XCTAssertEqual(0, try mainContext.fetch(Foo.fetchRequest()).count)
 	}
 
-	// MARK: - createNewContext
+	// MARK: - createBackgroundContext
 
 	func testNewContextWithMainAsParentGetsReturned() throws {
 		// Sanity check that the contexts is empty.

@@ -36,7 +36,7 @@ class NSManagedObject_InContextTests: XCTestCase {
 		mainContext.insert(newObject)
 		coreDataManager.persistMainContext()
 
-		let backgroundContext = coreDataManager.createNewContext()
+		let backgroundContext = coreDataManager.createBackgroundContext()
 
 		// Method under test.
 		let result = newObject.inContext(backgroundContext)

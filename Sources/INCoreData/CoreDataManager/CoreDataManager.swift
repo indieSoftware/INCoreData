@@ -36,14 +36,14 @@ public protocol CoreDataManager {
 
 	 - returns: The new background MOC.
 	 */
-	func createNewContext() -> NSManagedObjectContext
+	func createBackgroundContext() -> NSManagedObjectContext
 
 	/**
 	 Saves the content of the background context synchronously back into the main context
 	 and requests the main context to persist it.
 
 	 The background context's parent has to be the `mainContext`.
-	 This is automatically the case when `createNewContext` is used to create the background context.
+	 This is automatically the case when `createBackgroundContext` is used to create the background context.
 	 Has to be called on the same thread where the new context has been created.
 
 	 - parameter backgroundContext: The background context which to save back to the main context.

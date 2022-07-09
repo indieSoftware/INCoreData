@@ -45,7 +45,7 @@ class CoreDataManager_RaceConditionTests: XCTestCase {
 		let queue1 = DispatchQueue(label: "Queue1", qos: .background)
 		var backgroundContext1: NSManagedObjectContext!
 		queue1.sync {
-			backgroundContext1 = coreDataManager.createNewContext()
+			backgroundContext1 = coreDataManager.createBackgroundContext()
 		}
 		var fooInContext1: Foo!
 		try backgroundContext1.performAndWait {
@@ -57,7 +57,7 @@ class CoreDataManager_RaceConditionTests: XCTestCase {
 		let queue2 = DispatchQueue(label: "Queue2", qos: .background)
 		var backgroundContext2: NSManagedObjectContext!
 		queue2.sync {
-			backgroundContext2 = coreDataManager.createNewContext()
+			backgroundContext2 = coreDataManager.createBackgroundContext()
 		}
 		var fooInContext2: Foo!
 		try backgroundContext2.performAndWait {

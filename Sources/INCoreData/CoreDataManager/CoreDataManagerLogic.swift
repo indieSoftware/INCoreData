@@ -132,7 +132,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 		return persistenceStack.persist()
 	}
 
-	public func createNewContext() -> NSManagedObjectContext {
+	public func createBackgroundContext() -> NSManagedObjectContext {
 		guard let persistenceStack = persistenceStack else {
 			preconditionFailure("'setup' hasn't been called")
 		}

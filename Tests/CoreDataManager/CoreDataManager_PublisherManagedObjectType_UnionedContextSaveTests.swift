@@ -234,7 +234,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
-		let backgroundContext = coreDataManager.createNewContext()
+		let backgroundContext = coreDataManager.createBackgroundContext()
 		let fooOnBackground = fooObject.inContext(backgroundContext)
 
 		let publishExpectation = expectation(description: "publishExpectation")
@@ -264,7 +264,7 @@ class CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests: XCTest
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
-		let backgroundContext = coreDataManager.createNewContext()
+		let backgroundContext = coreDataManager.createBackgroundContext()
 		let fooOnBackground = fooObject.inContext(backgroundContext)
 
 		let publishExpectation = expectation(description: "publishExpectation")
