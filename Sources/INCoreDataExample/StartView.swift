@@ -32,14 +32,10 @@ struct StartView: View {
 					Button {
 						state = .initializing
 						DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-							// Set up the manager.
-							manager.setup(storeFolder: storeFolder) { result in
-								switch result {
-								case let .failure(error):
-									fatalError("Failed initializing CoreDataManager: \(error)")
-								case .success():
-									state = .initialized
-								}
+							// Load manager.
+							Task {
+								try! await manager.loadStore()
+								state = .initialized
 							}
 						}
 					} label: {
@@ -65,6 +61,6 @@ struct StartView: View {
 struct StartView_Previews: PreviewProvider {
 	static var previews: some View {
 		// Inject an in-memory manager for the preview.
-		StartView(manager: CoreDataManagerLogic(useInMemory: true))
+		StartView(manager: try! CoreDataManagerLogic(inMemory: true))
 	}
 }

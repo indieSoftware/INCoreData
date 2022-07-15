@@ -2,24 +2,23 @@
 import XCTest
 
 class NSManagedObject_InContextTests: XCTestCase {
-	var coreDataManager: CoreDataManager!
+	var coreDataManager: CoreDataManagerLogic!
 
-	override func setUp() {
-		super.setUp()
+	override func setUpWithError() throws {
+		try super.setUpWithError()
 
-		let setupExpectation = expectation(description: "setupExpectation")
-		coreDataManager = CoreDataManagerLogic(
-			dataModelName: TestModel.name,
+		coreDataManager = try CoreDataManagerLogic(
+			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
-			completion: { _, _, _, _ in
-				setupExpectation.fulfill()
-			}
+			inMemory: true
 		)
-		waitForExpectations()
+		performAsyncThrow {
+			try await self.coreDataManager.loadStore()
+		}
 	}
 
-	override func tearDown() {
-		super.tearDown()
+	override func tearDownWithError() throws {
+		try super.tearDownWithError()
 
 		coreDataManager = nil
 	}
@@ -27,23 +26,33 @@ class NSManagedObject_InContextTests: XCTestCase {
 	// MARK: - Tests
 
 	func testFindObjectInContext() {
-		let mainContext = coreDataManager.mainContext
+		var newObject: Foo!
 
 		// Insert new object to the main context.
-		let newObject = Foo(context: mainContext)
-		newObject.title = UUID().uuidString
-		newObject.number = 1
-		mainContext.insert(newObject)
-		coreDataManager.persistMainContext()
+		let title = UUID().uuidString
+		performAsyncThrow {
+			try await self.coreDataManager.performTask { context in
+				newObject = Foo(context: context)
+				newObject.title = title
+				newObject.number = 1
+				context.insert(newObject)
+			}
+		}
 
-		let backgroundContext = coreDataManager.createBackgroundContext()
+		let backgroundContext = coreDataManager.createNewContext()
+		XCTAssertNotIdentical(coreDataManager.mainContext, backgroundContext)
 
-		// Method under test.
-		let result = newObject.inContext(backgroundContext)
+		performAsyncThrow {
+			await backgroundContext.perform {
+				// Method under test.
+				let result = newObject.inContext(backgroundContext)
 
-		XCTAssertEqual(result.title, newObject.title)
-		XCTAssertIdentical(result.managedObjectContext, backgroundContext)
-		XCTAssertIdentical(newObject.managedObjectContext, mainContext)
-		XCTAssertNotIdentical(mainContext, backgroundContext)
+				// Verify the object matches the original.
+				XCTAssertEqual(result.title, title)
+				XCTAssertIdentical(result.managedObjectContext, backgroundContext)
+				XCTAssertIdentical(result.managedObjectContext, backgroundContext)
+				XCTAssertNotIdentical(result.managedObjectContext, newObject.managedObjectContext)
+			}
+		}
 	}
 }

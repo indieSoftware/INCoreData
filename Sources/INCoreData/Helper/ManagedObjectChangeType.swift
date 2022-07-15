@@ -1,6 +1,6 @@
 import CoreData
 
-// This is not a struct to have a compile-time hint when not exchausive
+// This is not a struct to have a compile-time hint when not exhausive
 // and to get automatically a case iterable conformance.
 // An option set will not work well either, because it wouldn't provide
 // any real benefit, but would require a raw value which still

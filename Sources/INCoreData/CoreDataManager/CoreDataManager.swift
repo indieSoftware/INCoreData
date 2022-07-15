@@ -2,51 +2,71 @@ import CoreData
 import Foundation
 
 /**
- A manager for CoreData.
+ A manager for CoreData which acts as a facade for the `PersistentContainer`.
 
- The idea is to have two contexts managed by this manager.
- One main context which runs on the main thread, is accessible by the UI
- and towards which all queries goes.
- And a second background context not accessible by outside of the manager.
- The purpose of the hidden background context is to persist all changes done to the main context.
- So, the main context itself is not persisting anything and
- thus doesn't do such a heavy work on the main thread.
- Instead it syncs itself into the background context which then
- persists the changes asynchronously in the background.
+ Usually `CoreDataManagerLogic` should be instantiated as an implementation of this protocol.
+
+ The wrapped `PersistentContainer` is a `NSPersistentContainer` with some
+ additional functionalities to streamline the usage of Core Data with this manager.
+ The protocol makes it possible to inject the manager to all dependents and replace it with
+ a mocked version for unit tests and SwiftUI previews.
+ For this only methods provided by this manager should be used instead of the underlying container.
  */
 public protocol CoreDataManager {
-	/// This is the main MOC and acts as the "Single Source of Truth".
-	/// It will run on the main queue, however it's encouraged to create a new background context via `createNewContext`
-	/// for background tasks and sync all changes later back to the main context via `persist(fromBackgroundContext:)`.
-	/// The UI will reference this MOC for anything it needs.
+	/**
+	 A reference to the `viewContext` for tasks on the main context.
+
+	 This context acts on the main thread and thus is also used by the UI.
+	 Keep any operations on this one as few as possible
+	 and consider applying them on a new background context instead if possible.
+
+	 For this use `createNewContext()` or `performTask(_:)`.
+	 */
 	var mainContext: NSManagedObjectContext { get }
 
 	/**
-	 Saves the main context synchronously by syncing any changes to the hidden background context.
-	 After that a save request is queried for the background context to finally persist the changes.
-	 */
-	func persistMainContext()
+	 Creates a new managed object context for background tasks.
 
-	/**
-	 Creates a new managed object context of the main context.
-	 The new MOC is intended to be used on a background thread.
+	 The new MOC is intended to be used on a background thread
+	 and has its parent set to be the main context.
 
-	 This can be used to create a new MOC for work on a background task
-	 which will then later saved back to the main context.
+	 To save any changes back to the main context just call `save` directly on the new context.
+	 Use  `saveContext(_:)` on the main context to persist any previously saved changes.
 
 	 - returns: The new background MOC.
 	 */
-	func createBackgroundContext() -> NSManagedObjectContext
+	func createNewContext() -> NSManagedObjectContext
 
 	/**
-	 Saves the content of the background context synchronously back into the main context
-	 and requests the main context to persist it.
+	 Saves any changes of the main context.
 
-	 The background context's parent has to be the `mainContext`.
-	 This is automatically the case when `createBackgroundContext` is used to create the background context.
-	 Has to be called on the same thread where the new context has been created.
+	 The save is wrapped by an async `perform(_:)` call on the main context.
+	 Use this method to save a context which received some changes from a child context's save.
+	 Usually saving a background context leads to unsaved changes on the main context, thus,
+	 to persist those changes either call `save` on the main context or use this method.
 
-	 - parameter backgroundContext: The background context which to save back to the main context.
+	 Does nothing if the context has no pending changes.
+
+	 ```
+	  let backgroundContext = manager.createNewContext()
+	  try await backgroundContext.perform {
+	    let foo = Foo(context: backgroundContext)
+	    backgroundContext.insert(foo)
+	    try context.save()
+	  }
+	  manager.saveContext()
+	 ```
+
+	 Does nothing if the context has no pending changes.
 	 */
-	func persist(backgroundContext: NSManagedObjectContext) throws
+	func persist() async throws
+
+	/**
+	 Executes a task block on a new background context and persists any changes.
+
+	 This is a shorthand convenience method to create a new background context,
+	 perform any async changes on it, then save it back to the main context
+	 and performing save on the main context to persist any changes.
+	 */
+	func performTask(_ task: @escaping (NSManagedObjectContext) throws -> Void) async throws
 }

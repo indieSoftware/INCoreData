@@ -3,35 +3,43 @@ import CoreData
 import XCTest
 
 class CoreDataManagerTests: XCTestCase {
-	var coreDataManager: CoreDataManager!
-	var persistenceStackMock: PersistenceStackMock!
+	var coreDataManager: CoreDataManagerLogic!
+	var persistentContainerMock: PersistentContainerMock!
 
-	override func setUp() {
-		super.setUp()
+	override func setUpWithError() throws {
+		try super.setUpWithError()
 
-		let setupExpectation = expectation(description: "setupExpectation")
-		persistenceStackMock = PersistenceStackMock()
-		persistenceStackMock.initialize {
-			setupExpectation.fulfill()
-		}
-		waitForExpectations()
-		coreDataManager = CoreDataManagerLogic(persistenceStack: persistenceStackMock)
+		persistentContainerMock = try XCTUnwrap(PersistentContainerMock())
+		coreDataManager = CoreDataManagerLogic(persistentContainer: persistentContainerMock)
 	}
 
-	override func tearDown() {
-		super.tearDown()
+	override func tearDownWithError() throws {
+		try super.tearDownWithError()
 
-		persistenceStackMock = nil
+		persistentContainerMock = nil
 		coreDataManager = nil
 	}
 
-	// MARK: - mainContext
+	// MARK: - Tests
 
-	func testMainContextIsReturned() {
-		let mainContextExpectation = expectation(description: "mainContextExpectation")
-		persistenceStackMock.mainContextMock = {
-			mainContextExpectation.fulfill()
-			return NSManagedObjectContext(.mainQueue) // any context, doesn't matter
+	func testLoadStore() throws {
+		let callExpectation = expectation(description: "callExpectation")
+		persistentContainerMock.loadPersistentStoreMock = {
+			callExpectation.fulfill()
+		}
+
+		performAsyncThrow {
+			try await self.coreDataManager.loadStore()
+		}
+
+		waitForExpectations()
+	}
+
+	func testMainContext() {
+		let callExpectation = expectation(description: "callExpectation")
+		persistentContainerMock.viewContextMock = {
+			callExpectation.fulfill()
+			return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		}
 
 		_ = coreDataManager.mainContext
@@ -39,53 +47,28 @@ class CoreDataManagerTests: XCTestCase {
 		waitForExpectations()
 	}
 
-	// MARK: - persistMainContext
-
-	func testPersist() {
-		let persistExpectation = expectation(description: "persistExpectation")
-		persistenceStackMock.persistMock = {
-			persistExpectation.fulfill()
+	func testCreateNewContext() {
+		let callExpectation = expectation(description: "callExpectation")
+		persistentContainerMock.createNewContextMock = {
+			callExpectation.fulfill()
+			return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		}
 
-		coreDataManager.persistMainContext()
+		_ = coreDataManager.createNewContext()
 
 		waitForExpectations()
 	}
 
-	// MARK: - createBackgroundContext
-
-	func testCreateBackgroundContext() {
-		let createNewContextExpectation = expectation(description: "createNewContextExpectation")
-		persistenceStackMock.createNewContextMock = {
-			createNewContextExpectation.fulfill()
-			return NSManagedObjectContext(.mainQueue) // any context, doesn't matter
+	func testPersist() throws {
+		let callExpectation = expectation(description: "callExpectation")
+		persistentContainerMock.persistMock = {
+			callExpectation.fulfill()
 		}
 
-		_ = coreDataManager.createBackgroundContext()
-
-		waitForExpectations()
-	}
-
-	// MARK: - persistBackgroundContext
-
-	func testPersistFromBackgroundContext() throws {
-		let persistExpectation = expectation(description: "persistExpectation")
-		persistenceStackMock.persistMock = {
-			persistExpectation.fulfill()
+		performAsyncThrow {
+			try await self.coreDataManager.persist()
 		}
 
-		let backgroundContext = coreDataManager.createBackgroundContext()
-
-		// Insert new object to the main context.
-		let newObject = Foo(context: backgroundContext)
-		newObject.title = UUID().uuidString
-		newObject.number = 1
-		backgroundContext.insert(newObject)
-		XCTAssertTrue(backgroundContext.hasChanges)
-
-		try coreDataManager.persist(backgroundContext: backgroundContext)
-
 		waitForExpectations()
-		XCTAssertFalse(backgroundContext.hasChanges)
 	}
 }
