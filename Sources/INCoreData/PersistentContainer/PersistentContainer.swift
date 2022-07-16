@@ -71,8 +71,8 @@ public class PersistentContainer: NSPersistentContainer {
 	 This calls `loadPersistentStores(completionHandler:)`.
 	 */
 	func loadPersistentStore() async throws {
-		try await withCheckedThrowingContinuation { continuation in
-			self.loadPersistentStores { description, error in
+		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+			self.loadPersistentStores { (description: NSPersistentStoreDescription, error: Error?) in
 				if let error = error {
 					continuation
 						.resume(throwing: PersistentContainerError.loadingPersistentStoreFailed(description, error))

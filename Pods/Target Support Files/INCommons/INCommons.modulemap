@@ -1,6 +1,0 @@
-framework module INCommons {
-  umbrella header "INCommons-umbrella.h"
-
-  export *
-  module * { export * }
-}
