@@ -39,19 +39,47 @@ class NSManagedObject_InContextTests: XCTestCase {
 			}
 		}
 
-		let backgroundContext = coreDataManager.createNewContext()
-		XCTAssertNotIdentical(coreDataManager.mainContext, backgroundContext)
+		let context = coreDataManager.mainContext
 
 		performAsyncThrow {
-			await backgroundContext.perform {
+			await context.perform {
 				// Method under test.
-				let result = newObject.inContext(backgroundContext)
+				let result = newObject.inContext(context)
 
 				// Verify the object matches the original.
+				XCTAssertTrue(result.isFault)
 				XCTAssertEqual(result.title, title)
-				XCTAssertIdentical(result.managedObjectContext, backgroundContext)
-				XCTAssertIdentical(result.managedObjectContext, backgroundContext)
+				XCTAssertFalse(result.isFault)
+				XCTAssertIdentical(result.managedObjectContext, context)
 				XCTAssertNotIdentical(result.managedObjectContext, newObject.managedObjectContext)
+			}
+		}
+	}
+
+	func testReturnsFaultObjectForNonExistent() {
+		let backgroundContext1 = coreDataManager.createNewContext()
+		var newObject: Foo!
+
+		// Create new object, but don't add it to the context.
+		let title = UUID().uuidString
+		performAsyncThrow {
+			await backgroundContext1.perform {
+				newObject = Foo(context: backgroundContext1)
+				newObject.title = title
+			}
+		}
+
+		let backgroundContext2 = coreDataManager.createNewContext()
+
+		performAsyncThrow {
+			await backgroundContext2.perform {
+				// Method under test.
+				let result = newObject.inContext(backgroundContext2)
+
+				// An empty fault object is returned.
+				XCTAssertTrue(result.isFault)
+				XCTAssertNil(result.title)
+				XCTAssertFalse(result.isFault)
 			}
 		}
 	}
