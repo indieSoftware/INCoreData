@@ -15,7 +15,7 @@ struct StartView: View {
 	@State private var state: StartViewState = .uninitialized
 	@State private var usageViewShown = false
 
-	private let storeFolder = FileManager.default.documentDirectory.appendingPathComponent("model")
+	private let storeFolder = FileManager.documentsDirectory.appendingPathComponent("model")
 
 	var body: some View {
 		ZStack {

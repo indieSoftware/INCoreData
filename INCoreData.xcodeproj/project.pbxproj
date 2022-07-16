@@ -33,6 +33,7 @@
 		2634945B2879E8330092B8FF /* PersistentContainerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2634945A2879E8330092B8FF /* PersistentContainerError.swift */; };
 		2634945F287AAAF60092B8FF /* CoreDataManagerLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2634945E287AAAF60092B8FF /* CoreDataManagerLogic.swift */; };
 		263B44D4285C70F40055B8D4 /* ManagedObjectsChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263B44D3285C70F40055B8D4 /* ManagedObjectsChange.swift */; };
+		264EEF182882C3E200874DF8 /* INCommons in Frameworks */ = {isa = PBXBuildFile; productRef = 264EEF172882C3E200874DF8 /* INCommons */; };
 		26713CEF283120CB008456E9 /* NSManagedObject+InContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */; };
 		26713CF52831248C008456E9 /* CoreDataManager+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF42831248C008456E9 /* CoreDataManager+Publisher.swift */; };
 		267F4D2E2838AC5700DC42E5 /* ManagedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F4D2D2838AC5700DC42E5 /* ManagedNotification.swift */; };
@@ -164,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				26FCE6FC27D1FAD700C229DA /* INCoreData.framework in Frameworks */,
+				264EEF182882C3E200874DF8 /* INCommons in Frameworks */,
 				9A886A5C404411A5FADCA8C6 /* Pods_INCoreDataExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -406,6 +408,9 @@
 				26FCE6FB27D1FAD700C229DA /* PBXTargetDependency */,
 			);
 			name = INCoreDataExample;
+			packageProductDependencies = (
+				264EEF172882C3E200874DF8 /* INCommons */,
+			);
 			productName = INCoreDataExample;
 			productReference = 26FCE6CF27D1F9C600C229DA /* INCoreDataExample.app */;
 			productType = "com.apple.product-type.application";
@@ -489,6 +494,7 @@
 			);
 			mainGroup = 26FCE6C627D1F9C600C229DA;
 			packageReferences = (
+				264EEF162882C3E200874DF8 /* XCRemoteSwiftPackageReference "INCommons" */,
 			);
 			productRefGroup = 26FCE6D027D1F9C600C229DA /* Products */;
 			projectDirPath = "";
@@ -1108,6 +1114,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		264EEF162882C3E200874DF8 /* XCRemoteSwiftPackageReference "INCommons" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/indieSoftware/INCommons";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		264EEF172882C3E200874DF8 /* INCommons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 264EEF162882C3E200874DF8 /* XCRemoteSwiftPackageReference "INCommons" */;
+			productName = INCommons;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		26EC46CE2882B60200DC733E /* TestModel.xcdatamodeld */ = {

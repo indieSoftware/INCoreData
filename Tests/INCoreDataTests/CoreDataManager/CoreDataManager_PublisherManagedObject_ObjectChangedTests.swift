@@ -25,12 +25,13 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 			// Add initial object to the main context.
 			try await self.coreDataManager.performTask { context in
-				self.context = context
 				let newObject = Foo(context: context)
 				newObject.title = UUID().uuidString
 				newObject.number = 1
 				context.insert(newObject)
+
 				self.fooObject = newObject
+				self.context = context
 			}
 		}
 	}
