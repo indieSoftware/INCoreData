@@ -36,12 +36,12 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		}
 	}
 
-	override func tearDown() {
+	override func tearDownWithError() throws {
 		subscriptions.removeAll()
 		coreDataManager = nil
 		fooObject = nil
 		context = nil
-		super.tearDown()
+		try super.tearDownWithError()
 	}
 
 	// MARK: - updated

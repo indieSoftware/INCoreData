@@ -1,4 +1,5 @@
 import Combine
+import CoreData
 @testable import INCoreData
 import XCTest
 

@@ -1,39 +1,47 @@
 import Combine
+import CoreData
 @testable import INCoreData
 import XCTest
 
 class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
-	private var coreDataManager: CoreDataManager!
+	private var coreDataManager: CoreDataManagerLogic!
 	private var subscriptions = Set<AnyCancellable>()
 	private var fooObject: Foo!
+	private var context: NSManagedObjectContext!
 
-	override func setUp() {
-		super.setUp()
+	override func setUpWithError() throws {
+		try super.setUpWithError()
 		subscriptions.removeAll()
 
-		let setupExpectation = expectation(description: "setupExpectation")
-		coreDataManager = CoreDataManagerLogic(
-			dataModelName: TestModel.name,
+		coreDataManager = try CoreDataManagerLogic(
+			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
-			completion: { _, _, _, _ in
-				setupExpectation.fulfill()
-			}
+			inMemory: true
 		)
-		waitForExpectations()
 
-		// Add initial object to the main context.
-		let newObject = Foo(context: coreDataManager.mainContext)
-		newObject.title = UUID().uuidString
-		newObject.number = 1
-		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persistMainContext()
-		fooObject = newObject
+		performAsyncThrow {
+			// Prepare manager.
+			try await self.coreDataManager.loadStore()
+
+			// Add initial object to the main context.
+			try await self.coreDataManager.performTask { context in
+				let newObject = Foo(context: context)
+				newObject.title = UUID().uuidString
+				newObject.number = 1
+				context.insert(newObject)
+
+				self.fooObject = newObject
+				self.context = context
+			}
+		}
 	}
 
-	override func tearDown() {
-		super.tearDown()
+	override func tearDownWithError() throws {
 		subscriptions.removeAll()
 		coreDataManager = nil
+		fooObject = nil
+		context = nil
+		try super.tearDownWithError()
 	}
 
 	// MARK: - updated
@@ -56,8 +64,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooObject.title = newTitle
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.title = newTitle
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -80,8 +92,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooObject.title = newTitle
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.title = newTitle
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -103,8 +119,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooObject.title = newTitle
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.title = newTitle
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -126,8 +146,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooObject.title = newTitle
-		// No persist()
+		performAsyncThrow {
+			await self.context.perform {
+				self.fooObject.title = newTitle
+				// no try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -137,9 +161,14 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
-		let barObject = Bar(context: coreDataManager.mainContext)
-		barObject.name = UUID().uuidString
-		coreDataManager.persistMainContext()
+		var barObject: Bar!
+		performAsyncThrow {
+			try await self.context.perform {
+				barObject = Bar(context: self.context)
+				barObject.name = UUID().uuidString
+				try self.context.save()
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -154,8 +183,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.addToBarRelationship(barObject)
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -165,9 +198,14 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
-		let barObject = Bar(context: coreDataManager.mainContext)
-		barObject.name = UUID().uuidString
-		coreDataManager.persistMainContext()
+		var barObject: Bar!
+		performAsyncThrow {
+			try await self.context.perform {
+				barObject = Bar(context: self.context)
+				barObject.name = UUID().uuidString
+				try self.context.save()
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -182,8 +220,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooObject.addToBarRelationship([barObject])
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.addToBarRelationship([barObject!])
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -193,10 +235,15 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 
 		// Add new object for relationship
-		let barObject = Bar(context: coreDataManager.mainContext)
-		barObject.name = UUID().uuidString
-		fooObject.addToBarRelationship(barObject)
-		coreDataManager.persistMainContext()
+		var barObject: Bar!
+		performAsyncThrow {
+			try await self.context.perform {
+				barObject = Bar(context: self.context)
+				barObject.name = UUID().uuidString
+				self.fooObject.addToBarRelationship(barObject)
+				try self.context.save()
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -211,8 +258,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		barObject.fooRelationship = nil
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				barObject.fooRelationship = nil
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -222,12 +273,17 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
-		let backgroundContext = coreDataManager.createBackgroundContext()
-		let fooOnBackground = fooObject.inContext(backgroundContext)
+		var fooOnMain: Foo!
+		let mainContext = coreDataManager.mainContext
+		performAsyncThrow {
+			await mainContext.perform {
+				fooOnMain = self.fooObject.inContext(mainContext)
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
-			managedObject: fooObject,
+			managedObject: fooOnMain,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -238,8 +294,13 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooOnBackground.title = newTitle
-		try coreDataManager.persist(backgroundContext: backgroundContext)
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.title = newTitle
+				try self.context.save()
+			}
+			try await self.coreDataManager.persist()
+		}
 
 		waitForExpectations()
 	}
@@ -249,13 +310,18 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.updated]
 		let newTitle = "FooBar"
 
-		let backgroundContext = coreDataManager.createBackgroundContext()
-		let fooOnBackground = fooObject.inContext(backgroundContext)
+		var fooOnMain: Foo!
+		let mainContext = coreDataManager.mainContext
+		performAsyncThrow {
+			await mainContext.perform {
+				fooOnMain = self.fooObject.inContext(mainContext)
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		publishExpectation.isInverted = true
 		coreDataManager.publisher(
-			managedObject: fooObject,
+			managedObject: fooOnMain,
 			notificationType: notificationType,
 			changeTypes: changeTypes
 		)
@@ -264,8 +330,13 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		fooOnBackground.title = newTitle
-		// no persist(fromBackgroundContext: backgroundContext)
+		performAsyncThrow {
+			try await self.context.perform {
+				self.fooObject.title = newTitle
+				try self.context.save()
+			}
+			// no try await self.coreDataManager.persist()
+		}
 
 		waitForExpectations()
 	}
@@ -277,9 +348,14 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.inserted]
 
 		// Prepare new object.
-		let newObject = Foo(context: coreDataManager.mainContext)
-		newObject.title = UUID().uuidString
-		newObject.number = 2
+		var newObject: Foo!
+		performAsyncThrow {
+			await self.context.perform {
+				newObject = Foo(context: self.context)
+				newObject.title = UUID().uuidString
+				newObject.number = 2
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -294,8 +370,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.context.insert(newObject)
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -305,9 +385,14 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.inserted]
 
 		// Prepare new object.
-		let newObject = Foo(context: coreDataManager.mainContext)
-		newObject.title = UUID().uuidString
-		newObject.number = 2
+		var newObject: Foo!
+		performAsyncThrow {
+			await self.context.perform {
+				newObject = Foo(context: self.context)
+				newObject.title = UUID().uuidString
+				newObject.number = 2
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		publishExpectation.isInverted = true
@@ -321,8 +406,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		coreDataManager.mainContext.insert(newObject)
-		// no persist()
+		performAsyncThrow {
+			await self.context.perform {
+				self.context.insert(newObject)
+				// no try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -332,9 +421,14 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		let changeTypes: [ManagedObjectChangeType] = [.inserted, .deleted, .updated]
 
 		// Prepare new object.
-		let newObject = Foo(context: coreDataManager.mainContext)
-		newObject.title = UUID().uuidString
-		newObject.number = 2
+		var newObject: Foo!
+		performAsyncThrow {
+			await self.context.perform {
+				newObject = Foo(context: self.context)
+				newObject.title = UUID().uuidString
+				newObject.number = 2
+			}
+		}
 
 		let publishExpectation = expectation(description: "publishExpectation")
 		coreDataManager.publisher(
@@ -349,8 +443,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		coreDataManager.mainContext.insert(newObject)
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.context.insert(newObject)
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -374,8 +472,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		coreDataManager.mainContext.delete(fooObject)
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.context.delete(self.fooObject)
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -398,8 +500,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		coreDataManager.mainContext.delete(fooObject)
-		// no persist()
+		performAsyncThrow {
+			await self.context.perform {
+				self.context.delete(self.fooObject)
+				// no try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
@@ -421,8 +527,12 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		})
 		.store(in: &subscriptions)
 
-		coreDataManager.mainContext.delete(fooObject)
-		coreDataManager.persistMainContext()
+		performAsyncThrow {
+			try await self.context.perform {
+				self.context.delete(self.fooObject)
+				try self.context.save()
+			}
+		}
 
 		waitForExpectations()
 	}
