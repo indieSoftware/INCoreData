@@ -35,6 +35,10 @@
 		263B44D4285C70F40055B8D4 /* ManagedObjectsChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263B44D3285C70F40055B8D4 /* ManagedObjectsChange.swift */; };
 		264EEF182882C3E200874DF8 /* INCommons in Frameworks */ = {isa = PBXBuildFile; productRef = 264EEF172882C3E200874DF8 /* INCommons */; };
 		264EEF192882D96F00874DF8 /* CoreDataManager_PublisherManagedObject_ContextSavedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46DA2882B60200DC733E /* CoreDataManager_PublisherManagedObject_ContextSavedTests.swift */; };
+		264EEF1C288431E600874DF8 /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D92882B60200DC733E /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift */; };
+		264EEF1D288454C500874DF8 /* CoreDataManager_PublisherManagedObjectType_ObjectChangedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D82882B60200DC733E /* CoreDataManager_PublisherManagedObjectType_ObjectChangedTests.swift */; };
+		264EEF1E28845B6400874DF8 /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D62882B60200DC733E /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift */; };
+		264EEF1F2884613900874DF8 /* CoreDataManager_RaceConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D72882B60200DC733E /* CoreDataManager_RaceConditionTests.swift */; };
 		26713CEF283120CB008456E9 /* NSManagedObject+InContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */; };
 		26713CF52831248C008456E9 /* CoreDataManager+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26713CF42831248C008456E9 /* CoreDataManager+Publisher.swift */; };
 		267F4D2E2838AC5700DC42E5 /* ManagedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F4D2D2838AC5700DC42E5 /* ManagedNotification.swift */; };
@@ -720,12 +724,16 @@
 			files = (
 				26EC46E52882B60200DC733E /* CoreDataManagerTests.swift in Sources */,
 				26EC46EE2882B60200DC733E /* PersistentContainer_contextTests.swift in Sources */,
+				264EEF1E28845B6400874DF8 /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift in Sources */,
+				264EEF1F2884613900874DF8 /* CoreDataManager_RaceConditionTests.swift in Sources */,
 				26EC46E42882B60200DC733E /* CoreDataManager_performTaskTests.swift in Sources */,
+				264EEF1D288454C500874DF8 /* CoreDataManager_PublisherManagedObjectType_ObjectChangedTests.swift in Sources */,
 				26EC46E22882B60200DC733E /* TestModel.xcdatamodeld in Sources */,
 				26EC46F02882B60200DC733E /* XCTestCase+additions.swift in Sources */,
 				26EC46E32882B60200DC733E /* TestModelName.swift in Sources */,
 				26EC46E62882B60200DC733E /* CoreDataManager_PublisherManagedObject_ObjectChangedTests.swift in Sources */,
 				26EC46EC2882B60200DC733E /* PersistentContainerMock.swift in Sources */,
+				264EEF1C288431E600874DF8 /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift in Sources */,
 				26EC46ED2882B60200DC733E /* PersistentContainer_initTests.swift in Sources */,
 				26EC46EF2882B60200DC733E /* NSManagedObject+InContextTests.swift in Sources */,
 				264EEF192882D96F00874DF8 /* CoreDataManager_PublisherManagedObject_ContextSavedTests.swift in Sources */,
