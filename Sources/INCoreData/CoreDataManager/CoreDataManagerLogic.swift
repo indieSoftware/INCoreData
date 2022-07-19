@@ -1,6 +1,5 @@
 import CoreData
 import Foundation
-import INCommons
 
 public class CoreDataManagerLogic: CoreDataManager {
 	/// The default name of a data model in the bundle, equals to "DataModel".
