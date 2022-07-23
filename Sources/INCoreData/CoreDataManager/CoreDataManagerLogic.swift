@@ -28,19 +28,19 @@ public class CoreDataManagerLogic: CoreDataManager {
 
 	 - parameter name: The name of the CoreData model which is the file name of the `xcdatamodeld` without extension.
 	 - parameter bundle: The bundle where to find the data model. Defaults to the main bundle.
-	 - parameter inMemory: Pass true to use an in-memory store suitable for Previews and UnitTests,
-	 rather than a "real" one. Defaults to `false`.
 	 - parameter storeDirectoryName: The directory's name of the persistent store,
 	 where the SQLite DB has to be written to.
 	 Any provided name will be treated as a relative path from the app's document folder.
 	 When `nil` then the default path will be used which is directly the app's document folder.
+	 - parameter inMemory: Pass true to use an in-memory store suitable for Previews and UnitTests,
+	 rather than a "real" one. Defaults to `false`.
 	 - throws: A `PersistentContainerError` when initializing the container failed.
 	 */
 	public init(
 		name: String = CoreDataManagerLogic.defaultDataModelName,
 		bundle: Bundle = .main,
-		inMemory: Bool = false,
-		storeDirectoryName: String? = CoreDataManagerLogic.defaultStoreDirectoryName
+		storeDirectoryName: String? = CoreDataManagerLogic.defaultStoreDirectoryName,
+		inMemory: Bool = false
 	) throws {
 		PersistentContainer.persistentStoreDirectoryName = storeDirectoryName
 		container = try PersistentContainer(name: name, bundle: bundle, inMemory: inMemory)

@@ -18,7 +18,7 @@ final class UsageViewModel: ObservableObject {
 		case error(_ message: String)
 	}
 
-	@Published var items: ItemsState = .empty
+	@Published private(set) var items: ItemsState = .empty
 
 	init(manager: CoreDataManager) {
 		self.manager = manager

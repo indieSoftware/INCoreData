@@ -37,12 +37,75 @@ Task {
 When using the CoreDataManager for UnitTests or Previews then a lighter in-memory version is more desirable. For that simply pass `true` for the `inMemory` parameter in the init method.
 
 ```
-struct StartView_Previews: PreviewProvider {
-	static var previews: some View {
-		StartView(manager: try! CoreDataManagerLogic(inMemory: true))
+class MyTests: XCTestCase {
+	private var coreDataManager: CoreDataManagerLogic!
+
+	override func setUpWithError() throws {
+		try super.setUpWithError()
+
+		// Create in-memory manager.
+		coreDataManager = try CoreDataManagerLogic(inMemory: true)
+
+		let asyncExpectation = expectation(description: "asyncExpectation")
+		Task {
+			do {
+				// Prepare manager.
+				try await self.coreDataManager.loadStore()
+				asyncExpectation.fulfill()
+			} catch {
+				XCTFail("Catched throwing error: \(error)")
+			}
+		}
+		// Wait for the async preparation to finish 
+		// before proceeding with the unit test.
+		wait(for: [asyncExpectation], timeout: 0.5)
 	}
 }
 ```
+
+### Previews
+
+To use a `CoreDataManager` in a preview it's recommended to use an in-memory version and to pre-fill it with some example data to show them in the preview. However, since the manager needs to be initialized asynchronously it might become tricky to prepare that for a preview. That's where `CoreDataPreview` can help.
+
+First create a namespace and a factory method which creates an instance of `CoreDataManager` with some pre-filled data:
+
+```
+enum PreviewData {
+	/// Creates an empty Core Data manager.
+	static func managerWithSomeElements() async -> CoreDataManager {
+		do {
+			// Initialize an in-memory manager.
+			let manager = try CoreDataManagerLogic(inMemory: true)
+			try await manager.loadStore()
+			
+			// Pre-fill it with some example data.
+			try await manager.performTask { context in
+				let newItem = Item(context: context)
+				context.insert(newItem)
+			}
+
+			return manager
+		} catch {
+			fatalError("Error: \(error)")
+		}
+	}
+}
+```
+
+Now use that factory and the `CoreDataPreview` in a preview to embed the custom view to preview:
+
+```
+struct MyView_Previews: PreviewProvider {
+	static var previews: some View {
+		// Use a preview container to inject the manager into the view.
+		CoreDataPreview(PreviewData.managerWithSomeElements) { manager in
+			MyView(viewModel: MyViewModel(manager: manager))
+		}
+	}
+}
+```
+
+The preview will now only render a placeholder view. To see the real view simply run the preview and then tap on the button. This will execute the factory asynchronously and inject the created manager into the view to preview.
 
 ## Creating Context
 
@@ -62,7 +125,7 @@ try await backgroundContext.perform {
 }
 ```
 
-Alternatively, use `performTask` to further simplify this process. This will create a new temporary background context on which any operations can be berformed and which will get automatically saved when finished. The above example would then lead to:
+Alternatively, use `performTask` to further simplify this process. This will create a new temporary background context on which any operations can be performed and which will automatically save any changes when finished. The above example would then be replaced by:
 
 ```
 try await manager.performTask { backgroundContext in
@@ -92,13 +155,13 @@ manager.publisher(
 .store(in: &cancellables)
 ```
 
-`item` is of type `Item` which is a `NSManagedObject`.
+Note: `item` is of type `Item` here which is a `NSManagedObject`.
 
-This will trigger an event immediately whenever a property of the item instance has been updated. 
+This will trigger an event immediately whenever a property of the item instance has been changed. 
 
-To not get events for any change, but only when the item has been saved, then use `.contextSaved` as the `notificationType` instad.
+Use `.contextSaved` instead of `.objectChanged` as the `notificationType` to get only notified via events when the changes have been saved rather than immediately and directly on each assignment.
 
-And to get also events when the item instance has been inserted or deleted from the context, then provide these `changeTypes`, e.g. `[.updated, .inserted, .deleted]` or simply `.allCases`.
+And to get also events when the item instance has been inserted or deleted from the context, then provide these `changeTypes`: `[.updated, .inserted, .deleted]` or simply `.allCases` or a mix of them when interested only in some.
 
 ### Listening for changes on an object type
 
@@ -113,12 +176,15 @@ manager.publisher(
 	changeTypes: .allCases // Any change is relevant, including insertion and deletion
 )
 .sink { [weak self] (objectsChange: ManagedObjectsChange<Item>) in
-	// Each insertion, deletion and update will trigger its own event now.
+	// Each insertion, deletion and update of any Item instance
+	// will trigger its own event now.
 }
 .store(in: &cancellables)
 ```
 
-This will create new events when a context gets saved. However, that might involve multiple different changes and even upon different objects, i.e. when modifying 2 different objects and deleting a third one will trigger only two events (updated and deleted), but with two objects in the list of the updated event.
+This will create new events when a context gets saved. However, that might involve multiple different changes and even upon different objects, i.e. when modifying 2 different objects and deleting a third then this will trigger only two events (updated and deleted), but with two objects in the list of the updated event.
+
+Of course, it's also possible to listen for any immediate changes rather than only when the context gets saved, but that's usually not the preferred way.
 
 ### Listening for changes on an object type, but published by a single event
 
@@ -133,10 +199,23 @@ manager.publisher(
 	changeTypes: .allCases // Any change is relevant, including insertion and deletion
 )
 .sink { [weak self] (objectsChanges: [ManagedObjectsChange<Item>]) in
-	// All insertions, deletions and updates will now be representd by onle one single event.
+	// All insertions, deletions and updates will now be representd 
+	// by only one single event.
 }
 .store(in: &cancellables)
 ```
 
-This publisher is only applicable for `contextSaved` notifications (otherwise it won't be possible that multiple change types happen on the same time).
+This publisher is only applicable for `contextSaved` notifications (otherwise it won't be technically possible that multiple change types happen on the same time, so that the second publisher would be more applicable in that situation).
 
+## Other helper
+
+### Retrieving an object from a context
+
+There exists a `NSManagedObject` extension which makes it easy to retrieve a given object, but in a different context. This might be useful when an object has already been created or retrieved in a different context and now should be processed further in a new task or context:
+
+```
+try await manager.performTask { backgroundContext in
+	let itemInBackgroundContext = itemInMainContext.inContext(backgroundContext)
+	// Do something with itemInBackgroundContext...
+}
+```

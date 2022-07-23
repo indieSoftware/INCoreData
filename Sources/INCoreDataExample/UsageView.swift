@@ -55,9 +55,11 @@ struct UsageView: View {
 
 struct UsageView_Previews: PreviewProvider {
 	static var previews: some View {
-		NavigationView {
-			// Inject a view model mock so we don't have to mess around with Core Data here.
-			UsageView(viewModel: UsageViewModel(manager: try! CoreDataManagerLogic(inMemory: true)))
+		// Use a preview container to inject the manager into the view.
+		CoreDataPreview(PreviewData.managerWithSomeElements) { manager in
+			NavigationView {
+				UsageView(viewModel: UsageViewModel(manager: manager))
+			}
 		}
 	}
 }
