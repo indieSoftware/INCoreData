@@ -25,14 +25,14 @@ public class PersistentContainer: NSPersistentContainer {
 	 - parameter bundle: The bundle where the data model can be found, defaults to the main bundle.
 	 - parameter inMemory: Set to `true` when an in-memory store should be used, e.g. for UnitTests.
 	 Defaults to `false` to have a persistent SQLite store in the app's document folder.
-	 - throws: An `PersistentContainerError` when initializing the container failed.
+	 - throws: A `CoreDataManagerError` when initializing the container failed.
 	 */
 	public init(name: String, bundle: Bundle = .main, inMemory: Bool = false) throws {
 		guard let modelUrl = bundle.url(forResource: name, withExtension: "momd") else {
-			throw PersistentContainerError.modelNotFound
+			throw CoreDataManagerError.modelNotFound
 		}
 		guard let model = NSManagedObjectModel(contentsOf: modelUrl) else {
-			throw PersistentContainerError.modelNotReadable
+			throw CoreDataManagerError.modelNotReadable
 		}
 		super.init(name: name, managedObjectModel: model)
 
@@ -46,7 +46,7 @@ public class PersistentContainer: NSPersistentContainer {
 	 */
 	private func configureStoreDescriptions(inMemory: Bool) throws {
 		guard let storeDescription = persistentStoreDescriptions.first else {
-			throw PersistentContainerError.noDefaultStoreConfigurationFound
+			throw CoreDataManagerError.noDefaultStoreConfigurationFound
 		}
 
 		if inMemory {
@@ -75,7 +75,7 @@ public class PersistentContainer: NSPersistentContainer {
 			self.loadPersistentStores { (description: NSPersistentStoreDescription, error: Error?) in
 				if let error = error {
 					continuation
-						.resume(throwing: PersistentContainerError.loadingPersistentStoreFailed(description, error))
+						.resume(throwing: CoreDataManagerError.loadingPersistentStoreFailed(description, error))
 					return
 				}
 				continuation.resume(with: Result.success(()))

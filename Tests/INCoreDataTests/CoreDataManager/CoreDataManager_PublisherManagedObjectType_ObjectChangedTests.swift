@@ -13,7 +13,7 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 		try super.setUpWithError()
 		subscriptions.removeAll()
 
-		coreDataManager = try CoreDataManagerLogic(
+		coreDataManager = CoreDataManagerLogic(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true

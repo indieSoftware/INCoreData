@@ -18,7 +18,7 @@ public protocol CoreDataManager {
 
 	 Has to be called once as part of the set up before interacting with the Core Data stack.
 
-	 - throws: A `PersistentContainerError` when loading the container failed.
+	 - throws: A `CoreDataManagerError` when loading the container failed.
 	 */
 	func loadStore() async throws
 
