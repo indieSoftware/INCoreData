@@ -1,14 +1,29 @@
 import Combine
 import INCoreData
 
+// Mark observable object as MainActor to ensure that all its
+// Published properties and methods are queried on the main thread.
+// Usually this is already given because only UI elements are
+// processing them, but internal assignments like assigning
+// new items after an async fetch request are now also ensured
+// that they happen on the main thread.
 @MainActor
 final class UsageViewModel: ObservableObject {
 	private let manager: CoreDataManager
 	private var cancellables = Set<AnyCancellable>()
 
+	enum ItemsState {
+		case empty
+		case data(_ items: [ItemModel])
+		case error(_ message: String)
+	}
+
+	@Published var items: ItemsState = .empty
+
 	init(manager: CoreDataManager) {
 		self.manager = manager
 
+		// Initially load the list's content.
 		loadData()
 
 		manager.publisher(
@@ -24,8 +39,6 @@ final class UsageViewModel: ObservableObject {
 		.store(in: &cancellables)
 	}
 
-	@Published var items: [ItemModel] = []
-
 	private func loadData() {
 		Task {
 			do {
@@ -35,15 +48,18 @@ final class UsageViewModel: ObservableObject {
 					let items = try context
 						.fetch(fetchRequest)
 						.map { ItemModel(timestamp: $0.timestamp ?? Date()) }
-					// Create a new task which will run on the main thread
-					// because of the MainActor annotation of the properties class.
+					// A Published property has to be set on the UI thread,
+					// therefore, initiate a new Task from within this context.
 					Task {
-						// A Published property has to be set on the UI thread.
-						self.items = items
+						if items.isEmpty {
+							self.items = .empty
+						} else {
+							self.items = .data(items)
+						}
 					}
 				}
 			} catch {
-				print("Error: \(error)")
+				items = .error(error.localizedDescription)
 			}
 		}
 	}
@@ -57,7 +73,7 @@ final class UsageViewModel: ObservableObject {
 					context.insert(newItem)
 				}
 			} catch {
-				print("Error: \(error)")
+				items = .error(error.localizedDescription)
 			}
 		}
 	}
@@ -69,16 +85,14 @@ final class UsageViewModel: ObservableObject {
 					let fetchRequest = Item.fetchRequest()
 					fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
 					try context
-						.fetch(fetchRequest)
-						.enumeratedArray()
-						.filter { offsets.contains($0.offset) }
-						.map(\.element)
-						.forEach {
-							context.delete($0)
-						}
+						.fetch(fetchRequest) // Get sorted list of Items
+						.enumeratedArray() // Map to (offset, element)
+						.filter { offsets.contains($0.offset) } // Filter for selected items
+						.map(\.element) // Map to element, omitting the offset
+						.forEach(context.delete) // Pass element/item to delete method
 				}
 			} catch {
-				print("Error: \(error)")
+				items = .error(error.localizedDescription)
 			}
 		}
 	}

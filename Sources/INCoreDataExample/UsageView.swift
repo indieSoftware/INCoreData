@@ -8,12 +8,14 @@ struct UsageView: View {
 
 	var body: some View {
 		VStack {
-			List {
-				ForEach(viewModel.items) { item in
-					Text("\(item.timestamp)")
-				}
-				.onDelete {
-					viewModel.deleteItems(offsets: $0)
+			Group {
+				switch viewModel.items {
+				case .empty:
+					emptyContent
+				case let .data(items):
+					listContent(items)
+				case let .error(message):
+					errorContent(message)
 				}
 			}
 			.toolbar {
@@ -29,6 +31,25 @@ struct UsageView: View {
 			}
 		}
 		.navigationTitle("Usage Example")
+	}
+
+	private func listContent(_ items: [ItemModel]) -> some View {
+		List {
+			ForEach(items) { item in
+				Text("\(item.timestamp)")
+			}
+			.onDelete {
+				viewModel.deleteItems(offsets: $0)
+			}
+		}
+	}
+
+	private var emptyContent: some View {
+		Text("No content")
+	}
+
+	private func errorContent(_ message: String) -> some View {
+		Text(message)
 	}
 }
 
