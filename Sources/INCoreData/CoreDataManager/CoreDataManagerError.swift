@@ -1,6 +1,6 @@
 import CoreData
 
-/// Programmer errors which can be thrown while creating a `PersistentContainer`.
+/// Programmer errors which can be thrown while creating a `CoreDataManager` or `PersistentContainer`.
 public enum CoreDataManagerError: Error {
 	/// An invalid state of the manager caused by multiple calls of `loadStore()`.
 	case multipleLoadStoreCalls
