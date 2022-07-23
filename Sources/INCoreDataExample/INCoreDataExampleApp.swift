@@ -6,7 +6,7 @@ struct INCoreDataExampleApp: App {
 	var body: some Scene {
 		WindowGroup {
 			NavigationView {
-				// Inject a default core data manager.
+				// Creating and inject a concrete core data manager instance.
 				let coreDataManager = try! CoreDataManagerLogic()
 				StartView(manager: coreDataManager)
 			}

@@ -5,12 +5,12 @@ import SwiftUI
 struct StartView: View {
 	enum StartViewState {
 		case uninitialized
-		case initializing
+		case loading
 		case initialized
 	}
 
 	/// The core data manager to be injected.
-	let manager: CoreDataManagerLogic
+	let manager: CoreDataManager
 
 	@State private var state: StartViewState = .uninitialized
 	@State private var usageViewShown = false
@@ -20,7 +20,7 @@ struct StartView: View {
 	var body: some View {
 		ZStack {
 			NavigationLink(isActive: $usageViewShown) {
-				UsageView(viewModel: UsageViewModelLogic(manager: manager))
+				UsageView(viewModel: UsageViewModel(manager: manager))
 			} label: {
 				EmptyView()
 			}
@@ -30,19 +30,18 @@ struct StartView: View {
 				case .uninitialized:
 					Text("CoreData not ready, yet")
 					Button {
-						state = .initializing
-						DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-							// Load manager.
-							Task {
-								try! await manager.loadStore()
-								state = .initialized
-							}
+						state = .loading
+						// Load manager.
+						Task {
+							try? await Task.sleep(seconds: 0.5)
+							try! await manager.loadStore()
+							state = .initialized
 						}
 					} label: {
 						Text("Initialize CoreData")
 					}
-				case .initializing:
-					Text("CoreData initializing")
+				case .loading:
+					Text("CoreData loading")
 					ProgressView()
 				case .initialized:
 					Text("CoreData ready")

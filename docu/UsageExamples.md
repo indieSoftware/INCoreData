@@ -8,66 +8,67 @@ Create an instance of the manager:
 ```
 import INCoreData
 
-let manager: CoreDataManager = CoreDataManagerLogic()
+let manager: CoreDataManager = try! CoreDataManagerLogic()
 ```
 
-Call setup before using the manager:
+This will use the data model named "DataModel" from the main bundle and use the path "CoreData" inside of the documents folder to persist the Core Data stack.
+
+If the "xcdatamodelId" file differes, is not in the main bundle or a different folder name in the documents folder should be used then provide those information to the init method.
 
 ```
-manager.setup(storeFolder: storeFolder) { result in
-	switch result {
-		case let .failure(error):
-			// Error handling
-		case .success():
-			// Core Data is set up, proceed with app flow
-	}
+let manager: CoreDataManager = try! CoreDataManagerLogic(
+	name: "MyModel", 
+	bundle: Bundle(for: Model.self), 
+	storeDirectoryName: "DataStack"
+)
+```
+
+Call `loadStore` before using the manager:
+
+```
+Task {
+	try! await manager.loadStore()
+	// Core Data is set up, proceed with app flow
 }
 ```
-
-This will use the data model named "DataModel" from the main bundle and use the path pointing at by `storeFolder` to persist the Core Data stack.
-
-If the "xcdatamodelId" file differes then a model name needs to be provided to the setup method. Same when the data model is not defined in the main bundle.
 
 ### In-memory manager
 
-When using the CoreDataManager for UnitTests or Previews then a lighter in-memory version is more desirable. For that either use the alternative convenience initializer which doesn't require setup to be called:
+When using the CoreDataManager for UnitTests or Previews then a lighter in-memory version is more desirable. For that simply pass `true` for the `inMemory` parameter in the init method.
 
 ```
-let inMemoryManager = CoreDataManagerLogic(
-	dataModelName: myDataModelName
-) { persistentStoreCoordinator, mainContext, privateContext, container in
-	// ...
-}
-```
-
-or use the standard initializer with the `useInMemory` parameter set to `true` to have no other change in the code flow:
-
-```
-let inMemoryManager = CoreDataManagerLogic(useInMemory: true)
-inMemoryManager.setup(storeFolder: storeFolder) { result in
-	// ...
+struct StartView_Previews: PreviewProvider {
+	static var previews: some View {
+		StartView(manager: try! CoreDataManagerLogic(inMemory: true))
+	}
 }
 ```
 
 ## Creating Context
 
-The default context is the main context which is also used by the UI. The main context can be used for any data manipulation and gets persisted when `persist` is called.
+The default context is the main context which is also used by the UI. To access it:
 
 ```
-let context = manager.mainContext
-// Modify the "context" or objects on it.
-manager.persist()
+let mainContext = manager.mainContext
 ```
 
-Alternatively, create a new context which also can be used on a background thread when created there and later save and persist it back to the main context:
+However, ususally it's not recommended to use the main context to retrieve or change elements. Use a background context for that:
 
 ```
 let backgroundContext = manager.createNewContext()
-// Modify "contextOnABackground" or objects on it.
-manager.persist(fromBackgroundContext: backgroundContext)
+try await backgroundContext.perform {
+	// Do somethong on backgroundContext ...
+	try backgroundContext.save()
+}
 ```
 
-Usually it's recommended to use a new background context rather than using the main context because the main context acts on the main thread and thus might have a negative impact on the UI when doing heavy processing on it.
+Alternatively, use `performTask` to further simplify this process. This will create a new temporary background context on which any operations can be berformed and which will get automatically saved when finished. The above example would then lead to:
+
+```
+try await manager.performTask { backgroundContext in
+	// Do something on backgroundContext ...
+}
+```
 
 ## Listen for changes with Publishers
 

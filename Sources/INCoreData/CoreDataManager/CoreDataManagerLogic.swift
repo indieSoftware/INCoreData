@@ -46,18 +46,11 @@ public class CoreDataManagerLogic: CoreDataManager {
 		container = try PersistentContainer(name: name, bundle: bundle, inMemory: inMemory)
 	}
 
-	/**
-	 Loads the persistent store.
+	// MARK: - CoreDataManager interface
 
-	 Has to be called as part of the set up before interacting with the Core Data stack.
-
-	 - throws: A `PersistentContainerError` when loading the container failed.
-	 */
 	public func loadStore() async throws {
 		try await container.loadPersistentStore()
 	}
-
-	// MARK: - CoreDataManager interface
 
 	public var mainContext: NSManagedObjectContext {
 		container.viewContext
@@ -75,8 +68,9 @@ public class CoreDataManagerLogic: CoreDataManager {
 		let context = createNewContext()
 		try await context.perform {
 			try task(context)
-			guard context.hasChanges else { return }
-			try context.save()
+			if context.hasChanges {
+				try context.save()
+			}
 		}
 		try await persist()
 	}

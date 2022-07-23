@@ -14,6 +14,15 @@ import Foundation
  */
 public protocol CoreDataManager {
 	/**
+	 Loads the persistent store.
+
+	 Has to be called once as part of the set up before interacting with the Core Data stack.
+
+	 - throws: A `PersistentContainerError` when loading the container failed.
+	 */
+	func loadStore() async throws
+
+	/**
 	 A reference to the `viewContext` for tasks on the main context.
 
 	 This context acts on the main thread and thus is also used by the UI.
