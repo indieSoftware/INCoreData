@@ -1,6 +1,6 @@
 import CoreData
 
-public class PersistentContainer: NSPersistentContainer {
+public class PersistentContainer: NSPersistentCloudKitContainer {
 	/// The directory's name of the persistent store, where the SQLite DB has to be written to.
 	/// Any provided name will be treated as a relative path from the app's document folder.
 	/// When `nil` then the default path will be used which is directly the app's document folder.
@@ -90,6 +90,8 @@ public class PersistentContainer: NSPersistentContainer {
 				continuation.resume(with: Result.success(()))
 			}
 		}
+		// Make sure the local stack gets updated when any changes in iCloud happens.
+		viewContext.automaticallyMergesChangesFromParent = true
 	}
 
 	/**
