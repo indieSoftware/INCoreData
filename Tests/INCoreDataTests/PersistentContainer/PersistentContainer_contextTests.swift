@@ -17,10 +17,13 @@ class PersistentContainer_contextTests: XCTestCase {
 	}
 
 	override func tearDownWithError() throws {
-		try super.tearDownWithError()
-
 		container = nil
 		try deletePersistentDirectory()
+
+		// Prevents flaky tests
+		yieldProcess()
+
+		try super.tearDownWithError()
 	}
 
 	private func deletePersistentDirectory() throws {

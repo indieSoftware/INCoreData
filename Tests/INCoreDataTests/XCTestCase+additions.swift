@@ -3,7 +3,7 @@ import XCTest
 
 extension XCTestCase {
 	/// The default time for expectations when they should time out.
-	static let defaultExpectationTimeout: TimeInterval = 0.5
+	static let defaultExpectationTimeout: TimeInterval = 1.0
 
 	/**
 	 Waits until the test fulfills all expectations or until it times out.
@@ -32,11 +32,21 @@ extension XCTestCase {
 		Task {
 			do {
 				try await block()
-				asyncExpectation.fulfill()
 			} catch {
 				XCTFail("Catched throwing error: \(error)", file: file, line: line)
 			}
+			asyncExpectation.fulfill()
 		}
 		wait(for: [asyncExpectation], timeout: XCTestCase.defaultExpectationTimeout)
+	}
+
+	/// Waits for 1 nanosecond just to give the main cycle the chance to clean up things,
+	/// i.e. any held references from Tasks to managed objects are kept until the process has yielded.
+	/// This can help fixing flaky tests because of those kept references by Tasks.
+	func yieldProcess() {
+		performAsyncThrow {
+			// Prevents flaky tests
+			try! await Task.sleep(nanoseconds: 1)
+		}
 	}
 }

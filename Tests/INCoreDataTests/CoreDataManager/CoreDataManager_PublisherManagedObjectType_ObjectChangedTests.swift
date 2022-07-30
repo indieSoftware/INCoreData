@@ -37,10 +37,24 @@ class CoreDataManager_PublisherManagedObjectType_ObjectChangedTests: XCTestCase 
 	}
 
 	override func tearDownWithError() throws {
+		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakContainer: NSPersistentContainer? = coreDataManager.container
+		weak var weakFooObject: Foo? = fooObject
+		weak var weakContext: NSManagedObjectContext? = context
+
 		subscriptions.removeAll()
-		coreDataManager = nil
 		fooObject = nil
+		coreDataManager = nil
 		context = nil
+
+		// Prevents flaky tests
+		yieldProcess()
+
+		XCTAssertNil(weakManager)
+		XCTAssertNil(weakFooObject)
+		XCTAssertNil(weakContainer)
+		XCTAssertNil(weakContext)
+
 		try super.tearDownWithError()
 	}
 

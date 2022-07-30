@@ -17,6 +17,10 @@ class CoreDataManager_loadStoreTests: XCTestCase {
 
 	override func tearDownWithError() throws {
 		coreDataManager = nil
+
+		// Prevents flaky tests
+		yieldProcess()
+
 		try super.tearDownWithError()
 	}
 

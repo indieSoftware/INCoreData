@@ -18,9 +18,12 @@ class NSManagedObject_InContextTests: XCTestCase {
 	}
 
 	override func tearDownWithError() throws {
-		try super.tearDownWithError()
-
 		coreDataManager = nil
+
+		// Prevents flaky tests
+		yieldProcess()
+
+		try super.tearDownWithError()
 	}
 
 	// MARK: - Tests

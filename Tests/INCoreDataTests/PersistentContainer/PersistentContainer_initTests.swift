@@ -10,9 +10,12 @@ class PersistentContainer_initTests: XCTestCase {
 	}
 
 	override func tearDownWithError() throws {
-		try super.tearDownWithError()
-
 		try deletePersistentDirectory()
+
+		// Prevents flaky tests
+		yieldProcess()
+
+		try super.tearDownWithError()
 	}
 
 	private func deletePersistentDirectory() throws {
