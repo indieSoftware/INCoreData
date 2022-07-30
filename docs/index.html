@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
           INCoreData
         </a>
-         (94% documented)
+         (95% documented)
       </p>
     
       <div class="header-col--secondary">
@@ -54,6 +54,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/PersistentContainer.html">PersistentContainer</a>
               </li>
             </ul>
           </li>
@@ -91,6 +94,9 @@
             <a class="nav-group-name-link" href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/CoreDataPreview.html">CoreDataPreview</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ManagedNotification.html">ManagedNotification</a>
               </li>
               <li class="nav-group-task">
@@ -115,17 +121,26 @@
 <p>Good resources for the general usage of CoreData:</p>
 
 <ul>
+<li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html</a></li>
+<li><a href="https://developer.apple.com/documentation/coredata">https://developer.apple.com/documentation/coredata</a></li>
 <li><a href="https://www.advancedswift.com/core-data-background-fetch-save-create">https://www.advancedswift.com/core-data-background-fetch-save-create</a></li>
+<li><a href="https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/">https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/</a></li>
 </ul>
 <h2 id='feature-overview' class='heading'>Feature overview</h2>
 
-<p>The main class is <code><a href="Protocols/CoreDataManager.html">CoreDataManager</a></code> which provides a manager to access the main context, get new background contexts and to persist any changes.</p>
+<p>The main class is <code><a href="Protocols/CoreDataManager.html">CoreDataManager</a></code> which provides a manager as a fascade to the underlying <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> which simplifies the correct usage of Core Data in an application.
+The <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> is deriving from <code>NSPersistentCloudKitContainer</code> and thus <code><a href="Protocols/CoreDataManager.html">CoreDataManager</a></code> supports Core Data in the iCloud.</p>
+<h2 id='advices' class='heading'>Advices</h2>
+<h3 id='debug-flag' class='heading'>Debug flag</h3>
 
-<p>The idea is to have a main context which works on the main thread as the single source of truth.
-However, for persisting any changes the main context only saves its changes to a background context which is then responsible for persisting the changes.
-That prevents the main thread of being blocked when persisting changes, because that will be then outsourced to the background context.</p>
+<p>It&rsquo;s recommended to add <code>-com.apple.CoreData.ConcurrencyDebug 1</code> as a runtime argument to the scheme to get Xcode errors when using Core Data wrongly and to get hints about potential undetected issues.</p>
+<h3 id='yield-process' class='heading'>Yield process</h3>
 
-<p>When creating new contexts via <code>createNewContext</code> then they will be linked to the main context so that it&rsquo;s easy to apply some changes on a background thread and then push them back to the main context via <code>persist(fromBackgroundContext:)</code> when finished processing. </p>
+<p>Use Xcode 14+ with Swift 5.7 or higher because that fixed some memory issues with Core Data and the async/await concurrency feature. As <code>CoreDataManager_MemoryLeakTests</code> shows the contexts and some referenced managed objects are not properly released. </p>
+
+<p>However, even with Xcode 14 and Swift 5.7 be aware that tests might become flaky, that means they might sometimes pass and sometimes fail because a context or object is not released in time. For the objects to get released it&rsquo;s necessary to yield the main queue to give the system the chance to clean up those release pools. For that the lib&rsquo;s project uses a <code>XCTestCase.yieldProcess()</code> method which just sleeps for one nanosecond. </p>
+
+<p>Just keep that in mind for own app tests when using Core Data.</p>
 <h2 id='example-of-usage' class='heading'>Example of usage</h2>
 
 <p><a href="https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md">Examples how to use INCoreData</a></p>
@@ -137,7 +152,7 @@ That prevents the main thread of being blocked when persisting changes, because 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-06-19)</p>
+      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-07-30)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

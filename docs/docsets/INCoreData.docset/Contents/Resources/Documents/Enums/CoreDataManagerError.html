@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           INCoreData
         </a>
-         (94% documented)
+         (95% documented)
       </p>
     
       <div class="header-col--secondary">
@@ -55,6 +55,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PersistentContainer.html">PersistentContainer</a>
               </li>
             </ul>
           </li>
@@ -92,6 +95,9 @@
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CoreDataPreview.html">CoreDataPreview</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ManagedNotification.html">ManagedNotification</a>
               </li>
               <li class="nav-group-task">
@@ -116,7 +122,7 @@
 
                 </div>
               </div>
-            <p>Errors which can occur while creating a CoreDataManager and its persistence stack.</p>
+            <p>Programmer errors which can be thrown while creating a <code><a href="../Protocols/CoreDataManager.html">CoreDataManager</a></code> or <code><a href="../Classes/PersistentContainer.html">PersistentContainer</a></code>.</p>
 
           </div>
         </section>
@@ -128,9 +134,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10INCoreData04CoreB12ManagerErrorO28storeFolderCouldNotBeCreatedyACSS_tcACmF"></a>
-                    <a name="//apple_ref/swift/Element/storeFolderCouldNotBeCreated(path:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO28storeFolderCouldNotBeCreatedyACSS_tcACmF">storeFolderCouldNotBeCreated(path:<wbr>)</a>
+                    <a name="/s:10INCoreData04CoreB12ManagerErrorO22multipleLoadStoreCallsyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/multipleLoadStoreCalls" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO22multipleLoadStoreCallsyA2CmF">multipleLoadStoreCalls</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -138,14 +144,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The folder for the given path could not be created.</p>
+                        <p>An invalid state of the manager caused by multiple calls of <code>loadStore()</code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">storeFolderCouldNotBeCreated</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">multipleLoadStoreCalls</span></code></pre>
 
                         </div>
                       </div>
@@ -155,9 +161,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10INCoreData04CoreB12ManagerErrorO32persistentStoreCouldNotBeCreatedyACSS_tcACmF"></a>
-                    <a name="//apple_ref/swift/Element/persistentStoreCouldNotBeCreated(path:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO32persistentStoreCouldNotBeCreatedyACSS_tcACmF">persistentStoreCouldNotBeCreated(path:<wbr>)</a>
+                    <a name="/s:10INCoreData04CoreB12ManagerErrorO13modelNotFoundyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/modelNotFound" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO13modelNotFoundyA2CmF">modelNotFound</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -165,14 +171,100 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The persistent store could not be created at the given path.</p>
+                        <p>The model&rsquo;s &ldquo;momd&rdquo; resource couldn&rsquo;t be found in the bundle.
+Probably the &ldquo;xcdatamodel&rdquo; file hasn&rsquo;t been added to the project.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">persistentStoreCouldNotBeCreated</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">modelNotFound</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB12ManagerErrorO16modelNotReadableyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/modelNotReadable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO16modelNotReadableyA2CmF">modelNotReadable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The model couldn&rsquo;t be loaded.
+Probably the bundle&rsquo;s model file is corrupt.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">modelNotReadable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB12ManagerErrorO32noDefaultStoreConfigurationFoundyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/noDefaultStoreConfigurationFound" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO32noDefaultStoreConfigurationFoundyA2CmF">noDefaultStoreConfigurationFound</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The underlying <code>NSPersistentStore</code> should provide at least
+one <code>persistentStoreDescriptions</code>, but actually doesn&rsquo;t.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">noDefaultStoreConfigurationFound</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB12ManagerErrorO28loadingPersistentStoreFailedyACSo012NSPersistentH11DescriptionC_s0E0_ptcACmF"></a>
+                    <a name="//apple_ref/swift/Element/loadingPersistentStoreFailed(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB12ManagerErrorO28loadingPersistentStoreFailedyACSo012NSPersistentH11DescriptionC_s0E0_ptcACmF">loadingPersistentStoreFailed(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Loading the persistent store failed.
+This happens by the underlying <code>loadPersistentStores(completionHandler:)</code> call
+and contains the return values by that method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">loadingPersistentStoreFailed</span><span class="p">(</span><span class="nv">_</span><span class="p">:</span> <span class="kt">NSPersistentStoreDescription</span><span class="p">,</span> <span class="nv">_</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -187,7 +279,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-06-19)</p>
+      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-07-30)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

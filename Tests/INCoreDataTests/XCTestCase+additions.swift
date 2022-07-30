@@ -42,11 +42,17 @@ extension XCTestCase {
 
 	/// Waits for 1 nanosecond just to give the main cycle the chance to clean up things,
 	/// i.e. any held references from Tasks to managed objects are kept until the process has yielded.
-	/// This can help fixing flaky tests because of those kept references by Tasks.
+	/// This can help fixing flaky tests.
+	func yieldProcess() async throws {
+		try await Task.sleep(nanoseconds: 1)
+	}
+
+	/// Waits for 1 nanosecond just to give the main cycle the chance to clean up things,
+	/// i.e. any held references from Tasks to managed objects are kept until the process has yielded.
+	/// This can help fixing flaky tests.
 	func yieldProcess() {
 		performAsyncThrow {
-			// Prevents flaky tests
-			try! await Task.sleep(nanoseconds: 1)
+			try! await self.yieldProcess()
 		}
 	}
 }

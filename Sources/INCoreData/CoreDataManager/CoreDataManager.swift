@@ -6,7 +6,7 @@ import Foundation
 
  Usually `CoreDataManagerLogic` should be instantiated as an implementation of this protocol.
 
- The wrapped `PersistentContainer` is a `NSPersistentContainer` with some
+ The wrapped `PersistentContainer` is a `NSPersistentCloudKitContainer` with some
  additional functionalities to streamline the usage of Core Data with this manager.
  The protocol makes it possible to inject the manager to all dependents and replace it with
  a mocked version for unit tests and SwiftUI previews.
