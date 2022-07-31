@@ -5,6 +5,7 @@
 --maxwidth 120
 --enable isEmpty
 --indent tab 
+--ifdef outdent
 --tabwidth 4
 --commas inline
 --wraparguments before-first

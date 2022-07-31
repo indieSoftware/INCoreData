@@ -11,12 +11,7 @@ public class CoreDataManagerLogic: CoreDataManager {
 	/// The underlying persistent container used.
 	public private(set) var container: PersistentContainer?
 
-	private struct PersistentContainerParameter {
-		let modelName: String
-		let modelBundle: Bundle
-		let inMemory: Bool
-	}
-
+	/// The parameters for the persistent container for passing later during the loading rather the init.
 	private let persistentContainerParameter: PersistentContainerParameter?
 
 	/**
@@ -45,18 +40,23 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 When `nil` then the default path will be used which is directly the app's document folder.
 	 - parameter inMemory: Pass true to use an in-memory store suitable for Previews and UnitTests,
 	 rather than a "real" one. Defaults to `false`.
+	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme with CloutKit during loading the persistent store.
+	 Will only be respected in a debug build for a non-in-memory store.
+	 Defaults to `false`.
 	 */
 	public init(
 		name: String = CoreDataManagerLogic.defaultDataModelName,
 		bundle: Bundle = .main,
 		storeDirectoryName: String? = CoreDataManagerLogic.defaultStoreDirectoryName,
-		inMemory: Bool = false
+		inMemory: Bool = false,
+		syncSchemeWithCloudKit: Bool = false
 	) {
 		PersistentContainer.persistentStoreDirectoryName = storeDirectoryName
 		persistentContainerParameter = PersistentContainerParameter(
 			modelName: name,
 			modelBundle: bundle,
-			inMemory: inMemory
+			inMemory: inMemory,
+			syncSchemeWithCloudKit: syncSchemeWithCloudKit
 		)
 	}
 

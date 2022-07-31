@@ -18,6 +18,9 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 		return super.defaultDirectoryURL().appendingPathComponent(pathComponent)
 	}
 
+	/// Flag to sync the scheme with CloudKit during loading the persistent store.
+	private let syncSchemeWithCloudKit: Bool
+
 	/**
 	 Initializes the container.
 
@@ -29,15 +32,24 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 	 - parameter bundle: The bundle where the data model can be found, defaults to the main bundle.
 	 - parameter inMemory: Set to `true` when an in-memory store should be used, e.g. for UnitTests.
 	 Defaults to `false` to have a persistent SQLite store in the app's document folder.
+	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme with CloutKit during loading the persistent store.
+	 Will only be respected in a debug build for a non-in-memory store.
+	 Defaults to `false`.
 	 - throws: A `CoreDataManagerError` when initializing the container failed.
 	 */
-	public init(name: String, bundle: Bundle = .main, inMemory: Bool = false) throws {
+	public init(
+		name: String,
+		bundle: Bundle = .main,
+		inMemory: Bool = false,
+		syncSchemeWithCloudKit: Bool = false
+	) throws {
 		guard let modelUrl = bundle.url(forResource: name, withExtension: "momd") else {
 			throw CoreDataManagerError.modelNotFound
 		}
 		guard let model = NSManagedObjectModel(contentsOf: modelUrl) else {
 			throw CoreDataManagerError.modelNotReadable
 		}
+		self.syncSchemeWithCloudKit = inMemory ? false : syncSchemeWithCloudKit
 		super.init(name: name, managedObjectModel: model)
 
 		try configureStoreDescriptions(inMemory: inMemory)
@@ -91,11 +103,23 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 						.resume(throwing: CoreDataManagerError.loadingPersistentStoreFailed(description, error))
 					return
 				}
+				// Make sure the local stack gets updated when any changes in iCloud happens.
+				self.viewContext.automaticallyMergesChangesFromParent = true
+#if DEBUG
+				if self.syncSchemeWithCloudKit {
+					do {
+						// Initialize the development schema (debug build only).
+						try self.initializeCloudKitSchema(options: [])
+					} catch {
+						continuation
+							.resume(throwing: CoreDataManagerError.initializeCloudKitSchemaFailed(error))
+						return
+					}
+				}
+#endif
 				continuation.resume(with: Result.success(()))
 			}
 		}
-		// Make sure the local stack gets updated when any changes in iCloud happens.
-		viewContext.automaticallyMergesChangesFromParent = true
 	}
 
 	/**

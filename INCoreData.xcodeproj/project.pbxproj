@@ -28,6 +28,7 @@
 		262C9CD1285F132300DD6D41 /* UsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CD0285F132300DD6D41 /* UsageView.swift */; };
 		262C9CD9285F3CD500DD6D41 /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CD8285F3CD500DD6D41 /* ItemModel.swift */; };
 		262C9CDB285F44D600DD6D41 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CDA285F44D600DD6D41 /* UsageViewModel.swift */; };
+		262EA4F82896600500717F54 /* PersistentContainerParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262EA4F72896600500717F54 /* PersistentContainerParameter.swift */; };
 		26349455287998F20092B8FF /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26349454287998F20092B8FF /* PersistentContainer.swift */; };
 		2634945B2879E8330092B8FF /* CoreDataManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2634945A2879E8330092B8FF /* CoreDataManagerError.swift */; };
 		2634945F287AAAF60092B8FF /* CoreDataManagerLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2634945E287AAAF60092B8FF /* CoreDataManagerLogic.swift */; };
@@ -117,6 +118,7 @@
 		262C9CD0285F132300DD6D41 /* UsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageView.swift; sourceTree = "<group>"; };
 		262C9CD8285F3CD500DD6D41 /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
 		262C9CDA285F44D600DD6D41 /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
+		262EA4F72896600500717F54 /* PersistentContainerParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerParameter.swift; sourceTree = "<group>"; };
 		26349454287998F20092B8FF /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		2634945A2879E8330092B8FF /* CoreDataManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerError.swift; sourceTree = "<group>"; };
 		2634945E287AAAF60092B8FF /* CoreDataManagerLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerLogic.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				26349454287998F20092B8FF /* PersistentContainer.swift */,
+				262EA4F72896600500717F54 /* PersistentContainerParameter.swift */,
 			);
 			path = PersistentContainer;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				534F5DC8280474A300DCB275 /* CoreDataManager.swift in Sources */,
+				262EA4F82896600500717F54 /* PersistentContainerParameter.swift in Sources */,
 				26BA6EC2288C3B9F0012D429 /* CoreDataPreview.swift in Sources */,
 				263B44D4285C70F40055B8D4 /* ManagedObjectsChange.swift in Sources */,
 				2634945F287AAAF60092B8FF /* CoreDataManagerLogic.swift in Sources */,
