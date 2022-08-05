@@ -23,6 +23,10 @@
 
 /* Begin PBXBuildFile section */
 		1FF6B17CBF3EC43F3C3E7337 /* Pods_INCoreDataTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239E24B414CA6568739AEA53 /* Pods_INCoreDataTests.framework */; };
+		260786BD289D5D2600504907 /* ManagedObjectModelWrapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260786BB289D5D2600504907 /* ManagedObjectModelWrapping.swift */; };
+		260786BE289D5D2600504907 /* ManagedObjectWrappingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260786BC289D5D2600504907 /* ManagedObjectWrappingModel.swift */; };
+		260786C0289D5DE000504907 /* ManagedObjectWrappingModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260786BF289D5DE000504907 /* ManagedObjectWrappingModelTests.swift */; };
+		260786C3289D622A00504907 /* INCommons in Frameworks */ = {isa = PBXBuildFile; productRef = 260786C2289D622A00504907 /* INCommons */; };
 		261C7F12288F196A004559B0 /* CoreDataManager_MemoryLeakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261C7F11288F196A004559B0 /* CoreDataManager_MemoryLeakTests.swift */; };
 		262C9CCF285F117300DD6D41 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CCE285F117300DD6D41 /* StartView.swift */; };
 		262C9CD1285F132300DD6D41 /* UsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CD0285F132300DD6D41 /* UsageView.swift */; };
@@ -113,6 +117,9 @@
 /* Begin PBXFileReference section */
 		1D3CF85261265366D7A83882 /* Pods-INCoreData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INCoreData.debug.xcconfig"; path = "Target Support Files/Pods-INCoreData/Pods-INCoreData.debug.xcconfig"; sourceTree = "<group>"; };
 		239E24B414CA6568739AEA53 /* Pods_INCoreDataTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_INCoreDataTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		260786BB289D5D2600504907 /* ManagedObjectModelWrapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectModelWrapping.swift; sourceTree = "<group>"; };
+		260786BC289D5D2600504907 /* ManagedObjectWrappingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectWrappingModel.swift; sourceTree = "<group>"; };
+		260786BF289D5DE000504907 /* ManagedObjectWrappingModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectWrappingModelTests.swift; sourceTree = "<group>"; };
 		261C7F11288F196A004559B0 /* CoreDataManager_MemoryLeakTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager_MemoryLeakTests.swift; sourceTree = "<group>"; };
 		262C9CCE285F117300DD6D41 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		262C9CD0285F132300DD6D41 /* UsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageView.swift; sourceTree = "<group>"; };
@@ -217,8 +224,10 @@
 				26BA6EC1288C3B9F0012D429 /* CoreDataPreview.swift */,
 				267F4D2D2838AC5700DC42E5 /* ManagedNotification.swift */,
 				268D4FD42854F36A003B18C8 /* ManagedObjectChange.swift */,
-				263B44D3285C70F40055B8D4 /* ManagedObjectsChange.swift */,
 				268D4FD22854F304003B18C8 /* ManagedObjectChangeType.swift */,
+				260786BB289D5D2600504907 /* ManagedObjectModelWrapping.swift */,
+				263B44D3285C70F40055B8D4 /* ManagedObjectsChange.swift */,
+				260786BC289D5D2600504907 /* ManagedObjectWrappingModel.swift */,
 				26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */,
 				267F4D322838B0B700DC42E5 /* Notification+ManagedObjects.swift */,
 			);
@@ -288,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				26EC46E02882B60200DC733E /* NSManagedObject+InContextTests.swift */,
+				260786BF289D5DE000504907 /* ManagedObjectWrappingModelTests.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -296,8 +306,8 @@
 			isa = PBXGroup;
 			children = (
 				26EC46C82882B0C300DC733E /* Package.swift */,
-				26F42BEB2871D37800FB6251 /* docu */,
 				26FCE70B27D2137300C229DA /* README.md */,
+				26F42BEB2871D37800FB6251 /* docu */,
 				26FCE6E027D1FA1D00C229DA /* Sources */,
 				26FCE6E127D1FA1D00C229DA /* Tests */,
 				26FCE6D027D1F9C600C229DA /* Products */,
@@ -714,6 +724,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				260786BD289D5D2600504907 /* ManagedObjectModelWrapping.swift in Sources */,
 				534F5DC8280474A300DCB275 /* CoreDataManager.swift in Sources */,
 				262EA4F82896600500717F54 /* PersistentContainerParameter.swift in Sources */,
 				26BA6EC2288C3B9F0012D429 /* CoreDataPreview.swift in Sources */,
@@ -725,6 +736,7 @@
 				2634945B2879E8330092B8FF /* CoreDataManagerError.swift in Sources */,
 				267F4D2E2838AC5700DC42E5 /* ManagedNotification.swift in Sources */,
 				26713CF52831248C008456E9 /* CoreDataManager+Publisher.swift in Sources */,
+				260786BE289D5D2600504907 /* ManagedObjectWrappingModel.swift in Sources */,
 				267F4D332838B0B700DC42E5 /* Notification+ManagedObjects.swift in Sources */,
 				26349455287998F20092B8FF /* PersistentContainer.swift in Sources */,
 			);
@@ -745,6 +757,7 @@
 				26EC46E32882B60200DC733E /* TestModelName.swift in Sources */,
 				26EC46E62882B60200DC733E /* CoreDataManager_PublisherManagedObject_ObjectChangedTests.swift in Sources */,
 				26EC46EC2882B60200DC733E /* PersistentContainerMock.swift in Sources */,
+				260786C0289D5DE000504907 /* ManagedObjectWrappingModelTests.swift in Sources */,
 				264EEF1C288431E600874DF8 /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift in Sources */,
 				26BA6ECC288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift in Sources */,
 				26EC46ED2882B60200DC733E /* PersistentContainer_initTests.swift in Sources */,

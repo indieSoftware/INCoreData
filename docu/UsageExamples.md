@@ -219,3 +219,82 @@ try await manager.performTask { backgroundContext in
 	// Do something with itemInBackgroundContext...
 }
 ```
+
+## Models
+
+The managed objects from CoreData have mostly an awkward interface. Often the properties are optionals when they should not be, or they are of a type like `Int32` or a data object instead of a concrete type. That means, instead of usign the managed object directly it's often adviceable to wrap it by a facade or model.
+
+To simplify this two protocols are provided by the framework which goes hand in hand: `ManagedObjectModelWrapping` and `ManagedObjectWrappingModel`.
+
+For example, there is a managed object named `Foo` which has two properties `var title: String?` and `var number: Int32`. Now create a custom model for that managed object and make it conform to `ManagedObjectWrappingModel` and add also an extension to the managed Foo object to conform it to `ManagedObjectModelWrapping` and link it to the `FooModel`:
+
+```
+public struct FooModel: ManagedObjectWrappingModel {
+	public let managedObject: Foo
+
+	public init(managedObject: Foo) {
+		self.managedObject = managedObject
+	}
+
+	public var title: String {
+		get {
+			guard let title = managedObject.title else {
+				preconditionFailure("Title of MO is nil")
+			}
+			return title
+		}
+		set {
+			managedObject.title = newValue
+		}
+	}
+
+	public var number: Int {
+		get {
+			Int(managedObject.number)
+		}
+		set {
+			managedObject.number = Int32(newValue)
+		}
+	}
+}
+
+extension Foo: ManagedObjectModelWrapping {
+	public typealias Model = FooModel
+}
+```
+
+This will allow to get a model from that Foo object automatically and to access the properties in a type-safe way:
+
+```
+let foo: Foo
+let model: FooModel = foo.asModel
+let title: String = model.title
+let number: Int = model.number
+```
+
+There is no casting or unwrapping necessary anymore, because that is done by the wrapping model.
+
+Through the computed properties it's also possible to ensure some logical constraints via `preconditions` to detect programmer errors when assigning a forbidden value, for example. For example when number should always be a positive number or zero by design then we can't model it in CoreData or with a type in our model, but we can at least verify that during the getter and setters of the model:
+
+```
+	public var number: Int {
+		get {
+			let value = Int(managedObject.number)
+			precondition(value >= 0)
+			return value
+		}
+		set {
+			precondition(newValue >= 0)
+			managedObject.number = Int32(newValue)
+		}
+	}
+```
+
+Now when assigning a negative value in code then we notice that via a crash during testing:
+
+```
+model.number = 4 // fine
+model.number = -4 // precondition triggers!
+```
+
+The model, therefore, works as a facade for the underlying managed object. When using a struct rahter than a class for the model then it's also light-weight without loosing the access to the managed object should it still be needed.
