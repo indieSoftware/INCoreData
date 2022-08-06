@@ -10,7 +10,7 @@ public protocol ManagedObjectWrappingModel: Equatable {
 	/// The reference property pointing to the wrapped managed object.
 	var managedObject: ManagedObject { get }
 
-	/// An initialized which takes the matching managed object and assigns it to the reference property.
+	/// An initializer which takes the matching managed object and assigns it to the reference property.
 	init(managedObject: ManagedObject)
 }
 
