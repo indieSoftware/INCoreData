@@ -26,7 +26,6 @@
 		260786BD289D5D2600504907 /* ManagedObjectModelWrapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260786BB289D5D2600504907 /* ManagedObjectModelWrapping.swift */; };
 		260786BE289D5D2600504907 /* ManagedObjectWrappingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260786BC289D5D2600504907 /* ManagedObjectWrappingModel.swift */; };
 		260786C0289D5DE000504907 /* ManagedObjectWrappingModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260786BF289D5DE000504907 /* ManagedObjectWrappingModelTests.swift */; };
-		260786C3289D622A00504907 /* INCommons in Frameworks */ = {isa = PBXBuildFile; productRef = 260786C2289D622A00504907 /* INCommons */; };
 		261C7F12288F196A004559B0 /* CoreDataManager_MemoryLeakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261C7F11288F196A004559B0 /* CoreDataManager_MemoryLeakTests.swift */; };
 		262C9CCF285F117300DD6D41 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CCE285F117300DD6D41 /* StartView.swift */; };
 		262C9CD1285F132300DD6D41 /* UsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262C9CD0285F132300DD6D41 /* UsageView.swift */; };
@@ -492,7 +491,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					26FCE6CE27D1F9C600C229DA = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -1086,6 +1085,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = H6T8HJZGHY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1096,6 +1096,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = H6T8HJZGHY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

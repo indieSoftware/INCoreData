@@ -7,7 +7,7 @@ final class ManagedObjectWrappingModelTests: XCTestCase {
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
-		coreDataManager = try CoreDataManagerLogic(
+		coreDataManager = CoreDataManagerLogic(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true

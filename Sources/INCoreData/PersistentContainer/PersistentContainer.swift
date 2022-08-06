@@ -32,7 +32,8 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 	 - parameter bundle: The bundle where the data model can be found, defaults to the main bundle.
 	 - parameter inMemory: Set to `true` when an in-memory store should be used, e.g. for UnitTests.
 	 Defaults to `false` to have a persistent SQLite store in the app's document folder.
-	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme with CloutKit during loading the persistent store.
+	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme
+	 with CloutKit during loading the persistent store.
 	 Will only be respected in a debug build for a non-in-memory store.
 	 Defaults to `false`.
 	 - throws: A `CoreDataManagerError` when initializing the container failed.

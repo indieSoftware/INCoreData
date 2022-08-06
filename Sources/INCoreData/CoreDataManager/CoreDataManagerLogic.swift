@@ -40,7 +40,8 @@ public class CoreDataManagerLogic: CoreDataManager {
 	 When `nil` then the default path will be used which is directly the app's document folder.
 	 - parameter inMemory: Pass true to use an in-memory store suitable for Previews and UnitTests,
 	 rather than a "real" one. Defaults to `false`.
-	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme with CloutKit during loading the persistent store.
+	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme with CloutKit
+	 during loading the persistent store.
 	 Will only be respected in a debug build for a non-in-memory store.
 	 Defaults to `false`.
 	 */
