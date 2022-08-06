@@ -1,3 +1,4 @@
+import CoreData
 import INCoreData
 import XCTest
 
@@ -29,7 +30,7 @@ final class ManagedObjectWrappingModelTests: XCTestCase {
 		performAsyncThrow {
 			try await self.coreDataManager.performTask { context in
 				let object = Foo(context: context)
-				var model = object.asModel
+				let model = object.asModel
 				model.title = title
 				model.number = 88
 				context.insert(object)
@@ -52,6 +53,34 @@ final class ManagedObjectWrappingModelTests: XCTestCase {
 
 		waitForExpectations()
 	}
+
+	func testModelInContext() {
+		let title = UUID().uuidString
+		var foo: FooModel?
+
+		performAsyncThrow {
+			try await self.coreDataManager.performTask { context in
+				let model = FooModel(context: context)
+				model.title = title
+				model.number = 1
+				model.addToContext()
+				foo = model
+			}
+		}
+		XCTAssertNotNil(foo)
+
+		let taskExpectation = expectation(description: "taskExpectation")
+		performAsyncThrow {
+			try await self.coreDataManager.performTask { context in
+				let model = try XCTUnwrap(foo?.inContext(context))
+				XCTAssertEqual(model.title, title)
+				XCTAssertEqual(model.number, 1)
+				taskExpectation.fulfill()
+			}
+		}
+
+		waitForExpectations()
+	}
 }
 
 public struct FooModel: ManagedObjectWrappingModel {
@@ -61,6 +90,10 @@ public struct FooModel: ManagedObjectWrappingModel {
 		self.managedObject = managedObject
 	}
 
+	public init(context: NSManagedObjectContext) {
+		managedObject = Foo(context: context)
+	}
+
 	public var title: String {
 		get {
 			guard let title = managedObject.title else {
@@ -68,7 +101,7 @@ public struct FooModel: ManagedObjectWrappingModel {
 			}
 			return title
 		}
-		set {
+		nonmutating set {
 			managedObject.title = newValue
 		}
 	}
@@ -77,7 +110,7 @@ public struct FooModel: ManagedObjectWrappingModel {
 		get {
 			Int(managedObject.number)
 		}
-		set {
+		nonmutating set {
 			managedObject.number = Int32(newValue)
 		}
 	}

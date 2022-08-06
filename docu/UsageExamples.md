@@ -214,8 +214,19 @@ This publisher is only applicable for `contextSaved` notifications (otherwise it
 There exists a `NSManagedObject` extension which makes it easy to retrieve a given object, but in a different context. This might be useful when an object has already been created or retrieved in a different context and now should be processed further in a new task or context:
 
 ```
+let itemInMainContext: NSManagedObject!
 try await manager.performTask { backgroundContext in
 	let itemInBackgroundContext = itemInMainContext.inContext(backgroundContext)
+	// Do something with itemInBackgroundContext...
+}
+```
+
+The same can be done with a model:
+
+```
+let modelInMainContext: Model!
+try await manager.performTask { backgroundContext in
+	let modelInBackgroundContext = modelInMainContext.inContext(backgroundContext)
 	// Do something with itemInBackgroundContext...
 }
 ```
@@ -263,6 +274,8 @@ extension Foo: ManagedObjectModelWrapping {
 }
 ```
 
+### asModel
+
 This will allow to get a model from that Foo object automatically and to access the properties in a type-safe way:
 
 ```
@@ -298,3 +311,8 @@ model.number = -4 // precondition triggers!
 ```
 
 The model, therefore, works as a facade for the underlying managed object. When using a struct rahter than a class for the model then it's also light-weight without loosing the access to the managed object should it still be needed.
+
+### addToContext
+
+Calling `model.addToContext()` will insert the wrapped managed object to its context.
+
