@@ -312,9 +312,9 @@ model.number = -4 // precondition triggers!
 
 The model, therefore, works as a facade for the underlying managed object. When using a struct rahter than a class for the model then it's also light-weight without loosing the access to the managed object should it still be needed.
 
-### addToContext
+### addToContext & removeFromContext
 
-Calling `model.addToContext()` will insert the wrapped managed object to its context.
+Calling `model.addToContext()` will insert the wrapped managed object to the persistent store on save.
 
 However, instead of calling this method manually it's recommended to add the insert already in an init method when creating a new model:
 
@@ -332,6 +332,9 @@ public struct FooModel: ManagedObjectWrappingModel {
 	}
 }
 ```
+
+When removing a model's reference or when deleting a model then it should also be deleted from its persistent store on save.
+To do this just call `model.removeFromContext()`. 
 
 ### addModel, removeModel & insertModel
 

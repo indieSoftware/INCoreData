@@ -1,6 +1,14 @@
 import CoreData
 
 public extension ManagedObjectWrappingModel where ManagedObject.Model == Self {
+	/**
+	 Appends the given model to the sorted list.
+
+	 - parameter model: The model to add.
+	 - parameter managedObjectAddingMethod: The method on the `managedObject` to call to add a relationship.
+	 - parameter listIndexKeyPath: A writeable key-path to the model's list index to update its index.
+	 - parameter listCountKeyPath: A key-path to a property which returns the count of the list in a non-looping way.
+	 */
 	func addModel<Model: ManagedObjectWrappingModel>(
 		_ model: Model,
 		managedObjectAddingMethod: (Model.ManagedObject) -> Void,
@@ -12,6 +20,17 @@ public extension ManagedObjectWrappingModel where ManagedObject.Model == Self {
 		model[keyPath: listIndexKeyPath] = self[keyPath: listCountKeyPath] - 1
 	}
 
+	/**
+	 Removes a given model from the list.
+
+	 - warning: The model's managed object gets removed from the relationship list, but not from the persistent store.
+	 You still have to call `model.removeFromContext()` if you want to delete it from the persistent store on save.
+
+	 - parameter model: The model to remove.
+	 - parameter managedObjectRemovingMethod: The method on the `managedObject` to call to remove a relationship.
+	 - parameter listIndexKeyPath: A writeable key-path to the model's list index to update its index.
+	 - parameter listKeyPath: A key-path to a property which returns the list of the model's managed objects.
+	 */
 	func removeModel<Model: ManagedObjectWrappingModel>(
 		_ model: Model,
 		managedObjectRemovingMethod: (Model.ManagedObject) -> Void,
@@ -37,6 +56,15 @@ public extension ManagedObjectWrappingModel where ManagedObject.Model == Self {
 		managedObjectRemovingMethod(model.managedObject)
 	}
 
+	/**
+	 Inserts the given model into the list at a specific position.
+
+	 - parameter model: The model to insert.
+	 - parameter index: The zero-based index at which position to add the model.
+	 - parameter managedObjectAddingMethod: The method on the `managedObject` to call to add a relationship.
+	 - parameter listIndexKeyPath: A writeable key-path to the model's list index to update its index.
+	 - parameter listKeyPath: A key-path to a property which returns the list of the model's managed objects.
+	 */
 	func insertModel<Model: ManagedObjectWrappingModel>(
 		_ model: Model,
 		index: Int,
