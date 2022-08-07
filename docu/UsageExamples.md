@@ -316,3 +316,146 @@ The model, therefore, works as a facade for the underlying managed object. When 
 
 Calling `model.addToContext()` will insert the wrapped managed object to its context.
 
+However, instead of calling this method manually it's recommended to add the insert already in an init method when creating a new model:
+
+```
+public struct FooModel: ManagedObjectWrappingModel {
+	public let managedObject: Foo
+
+	public init(managedObject: Foo) {
+		self.managedObject = managedObject
+	}
+
+	public init(context: NSManagedObjectContext) {
+		managedObject = Foo(context: context)
+		context.insert(managedObject)
+	}
+}
+```
+
+### addModel, removeModel & insertModel
+
+A common case is to add, remove or insert managed objects in a sorted list. 
+However, CoreData's support for sorted lists is kind of limited.
+To support sorted lists the model has to follow some pattern, but then the model can be easily updated to provide a better interface for adding, removing and inserting.
+
+#### CoreData model
+
+To support sorted lists we are using typical one-to-many relationships with an index property on the second model.
+That means the managed object to which the other needs multiple references needs an index property.
+
+For example, `Foo` has a one-to-many relationship to `Bar`. Therefore, `Foo` has a `barRelationship` and `Bar` a reverse `fooRelationship`. To hold the index of `Bar` in the list hold by `Foo` we need to introduce `fooIndex` of a scalar `Int32` type to `Bar`.
+ 
+Not required, but recommended is to add the delete rule `Nullify` to `fooRelationship`and `Cascade` to `barRelationship` to make `Bar` to be deleted when `Foo` gets deleted, but the `Bar` reference in `Foo` gets only removed from the list when deleting a `Bar` instance.
+
+#### Model wrappers
+
+With the Core Data models set up we need to provide the references to the wrapping models.
+
+To `BarModel` we can simply provide the index and the back-reference:
+
+```
+var fooIndex: Int {
+	get {
+		Int(managedObject.fooIndex)
+	}
+	nonmutating set {
+		precondition(newValue >= 0, "Negative index")
+		precondition(newValue < foo.barCount, "Index out of bounds")
+		managedObject.fooIndex = Int32(newValue)
+	}
+}
+
+var foo: FooModel {
+	guard let model = managedObject.fooRelationship?.asModel else {
+		preconditionFailure("No reference model")
+	}
+	return model
+}
+```
+
+In `FooModel` we need to provide the accessor to the bar list:
+
+```
+var bars: [BarModel] {
+	guard let barSet = managedObject.barRelationship else {
+		preconditionFailure("No set")
+	}
+	let models = barSet.compactMap {
+		($0 as? Bar)?.asModel
+	}.sorted()
+	return models
+}
+```
+
+And because the `fooIndex` of `BarModel` has a precondition which assures that the index is in bounds we need to provide in `FooModel` the property which returns the number of `BarModel` objects in the list of `FooModel`.
+However, we can't simply use `bars` from `FooModel` because that uses the `sorted` method and thus a `Comparable` conformance which will rely on the `fooIndex`.
+So, when setting the `fooIndex` it would query the `bars` which will query the `fooIndex` and that multiple times which is quite unnecessary.
+Therefore, we are providing the count in a loop-safe way to `FooModel`: 
+
+```
+var barCount: Int {
+	guard let count = managedObject.barRelationship?.count else {
+		preconditionFailure("No set")
+	}
+	return count
+}
+```
+
+And as alreay mentioned the `FooModel`'s `bars` property needs to sort the `BarModel`s via the `sorted()` method.
+That means we have to add to `BarModel` the `Comparable` conformance:
+
+```
+extension BarModel: Comparable {
+	public static func < (lhs: BarModel, rhs: BarModel) -> Bool {
+		lhs.fooIndex < rhs.fooIndex
+	}
+}
+```
+
+#### add, remove & insert
+
+Now with everything set up we can easily support for adding, removing and inserting of `BarModel`s to a `FooModel`'s list by simply adding the following to `FooModel`:
+
+```
+func addBar(_ model: BarModel) {
+	addModel(
+		model,
+		addingMethod: managedObject.addToBarRelationship,
+		indexKeyPath: \BarModel.fooIndex,
+		countKeyPath: \.barCount
+	)
+}
+
+func removeBar(_ model: BarModel) {
+	removeModel(
+		model,
+		removingMethod: managedObject.removeFromBarRelationship,
+		indexKeyPath: \BarModel.fooIndex,
+		objectSetKeyPath: \.barRelationship
+	)
+}
+
+func insertBar(_ model: BarModel, index: Int) {
+	insertModel(
+		model,
+		index: index,
+		addingMethod: managedObject.addToBarRelationship,
+		indexKeyPath: \BarModel.fooIndex,
+		objectSetKeyPath: \.barRelationship
+	)
+}
+```
+
+We are relying here on a protocol extension of `ManagedObjectWrappingModel` which takes some key paths and method references to provide the logics.
+
+#### Usage
+
+With everything ready we can now easily use this:
+
+```
+fooModel.addBar(barModel)
+fooModel.removeBar(barModel)
+fooModel.insertBar(barModel, index: 0)
+```
+

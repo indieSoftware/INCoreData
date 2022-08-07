@@ -51,6 +51,12 @@
 		26BA6EC0288BDD8C0012D429 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA6EBF288BDD8C0012D429 /* PreviewData.swift */; };
 		26BA6EC2288C3B9F0012D429 /* CoreDataPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA6EC1288C3B9F0012D429 /* CoreDataPreview.swift */; };
 		26BA6ECC288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA6ECB288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift */; };
+		26E99C2C289F8468007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C2B289F8468007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulation.swift */; };
+		26E99C2E289F84F1007CAF55 /* ManagedObjectWrappingModel+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C2D289F84F1007CAF55 /* ManagedObjectWrappingModel+Context.swift */; };
+		26E99C30289F8567007CAF55 /* ManagedObjectWrappingModel+ContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C2F289F8567007CAF55 /* ManagedObjectWrappingModel+ContextTests.swift */; };
+		26E99C33289F8689007CAF55 /* FooModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C31289F85E4007CAF55 /* FooModel.swift */; };
+		26E99C35289F8793007CAF55 /* BarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C34289F8793007CAF55 /* BarModel.swift */; };
+		26E99C37289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C36289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift */; };
 		26EC46E22882B60200DC733E /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46CE2882B60200DC733E /* TestModel.xcdatamodeld */; };
 		26EC46E32882B60200DC733E /* TestModelName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D12882B60200DC733E /* TestModelName.swift */; };
 		26EC46E42882B60200DC733E /* CoreDataManager_performTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D32882B60200DC733E /* CoreDataManager_performTaskTests.swift */; };
@@ -138,6 +144,12 @@
 		26BA6EBF288BDD8C0012D429 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		26BA6EC1288C3B9F0012D429 /* CoreDataPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPreview.swift; sourceTree = "<group>"; };
 		26BA6ECB288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager_loadStoreTests.swift; sourceTree = "<group>"; };
+		26E99C2B289F8468007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedObjectWrappingModel+ReferenceManipulation.swift"; sourceTree = "<group>"; };
+		26E99C2D289F84F1007CAF55 /* ManagedObjectWrappingModel+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedObjectWrappingModel+Context.swift"; sourceTree = "<group>"; };
+		26E99C2F289F8567007CAF55 /* ManagedObjectWrappingModel+ContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedObjectWrappingModel+ContextTests.swift"; sourceTree = "<group>"; };
+		26E99C31289F85E4007CAF55 /* FooModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooModel.swift; sourceTree = "<group>"; };
+		26E99C34289F8793007CAF55 /* BarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarModel.swift; sourceTree = "<group>"; };
+		26E99C36289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedObjectWrappingModel+ReferenceManipulationTests.swift"; sourceTree = "<group>"; };
 		26EC46C82882B0C300DC733E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		26EC46CF2882B60200DC733E /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 		26EC46D02882B60200DC733E /* TestModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TestModel 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -227,6 +239,8 @@
 				260786BB289D5D2600504907 /* ManagedObjectModelWrapping.swift */,
 				263B44D3285C70F40055B8D4 /* ManagedObjectsChange.swift */,
 				260786BC289D5D2600504907 /* ManagedObjectWrappingModel.swift */,
+				26E99C2D289F84F1007CAF55 /* ManagedObjectWrappingModel+Context.swift */,
+				26E99C2B289F8468007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulation.swift */,
 				26713CEE283120CA008456E9 /* NSManagedObject+InContext.swift */,
 				267F4D322838B0B700DC42E5 /* Notification+ManagedObjects.swift */,
 			);
@@ -261,6 +275,8 @@
 			children = (
 				26EC46CE2882B60200DC733E /* TestModel.xcdatamodeld */,
 				26EC46D12882B60200DC733E /* TestModelName.swift */,
+				26E99C31289F85E4007CAF55 /* FooModel.swift */,
+				26E99C34289F8793007CAF55 /* BarModel.swift */,
 			);
 			path = TestModel;
 			sourceTree = "<group>";
@@ -297,6 +313,8 @@
 			children = (
 				26EC46E02882B60200DC733E /* NSManagedObject+InContextTests.swift */,
 				260786BF289D5DE000504907 /* ManagedObjectWrappingModelTests.swift */,
+				26E99C2F289F8567007CAF55 /* ManagedObjectWrappingModel+ContextTests.swift */,
+				26E99C36289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -726,12 +744,14 @@
 				260786BD289D5D2600504907 /* ManagedObjectModelWrapping.swift in Sources */,
 				534F5DC8280474A300DCB275 /* CoreDataManager.swift in Sources */,
 				262EA4F82896600500717F54 /* PersistentContainerParameter.swift in Sources */,
+				26E99C2E289F84F1007CAF55 /* ManagedObjectWrappingModel+Context.swift in Sources */,
 				26BA6EC2288C3B9F0012D429 /* CoreDataPreview.swift in Sources */,
 				263B44D4285C70F40055B8D4 /* ManagedObjectsChange.swift in Sources */,
 				2634945F287AAAF60092B8FF /* CoreDataManagerLogic.swift in Sources */,
 				268D4FD52854F36A003B18C8 /* ManagedObjectChange.swift in Sources */,
 				26713CEF283120CB008456E9 /* NSManagedObject+InContext.swift in Sources */,
 				268D4FD32854F304003B18C8 /* ManagedObjectChangeType.swift in Sources */,
+				26E99C2C289F8468007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulation.swift in Sources */,
 				2634945B2879E8330092B8FF /* CoreDataManagerError.swift in Sources */,
 				267F4D2E2838AC5700DC42E5 /* ManagedNotification.swift in Sources */,
 				26713CF52831248C008456E9 /* CoreDataManager+Publisher.swift in Sources */,
@@ -748,6 +768,7 @@
 				26EC46E52882B60200DC733E /* CoreDataManagerIntegrationTests.swift in Sources */,
 				26EC46EE2882B60200DC733E /* PersistentContainer_contextTests.swift in Sources */,
 				264EEF1E28845B6400874DF8 /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift in Sources */,
+				26E99C35289F8793007CAF55 /* BarModel.swift in Sources */,
 				264EEF1F2884613900874DF8 /* CoreDataManager_RaceConditionTests.swift in Sources */,
 				26EC46E42882B60200DC733E /* CoreDataManager_performTaskTests.swift in Sources */,
 				264EEF1D288454C500874DF8 /* CoreDataManager_PublisherManagedObjectType_ObjectChangedTests.swift in Sources */,
@@ -755,9 +776,12 @@
 				26EC46F02882B60200DC733E /* XCTestCase+additions.swift in Sources */,
 				26EC46E32882B60200DC733E /* TestModelName.swift in Sources */,
 				26EC46E62882B60200DC733E /* CoreDataManager_PublisherManagedObject_ObjectChangedTests.swift in Sources */,
+				26E99C30289F8567007CAF55 /* ManagedObjectWrappingModel+ContextTests.swift in Sources */,
 				26EC46EC2882B60200DC733E /* PersistentContainerMock.swift in Sources */,
+				26E99C37289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift in Sources */,
 				260786C0289D5DE000504907 /* ManagedObjectWrappingModelTests.swift in Sources */,
 				264EEF1C288431E600874DF8 /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift in Sources */,
+				26E99C33289F8689007CAF55 /* FooModel.swift in Sources */,
 				26BA6ECC288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift in Sources */,
 				26EC46ED2882B60200DC733E /* PersistentContainer_initTests.swift in Sources */,
 				26EC46EF2882B60200DC733E /* NSManagedObject+InContextTests.swift in Sources */,

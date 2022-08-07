@@ -2,7 +2,7 @@ import CoreData
 import INCoreData
 import XCTest
 
-final class ManagedObjectWrappingModelTests: XCTestCase {
+final class ManagedObjectWrappingModel_ContextTests: XCTestCase {
 	var coreDataManager: CoreDataManagerLogic!
 
 	override func setUpWithError() throws {
@@ -24,29 +24,27 @@ final class ManagedObjectWrappingModelTests: XCTestCase {
 		coreDataManager = nil
 	}
 
-	func testAsModel() {
+	func testModelInContext() {
 		let title = UUID().uuidString
+		var foo: FooModel?
 
 		performAsyncThrow {
 			try await self.coreDataManager.performTask { context in
-				let object = Foo(context: context)
-				let model = object.asModel
+				let model = FooModel(context: context)
 				model.title = title
-				model.number = 88
-				context.insert(object)
+				model.number = 1
+				model.addToContext()
+				foo = model
 			}
 		}
+		XCTAssertNotNil(foo)
 
 		let taskExpectation = expectation(description: "taskExpectation")
 		performAsyncThrow {
 			try await self.coreDataManager.performTask { context in
-				let result = try context.fetch(Foo.fetchRequest())
-				XCTAssertEqual(result.count, 1)
-				let object = try XCTUnwrap(result.first)
-				let model = object.asModel
-				XCTAssertEqual(object, model.managedObject)
+				let model = try XCTUnwrap(foo?.inContext(context))
 				XCTAssertEqual(model.title, title)
-				XCTAssertEqual(model.number, 88)
+				XCTAssertEqual(model.number, 1)
 				taskExpectation.fulfill()
 			}
 		}
