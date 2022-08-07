@@ -3,62 +3,62 @@ import CoreData
 public extension ManagedObjectWrappingModel where ManagedObject.Model == Self {
 	func addModel<Model: ManagedObjectWrappingModel>(
 		_ model: Model,
-		addingMethod: (Model.ManagedObject) -> Void,
-		indexKeyPath: ReferenceWritableKeyPath<Model, Int>,
-		countKeyPath: KeyPath<Self, Int>
+		managedObjectAddingMethod: (Model.ManagedObject) -> Void,
+		listIndexKeyPath: ReferenceWritableKeyPath<Model, Int>,
+		listCountKeyPath: KeyPath<Self, Int>
 	) {
 		// Just append the new object.
-		addingMethod(model.managedObject)
-		model[keyPath: indexKeyPath] = self[keyPath: countKeyPath] - 1
+		managedObjectAddingMethod(model.managedObject)
+		model[keyPath: listIndexKeyPath] = self[keyPath: listCountKeyPath] - 1
 	}
 
 	func removeModel<Model: ManagedObjectWrappingModel>(
 		_ model: Model,
-		removingMethod: (Model.ManagedObject) -> Void,
-		indexKeyPath: ReferenceWritableKeyPath<Model, Int>,
-		objectSetKeyPath: KeyPath<ManagedObject, NSSet?>
+		managedObjectRemovingMethod: (Model.ManagedObject) -> Void,
+		listIndexKeyPath: ReferenceWritableKeyPath<Model, Int>,
+		listKeyPath: KeyPath<ManagedObject, NSSet?>
 	) where Model == Model.ManagedObject.Model {
 		// Decrement index of all following objects.
-		let modelIndex = model[keyPath: indexKeyPath]
-		guard let objectSet = managedObject[keyPath: objectSetKeyPath] else {
+		let modelIndex = model[keyPath: listIndexKeyPath]
+		guard let objectSet = managedObject[keyPath: listKeyPath] else {
 			preconditionFailure("No set")
 		}
-		objectSet.forEach { (object: Any) in
+		objectSet.forEach { object in
 			guard let mappedObject = object as? Model.ManagedObject else {
 				preconditionFailure("Not matching managed object in set: \(object)")
 			}
 			let mappedObjectModel: Model = mappedObject.asModel
-			if mappedObjectModel[keyPath: indexKeyPath] > modelIndex {
-				mappedObjectModel[keyPath: indexKeyPath] -= 1
+			if mappedObjectModel[keyPath: listIndexKeyPath] > modelIndex {
+				mappedObjectModel[keyPath: listIndexKeyPath] -= 1
 			}
 		}
 
 		// Finally remove the object.
-		removingMethod(model.managedObject)
+		managedObjectRemovingMethod(model.managedObject)
 	}
 
 	func insertModel<Model: ManagedObjectWrappingModel>(
 		_ model: Model,
 		index: Int,
-		addingMethod: (Model.ManagedObject) -> Void,
-		indexKeyPath: ReferenceWritableKeyPath<Model, Int>,
-		objectSetKeyPath: KeyPath<ManagedObject, NSSet?>
+		managedObjectAddingMethod: (Model.ManagedObject) -> Void,
+		listIndexKeyPath: ReferenceWritableKeyPath<Model, Int>,
+		listKeyPath: KeyPath<ManagedObject, NSSet?>
 	) where Model == Model.ManagedObject.Model {
 		// Add first the object to respect any constraints.
-		addingMethod(model.managedObject)
-		model[keyPath: indexKeyPath] = index
+		managedObjectAddingMethod(model.managedObject)
+		model[keyPath: listIndexKeyPath] = index
 
 		// Increase the index of all other objects from the index position.
-		guard let objectSet = managedObject[keyPath: objectSetKeyPath] else {
+		guard let objectSet = managedObject[keyPath: listKeyPath] else {
 			preconditionFailure("No set")
 		}
-		objectSet.forEach { (object: Any) in
+		objectSet.forEach { object in
 			guard let mappedObject = object as? Model.ManagedObject else {
 				preconditionFailure("Not matching managed object in set: \(object)")
 			}
 			let mappedObjectModel: Model = mappedObject.asModel
-			if mappedObjectModel[keyPath: indexKeyPath] >= index, mappedObjectModel != model {
-				mappedObjectModel[keyPath: indexKeyPath] += 1
+			if mappedObjectModel[keyPath: listIndexKeyPath] >= index, mappedObjectModel != model {
+				mappedObjectModel[keyPath: listIndexKeyPath] += 1
 			}
 		}
 	}

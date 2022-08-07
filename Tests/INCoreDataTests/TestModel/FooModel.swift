@@ -63,18 +63,18 @@ public struct FooModel: ManagedObjectWrappingModel {
 	func addBar(_ model: BarModel) {
 		addModel(
 			model,
-			addingMethod: managedObject.addToBarRelationship,
-			indexKeyPath: \BarModel.fooIndex,
-			countKeyPath: \.barCount
+			managedObjectAddingMethod: managedObject.addToBarRelationship,
+			listIndexKeyPath: \BarModel.fooIndex,
+			listCountKeyPath: \.barCount
 		)
 	}
 
 	func removeBar(_ model: BarModel) {
 		removeModel(
 			model,
-			removingMethod: managedObject.removeFromBarRelationship,
-			indexKeyPath: \BarModel.fooIndex,
-			objectSetKeyPath: \.barRelationship
+			managedObjectRemovingMethod: managedObject.removeFromBarRelationship,
+			listIndexKeyPath: \BarModel.fooIndex,
+			listKeyPath: \.barRelationship
 		)
 	}
 
@@ -82,9 +82,9 @@ public struct FooModel: ManagedObjectWrappingModel {
 		insertModel(
 			model,
 			index: index,
-			addingMethod: managedObject.addToBarRelationship,
-			indexKeyPath: \BarModel.fooIndex,
-			objectSetKeyPath: \.barRelationship
+			managedObjectAddingMethod: managedObject.addToBarRelationship,
+			listIndexKeyPath: \BarModel.fooIndex,
+			listKeyPath: \.barRelationship
 		)
 	}
 }

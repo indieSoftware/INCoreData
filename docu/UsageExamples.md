@@ -421,18 +421,18 @@ Now with everything set up we can easily support for adding, removing and insert
 func addBar(_ model: BarModel) {
 	addModel(
 		model,
-		addingMethod: managedObject.addToBarRelationship,
-		indexKeyPath: \BarModel.fooIndex,
-		countKeyPath: \.barCount
+		managedObjectAddingMethod: managedObject.addToBarRelationship,
+		listIndexKeyPath: \BarModel.fooIndex,
+		listCountKeyPath: \.barCount
 	)
 }
 
 func removeBar(_ model: BarModel) {
 	removeModel(
 		model,
-		removingMethod: managedObject.removeFromBarRelationship,
-		indexKeyPath: \BarModel.fooIndex,
-		objectSetKeyPath: \.barRelationship
+		managedObjectRemovingMethod: managedObject.removeFromBarRelationship,
+		listIndexKeyPath: \BarModel.fooIndex,
+		listKeyPath: \.barRelationship
 	)
 }
 
@@ -440,9 +440,9 @@ func insertBar(_ model: BarModel, index: Int) {
 	insertModel(
 		model,
 		index: index,
-		addingMethod: managedObject.addToBarRelationship,
-		indexKeyPath: \BarModel.fooIndex,
-		objectSetKeyPath: \.barRelationship
+		managedObjectAddingMethod: managedObject.addToBarRelationship,
+		listIndexKeyPath: \BarModel.fooIndex,
+		listKeyPath: \.barRelationship
 	)
 }
 ```
@@ -459,3 +459,5 @@ fooModel.removeBar(barModel)
 fooModel.insertBar(barModel, index: 0)
 ```
 
+However, keep in mind that accessing the models needs to be done in a `context.perform {}` block (or a `coreDataManager.performTask {}` block).
+That means they should be queried on a view model to gather the data, but then the models need to be converted into view models which hold the corresponding data without the need to query the managed objects on their context.

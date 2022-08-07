@@ -14,7 +14,7 @@ final class UsageViewModel: ObservableObject {
 
 	enum ItemsState {
 		case empty
-		case data(_ items: [ItemModel])
+		case data(_ items: [ItemViewModel])
 		case error(_ message: String)
 	}
 
@@ -43,11 +43,7 @@ final class UsageViewModel: ObservableObject {
 		Task {
 			do {
 				try await manager.performTask { context in
-					let fetchRequest = Item.fetchRequest()
-					fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
-					let items = try context
-						.fetch(fetchRequest)
-						.map { ItemModel(timestamp: $0.timestamp ?? Date()) }
+					let items = try context.fetchItems().map { ItemViewModel(model: $0) }
 					// A Published property has to be set on the UI thread,
 					// therefore, initiate a new Task from within this context.
 					Task {
@@ -70,7 +66,6 @@ final class UsageViewModel: ObservableObject {
 				try await manager.performTask { context in
 					let newItem = Item(context: context)
 					newItem.timestamp = Date()
-					context.insert(newItem)
 				}
 			} catch {
 				items = .error(error.localizedDescription)
@@ -82,6 +77,9 @@ final class UsageViewModel: ObservableObject {
 		Task {
 			do {
 				try await manager.performTask { context in
+					// Example to show-case that we can still use the plain CoreData layer for manipulation
+					// rather than relying totally on the wrapping model.
+					// However, in productive code it's recommended to use the model layer for that.
 					let fetchRequest = Item.fetchRequest()
 					fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
 					try context

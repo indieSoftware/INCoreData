@@ -57,6 +57,7 @@
 		26E99C33289F8689007CAF55 /* FooModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C31289F85E4007CAF55 /* FooModel.swift */; };
 		26E99C35289F8793007CAF55 /* BarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C34289F8793007CAF55 /* BarModel.swift */; };
 		26E99C37289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C36289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift */; };
+		26E99C39289FDD51007CAF55 /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E99C38289FDD51007CAF55 /* ItemViewModel.swift */; };
 		26EC46E22882B60200DC733E /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46CE2882B60200DC733E /* TestModel.xcdatamodeld */; };
 		26EC46E32882B60200DC733E /* TestModelName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D12882B60200DC733E /* TestModelName.swift */; };
 		26EC46E42882B60200DC733E /* CoreDataManager_performTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC46D32882B60200DC733E /* CoreDataManager_performTaskTests.swift */; };
@@ -150,6 +151,7 @@
 		26E99C31289F85E4007CAF55 /* FooModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooModel.swift; sourceTree = "<group>"; };
 		26E99C34289F8793007CAF55 /* BarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarModel.swift; sourceTree = "<group>"; };
 		26E99C36289F9562007CAF55 /* ManagedObjectWrappingModel+ReferenceManipulationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedObjectWrappingModel+ReferenceManipulationTests.swift"; sourceTree = "<group>"; };
+		26E99C38289FDD51007CAF55 /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
 		26EC46C82882B0C300DC733E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		26EC46CF2882B60200DC733E /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 		26EC46D02882B60200DC733E /* TestModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TestModel 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				262C9CD0285F132300DD6D41 /* UsageView.swift */,
 				262C9CDA285F44D600DD6D41 /* UsageViewModel.swift */,
 				262C9CD8285F3CD500DD6D41 /* ItemModel.swift */,
+				26E99C38289FDD51007CAF55 /* ItemViewModel.swift */,
 				26FCE6D627D1F9C700C229DA /* Assets.xcassets */,
 				26FCE6D827D1F9C700C229DA /* Preview Content */,
 				532C387328062E6500B513B1 /* DataModel.xcdatamodeld */,
@@ -728,6 +731,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				532C387528062E6500B513B1 /* DataModel.xcdatamodeld in Sources */,
+				26E99C39289FDD51007CAF55 /* ItemViewModel.swift in Sources */,
 				262C9CD1285F132300DD6D41 /* UsageView.swift in Sources */,
 				26FCE6D327D1F9C600C229DA /* INCoreDataExampleApp.swift in Sources */,
 				262C9CDB285F44D600DD6D41 /* UsageViewModel.swift in Sources */,

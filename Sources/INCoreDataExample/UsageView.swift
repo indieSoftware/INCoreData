@@ -33,7 +33,7 @@ struct UsageView: View {
 		.navigationTitle("Usage Example")
 	}
 
-	private func listContent(_ items: [ItemModel]) -> some View {
+	private func listContent(_ items: [ItemViewModel]) -> some View {
 		List {
 			ForEach(items) { item in
 				Text("\(item.timestamp)")
