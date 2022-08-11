@@ -207,6 +207,23 @@ manager.publisher(
 
 This publisher is only applicable for `contextSaved` notifications (otherwise it won't be technically possible that multiple change types happen on the same time, so that the second publisher would be more applicable in that situation).
 
+### Listening for any changes on a context when saves
+
+To listen for any kind of changes on a context use the following publisher:
+
+```
+manager.publisher(
+	context: manager.mainContext, // Listen for all changes on the main context
+	changeTypes: .allCases // Any change is relevant, including insertion and deletion
+)
+.sink { (changes: [ManagedObjectsChange<NSManagedObject>]) in
+	print("Change on main context: \(changes)")
+}
+.store(in: &cancellables)
+```
+
+This might be useful for logging any CoreData changes or when listening for changes on a specific background context.
+
 ## Other helper
 
 ### Retrieving an object from a context

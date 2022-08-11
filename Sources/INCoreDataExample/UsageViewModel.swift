@@ -1,4 +1,5 @@
 import Combine
+import CoreData
 import INCoreData
 
 // Mark observable object as MainActor to ensure that all its
@@ -35,6 +36,15 @@ final class UsageViewModel: ObservableObject {
 			// We can now inspect all changes,
 			// but instead we simply reload all data.
 			self?.loadData()
+		}
+		.store(in: &cancellables)
+
+		manager.publisher(
+			context: manager.mainContext,
+			changeTypes: .allCases
+		)
+		.sink { (changes: [ManagedObjectsChange<NSManagedObject>]) in
+			print("Change on main context: \(changes)")
 		}
 		.store(in: &cancellables)
 	}
