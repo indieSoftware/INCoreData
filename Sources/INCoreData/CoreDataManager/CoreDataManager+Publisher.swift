@@ -177,4 +177,53 @@ public extension CoreDataManager {
 			}
 			.eraseToAnyPublisher()
 	}
+
+	/**
+	 Returns a publisher which emits events for changes on a context when saved.
+
+	 This is independent on a specific type or instance, therefore, any change
+	 on save will trigger a new published event.
+	 This might be useful to log any changes on the main context.
+
+	 - parameter context: The context on which to listen for the changes.
+	 - parameter changeTypes: The type of change (insert, delete, update) to listen for,
+	 e.g. "`ManagedObjectChangeType.allCases`".
+	 Only changes matching the provided types will be passed to the published event.
+	 The provided order is repsected when emitting new events when multiple change types are applied at once.
+	 - returns: The publisher.
+	 */
+	func publisher<NSManagedObject>(
+		context: NSManagedObjectContext,
+		changeTypes: [ManagedObjectChangeType]
+	) -> AnyPublisher<[ManagedObjectsChange<NSManagedObject>], Never> {
+		NotificationCenter.default
+			// The publisher emits the notification of the context.
+			.publisher(for: ManagedNotification.contextSaved.name, object: context)
+			// Map the notification to the desired event and ignore nil values.
+			.compactMap { notification -> [ManagedObjectsChange<NSManagedObject>] in
+				// We are only interested in specific change types.
+				changeTypes.compactMap { changeType -> ManagedObjectsChange<NSManagedObject>? in
+					// The changed objects are provided in a set for each change type.
+					guard let changes = notification.managedObjects(changeType: changeType) else {
+						return nil
+					}
+					// Retrieve all objects corresponding to that change.
+					let objects = changes
+						.compactMap { object in
+							context.object(with: object.objectID) as? NSManagedObject
+						}
+					// No changes in object types we are interested in?
+					guard !objects.isEmpty else {
+						return nil
+					}
+					// Return the objects and its change type.
+					return ManagedObjectsChange(objects: objects, type: changeType)
+				}
+			}
+			// Ignore empty events.
+			.filter { managedObjectsChanges in
+				!managedObjectsChanges.isEmpty
+			}
+			.eraseToAnyPublisher()
+	}
 }

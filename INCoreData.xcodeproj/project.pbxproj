@@ -48,6 +48,7 @@
 		267F4D332838B0B700DC42E5 /* Notification+ManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F4D322838B0B700DC42E5 /* Notification+ManagedObjects.swift */; };
 		268D4FD32854F304003B18C8 /* ManagedObjectChangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D4FD22854F304003B18C8 /* ManagedObjectChangeType.swift */; };
 		268D4FD52854F36A003B18C8 /* ManagedObjectChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D4FD42854F36A003B18C8 /* ManagedObjectChange.swift */; };
+		26A8B81B28A581E000B8A487 /* CoreDataManager_PublisherContext_ContextSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A8B81A28A581E000B8A487 /* CoreDataManager_PublisherContext_ContextSaveTests.swift */; };
 		26BA6EC0288BDD8C0012D429 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA6EBF288BDD8C0012D429 /* PreviewData.swift */; };
 		26BA6EC2288C3B9F0012D429 /* CoreDataPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA6EC1288C3B9F0012D429 /* CoreDataPreview.swift */; };
 		26BA6ECC288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA6ECB288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift */; };
@@ -142,6 +143,7 @@
 		267F4D322838B0B700DC42E5 /* Notification+ManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+ManagedObjects.swift"; sourceTree = "<group>"; };
 		268D4FD22854F304003B18C8 /* ManagedObjectChangeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectChangeType.swift; sourceTree = "<group>"; };
 		268D4FD42854F36A003B18C8 /* ManagedObjectChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectChange.swift; sourceTree = "<group>"; };
+		26A8B81A28A581E000B8A487 /* CoreDataManager_PublisherContext_ContextSaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager_PublisherContext_ContextSaveTests.swift; sourceTree = "<group>"; };
 		26BA6EBF288BDD8C0012D429 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		26BA6EC1288C3B9F0012D429 /* CoreDataPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPreview.swift; sourceTree = "<group>"; };
 		26BA6ECB288C9CA70012D429 /* CoreDataManager_loadStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager_loadStoreTests.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				26EC46D92882B60200DC733E /* CoreDataManager_PublisherManagedObjectType_ContextSavedTests.swift */,
 				26EC46D82882B60200DC733E /* CoreDataManager_PublisherManagedObjectType_ObjectChangedTests.swift */,
 				26EC46D62882B60200DC733E /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift */,
+				26A8B81A28A581E000B8A487 /* CoreDataManager_PublisherContext_ContextSaveTests.swift */,
 				26EC46D72882B60200DC733E /* CoreDataManager_RaceConditionTests.swift */,
 			);
 			path = CoreDataManager;
@@ -770,6 +773,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				26EC46E52882B60200DC733E /* CoreDataManagerIntegrationTests.swift in Sources */,
+				26A8B81B28A581E000B8A487 /* CoreDataManager_PublisherContext_ContextSaveTests.swift in Sources */,
 				26EC46EE2882B60200DC733E /* PersistentContainer_contextTests.swift in Sources */,
 				264EEF1E28845B6400874DF8 /* CoreDataManager_PublisherManagedObjectType_UnionedContextSaveTests.swift in Sources */,
 				26E99C35289F8793007CAF55 /* BarModel.swift in Sources */,
