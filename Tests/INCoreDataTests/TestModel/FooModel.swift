@@ -60,44 +60,41 @@ public struct FooModel: ManagedObjectWrappingModel {
 		return count
 	}
 
-	func addBar(_ model: BarModel) {
-		addModel(
-			model,
-			managedObjectAddingMethod: managedObject.addToBarRelationship,
-			listIndexKeyPath: \BarModel.fooIndex,
-			listCountKeyPath: \.barCount
-		)
+	func addBar(_ model: BarModel) throws {
+		managedObject.addToBarRelationship(model.managedObject)
+		try model.setFooIndex(barCount - 1)
 	}
 
-	func removeBar(_ model: BarModel) {
-		removeModel(
-			model,
-			managedObjectRemovingMethod: managedObject.removeFromBarRelationship,
-			listIndexKeyPath: \BarModel.fooIndex,
-			listKeyPath: \.barRelationship
+	func removeBar(_ model: BarModel) throws {
+		try model.removeIndex(
+			fromModels: bars,
+			indexKeyPath: \.fooIndex,
+			indexSetter: BarModel.setFooIndex
 		)
+		managedObject.removeFromBarRelationship(model.managedObject)
 	}
 
-	func insertBar(_ model: BarModel, index: Int) {
-		insertModel(
-			model,
+	func insertBar(_ model: BarModel, index: Int) throws {
+		managedObject.addToBarRelationship(model.managedObject)
+		try model.insertIndex(
 			index: index,
-			managedObjectAddingMethod: managedObject.addToBarRelationship,
-			listIndexKeyPath: \BarModel.fooIndex,
-			listKeyPath: \.barRelationship
+			intoModels: bars,
+			indexKeyPath: \.fooIndex,
+			indexSetter: BarModel.setFooIndex
 		)
 	}
 }
 
 // MARK: - Queries
 
-extension NSManagedObjectContext {
-	func fetchFoos() throws -> [FooModel] {
-		try fetch(Foo.fetchRequest())
-			.map(\.asModel)
-			.sorted {
-				$0.number < $1.number
-			}
+extension FooModel {
+	static func fetchFoos(inContext context: NSManagedObjectContext) throws -> [FooModel] {
+		let request: NSFetchRequest<Foo> = Foo.fetchRequest()
+		request.sortDescriptors = [
+			NSSortDescriptor(keyPath: \Foo.number, ascending: true)
+		]
+		let result = try context.fetch(request)
+		return result.map(\.asModel)
 	}
 }
 

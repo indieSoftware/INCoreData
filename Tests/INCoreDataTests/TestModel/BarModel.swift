@@ -27,14 +27,13 @@ public struct BarModel: ManagedObjectWrappingModel {
 	}
 
 	var fooIndex: Int {
-		get {
-			Int(managedObject.fooIndex)
-		}
-		nonmutating set {
-			precondition(newValue >= 0, "Negative index")
-			precondition(newValue < foo.barCount, "Index out of bounds")
-			managedObject.fooIndex = Int32(newValue)
-		}
+		Int(managedObject.fooIndex)
+	}
+
+	func setFooIndex(_ newValue: Int) throws {
+		precondition(newValue >= 0, "Negative index") // We could also throw an error here instead
+		precondition(newValue < foo.barCount, "Index out of bounds")
+		managedObject.fooIndex = Int32(newValue)
 	}
 
 	// MARK: - References

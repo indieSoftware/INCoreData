@@ -376,14 +376,13 @@ To `BarModel` we can simply provide the index and the back-reference:
 
 ```
 var fooIndex: Int {
-	get {
-		Int(managedObject.fooIndex)
-	}
-	nonmutating set {
-		precondition(newValue >= 0, "Negative index")
-		precondition(newValue < foo.barCount, "Index out of bounds")
-		managedObject.fooIndex = Int32(newValue)
-	}
+	Int(managedObject.fooIndex)
+}
+
+func setFooIndex(_ newValue: Int) throws {
+	precondition(newValue >= 0, "Negative index")
+	precondition(newValue < foo.barCount, "Index out of bounds")
+	managedObject.fooIndex = Int32(newValue)
 }
 
 var foo: FooModel {
@@ -393,6 +392,8 @@ var foo: FooModel {
 	return model
 }
 ```
+
+Here the `fooIndex` accessors are split into a computed getter property and a setter method. The reason is to be able to throw an exception when setting a value. That way it's possible to throw an error when a precondition is not valid instead of crashing the app. In that case simply replace the precondition calls with a throwing error statement.
 
 In `FooModel` we need to provide the accessor to the bar list:
 
@@ -438,36 +439,34 @@ extension BarModel: Comparable {
 Now with everything set up we can easily support for adding, removing and inserting of `BarModel`s to a `FooModel`'s list by simply adding the following to `FooModel`:
 
 ```
-func addBar(_ model: BarModel) {
-	addModel(
-		model,
-		managedObjectAddingMethod: managedObject.addToBarRelationship,
-		listIndexKeyPath: \BarModel.fooIndex,
-		listCountKeyPath: \.barCount
-	)
+func addBar(_ model: BarModel) throws {
+	managedObject.addToBarRelationship(model.managedObject)
+	try model.setFooIndex(barCount - 1)
 }
 
-func removeBar(_ model: BarModel) {
-	removeModel(
-		model,
-		managedObjectRemovingMethod: managedObject.removeFromBarRelationship,
-		listIndexKeyPath: \BarModel.fooIndex,
-		listKeyPath: \.barRelationship
+func removeBar(_ model: BarModel) throws {
+	try model.removeIndex(
+		fromModels: bars,
+		indexKeyPath: \.fooIndex,
+		indexSetter: BarModel.setFooIndex
 	)
+	managedObject.removeFromBarRelationship(model.managedObject)
 }
 
-func insertBar(_ model: BarModel, index: Int) {
-	insertModel(
-		model,
+func insertBar(_ model: BarModel, index: Int) throws {
+	managedObject.addToBarRelationship(model.managedObject)
+	try model.insertIndex(
 		index: index,
-		managedObjectAddingMethod: managedObject.addToBarRelationship,
-		listIndexKeyPath: \BarModel.fooIndex,
-		listKeyPath: \.barRelationship
+		intoModels: bars,
+		indexKeyPath: \.fooIndex,
+		indexSetter: BarModel.setFooIndex
 	)
 }
 ```
 
-We are relying here on a protocol extension of `ManagedObjectWrappingModel` which takes some key paths and method references to provide the logics.
+We are relying here on a protocol extension of `ManagedObjectWrappingModel` which takes some key paths and method references to provide the logics to insert or remove an index to keep its consistency. 
+
+However, the model's object still needs to be added or removed from the relationship reference. And after removing an object it's highly likely that the object needs also be deleted from the context, which also has to be done manually after removing the object (and its index).
 
 #### Usage
 
@@ -480,4 +479,4 @@ fooModel.insertBar(barModel, index: 0)
 ```
 
 However, keep in mind that accessing the models needs to be done in a `context.perform {}` block (or a `coreDataManager.performTask {}` block).
-That means they should be queried on a view model to gather the data, but then the models need to be converted into view models which hold the corresponding data without the need to query the managed objects on their context.
+That means they should be queried on a view model or additional layer to gather the data, but then the models need to be converted into simpler view models specific for the view which holds only the corresponding data without the need to query the managed objects on their context when accessing the properties.

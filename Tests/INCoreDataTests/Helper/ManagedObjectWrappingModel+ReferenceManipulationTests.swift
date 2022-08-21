@@ -45,15 +45,15 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 
 			// Add one bar.
 			let barModel1 = BarModel(context: context)
-			fooModel.addBar(barModel1)
+			try fooModel.addBar(barModel1)
 
 			// Add second bar.
 			let barModel2 = BarModel(context: context)
-			fooModel.addBar(barModel2)
+			try fooModel.addBar(barModel2)
 
 			// Add third bar.
 			let barModel3 = BarModel(context: context)
-			fooModel.addBar(barModel3)
+			try fooModel.addBar(barModel3)
 
 			// Assure three bars in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 3)
@@ -73,14 +73,14 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(fooModel.barCount, 0)
 
 			let barModel1 = BarModel(context: context)
-			fooModel.addBar(barModel1)
+			try fooModel.addBar(barModel1)
 			let barModel2 = BarModel(context: context)
-			fooModel.addBar(barModel2)
+			try fooModel.addBar(barModel2)
 			let barModel3 = BarModel(context: context)
-			fooModel.addBar(barModel3)
+			try fooModel.addBar(barModel3)
 
 			// Remove second bar.
-			fooModel.removeBar(barModel2)
+			try fooModel.removeBar(barModel2)
 
 			// Assure two bar in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 2)
@@ -89,7 +89,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(barModel3.fooIndex, 1)
 
 			// Remove first bar.
-			fooModel.removeBar(barModel1)
+			try fooModel.removeBar(barModel1)
 
 			// Assure last bar is remaining.
 			XCTAssertEqual(fooModel.barCount, 1)
@@ -97,7 +97,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(barModel3.fooIndex, 0)
 
 			// Remove last bar.
-			fooModel.removeBar(barModel3)
+			try fooModel.removeBar(barModel3)
 
 			// Assure no bars are remaining.
 			XCTAssertEqual(fooModel.barCount, 0)
@@ -114,19 +114,19 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(fooModel.barCount, 0)
 
 			let barModel1 = BarModel(context: context)
-			fooModel.addBar(barModel1)
+			try fooModel.addBar(barModel1)
 			let barModel2 = BarModel(context: context)
-			fooModel.addBar(barModel2)
+			try fooModel.addBar(barModel2)
 			let barModel3 = BarModel(context: context)
-			fooModel.addBar(barModel3)
+			try fooModel.addBar(barModel3)
 
 			// Insert some bars.
 			let barModel4 = BarModel(context: context)
-			fooModel.insertBar(barModel4, index: 0)
+			try fooModel.insertBar(barModel4, index: 0)
 			let barModel5 = BarModel(context: context)
-			fooModel.insertBar(barModel5, index: fooModel.barCount)
+			try fooModel.insertBar(barModel5, index: fooModel.barCount)
 			let barModel6 = BarModel(context: context)
-			fooModel.insertBar(barModel6, index: 2)
+			try fooModel.insertBar(barModel6, index: 2)
 
 			// Assure bars have been inserted into correct position.
 			XCTAssertEqual(fooModel.barCount, 6)
@@ -150,15 +150,15 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 
 			// Add one bar.
 			let barModel1 = BarModel(context: context)
-			fooModel.addBar(barModel1)
+			try fooModel.addBar(barModel1)
 
 			// Add second bar.
 			let barModel2 = BarModel(context: context)
-			fooModel.addBar(barModel2)
+			try fooModel.addBar(barModel2)
 
 			// Add third bar.
 			let barModel3 = BarModel(context: context)
-			fooModel.addBar(barModel3)
+			try fooModel.addBar(barModel3)
 
 			// Assure three bars in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 3)
@@ -168,7 +168,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(barModel3.fooIndex, 2)
 
 			// Remove second bar.
-			fooModel.removeBar(barModel2)
+			try fooModel.removeBar(barModel2)
 
 			// Assure two bar in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 2)
@@ -178,7 +178,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 
 			// Insert fourth bar.
 			let barModel4 = BarModel(context: context)
-			fooModel.insertBar(barModel4, index: 1)
+			try fooModel.insertBar(barModel4, index: 1)
 
 			// Assure three bars in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 3)
@@ -188,7 +188,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(barModel3.fooIndex, 2)
 
 			// Remove first bar.
-			fooModel.removeBar(barModel1)
+			try fooModel.removeBar(barModel1)
 
 			// Assure two bars in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 2)
@@ -197,7 +197,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 			XCTAssertEqual(barModel3.fooIndex, 1)
 
 			// Add first bar again.
-			fooModel.addBar(barModel1)
+			try fooModel.addBar(barModel1)
 
 			// Assure three bars in correct order are added to foo.
 			XCTAssertEqual(fooModel.barCount, 3)

@@ -1,92 +1,49 @@
 import CoreData
 
-public extension ManagedObjectWrappingModel where ManagedObject.Model == Self {
+public extension ManagedObjectWrappingModel where Self == ManagedObject.Model {
 	/**
-	 Appends the given model to the sorted list.
+	 Removes a model's index by decrementing the index of all following models.
 
-	 - parameter model: The model to add.
-	 - parameter managedObjectAddingMethod: The method on the `managedObject` to call to add a relationship.
-	 - parameter listIndexKeyPath: A writeable key-path to the model's list index to update its index.
-	 - parameter listCountKeyPath: A key-path to a property which returns the count of the list in a non-looping way.
+	 - warning: This doesn't remove the model from the list nor deletes it,
+	 this has to be done manually after calling this method.
+
+	 - parameter models: The list of models which contains this model and where
+	 the other model's index has to be decremented.
+	 - parameter indexKeyPath: A key-path to the model's index value.
+	 - parameter indexSetter: A setter method which to call to set the new index on a model.
 	 */
-	func addModel<Model: ManagedObjectWrappingModel>(
-		_ model: Model,
-		managedObjectAddingMethod: (Model.ManagedObject) -> Void,
-		listIndexKeyPath: ReferenceWritableKeyPath<Model, Int>,
-		listCountKeyPath: KeyPath<Self, Int>
-	) {
-		// Just append the new object.
-		managedObjectAddingMethod(model.managedObject)
-		model[keyPath: listIndexKeyPath] = self[keyPath: listCountKeyPath] - 1
+	func removeIndex(
+		fromModels models: [Self],
+		indexKeyPath: KeyPath<Self, Int>,
+		indexSetter: (Self) -> (Int) throws -> Void
+	) throws {
+		try models.forEach { model in
+			let objectIndex = model[keyPath: indexKeyPath]
+			if objectIndex > self[keyPath: indexKeyPath] {
+				try indexSetter(model)(objectIndex - 1)
+			}
+		}
 	}
 
 	/**
-	 Removes a given model from the list.
+	 Inserts a new model's index into the list of models.
 
-	 - warning: The model's managed object gets removed from the relationship list, but not from the persistent store.
-	 You still have to call `model.removeFromContext()` if you want to delete it from the persistent store on save.
-
-	 - parameter model: The model to remove.
-	 - parameter managedObjectRemovingMethod: The method on the `managedObject` to call to remove a relationship.
-	 - parameter listIndexKeyPath: A writeable key-path to the model's list index to update its index.
-	 - parameter listKeyPath: A key-path to a property which returns the list of the model's managed objects.
-	 */
-	func removeModel<Model: ManagedObjectWrappingModel>(
-		_ model: Model,
-		managedObjectRemovingMethod: (Model.ManagedObject) -> Void,
-		listIndexKeyPath: ReferenceWritableKeyPath<Model, Int>,
-		listKeyPath: KeyPath<ManagedObject, NSSet?>
-	) where Model == Model.ManagedObject.Model {
-		// Decrement index of all following objects.
-		let modelIndex = model[keyPath: listIndexKeyPath]
-		guard let objectSet = managedObject[keyPath: listKeyPath] else {
-			preconditionFailure("No set")
-		}
-		objectSet.forEach { object in
-			guard let mappedObject = object as? Model.ManagedObject else {
-				preconditionFailure("Not matching managed object in set: \(object)")
-			}
-			let mappedObjectModel: Model = mappedObject.asModel
-			if mappedObjectModel[keyPath: listIndexKeyPath] > modelIndex {
-				mappedObjectModel[keyPath: listIndexKeyPath] -= 1
-			}
-		}
-
-		// Finally remove the object.
-		managedObjectRemovingMethod(model.managedObject)
-	}
-
-	/**
-	 Inserts the given model into the list at a specific position.
-
-	 - parameter model: The model to insert.
 	 - parameter index: The zero-based index at which position to add the model.
-	 - parameter managedObjectAddingMethod: The method on the `managedObject` to call to add a relationship.
-	 - parameter listIndexKeyPath: A writeable key-path to the model's list index to update its index.
-	 - parameter listKeyPath: A key-path to a property which returns the list of the model's managed objects.
+	 - parameter models: The list of models which also contains this object, but where the index has to be updated.
+	 - parameter indexKeyPath: A key-path to the model's index value.
+	 - parameter indexSetter: A setter method which to call to set the new index on a model.
 	 */
-	func insertModel<Model: ManagedObjectWrappingModel>(
-		_ model: Model,
+	func insertIndex(
 		index: Int,
-		managedObjectAddingMethod: (Model.ManagedObject) -> Void,
-		listIndexKeyPath: ReferenceWritableKeyPath<Model, Int>,
-		listKeyPath: KeyPath<ManagedObject, NSSet?>
-	) where Model == Model.ManagedObject.Model {
-		// Add first the object to respect any constraints.
-		managedObjectAddingMethod(model.managedObject)
-		model[keyPath: listIndexKeyPath] = index
-
-		// Increase the index of all other objects from the index position.
-		guard let objectSet = managedObject[keyPath: listKeyPath] else {
-			preconditionFailure("No set")
-		}
-		objectSet.forEach { object in
-			guard let mappedObject = object as? Model.ManagedObject else {
-				preconditionFailure("Not matching managed object in set: \(object)")
-			}
-			let mappedObjectModel: Model = mappedObject.asModel
-			if mappedObjectModel[keyPath: listIndexKeyPath] >= index, mappedObjectModel != model {
-				mappedObjectModel[keyPath: listIndexKeyPath] += 1
+		intoModels models: [Self],
+		indexKeyPath: KeyPath<Self, Int>,
+		indexSetter: (Self) -> (Int) throws -> Void
+	) throws {
+		try indexSetter(self)(index)
+		try models.forEach { model in
+			let objectIndex = model[keyPath: indexKeyPath]
+			if model[keyPath: indexKeyPath] >= index, model != self {
+				try indexSetter(model)(objectIndex + 1)
 			}
 		}
 	}
