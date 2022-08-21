@@ -28,6 +28,8 @@ public extension ManagedObjectWrappingModel where Self == ManagedObject.Model {
 	/**
 	 Inserts a new model's index into the list of models.
 
+	 - warning: The object needs to be added to the relationship manually before calling this method.
+
 	 - parameter index: The zero-based index at which position to add the model.
 	 - parameter models: The list of models which also contains this object, but where the index has to be updated.
 	 - parameter indexKeyPath: A key-path to the model's index value.
