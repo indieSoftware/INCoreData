@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec| 
   spec.name         = "INCoreData"
- spec.version = "1.1.0" # auto-generated
- spec.swift_versions = ['5.6.1'] # auto-generated
+ spec.version = "2.0.0" # auto-generated
+ spec.swift_versions = ['5.7'] # auto-generated
   spec.summary      = "That library supports dynamic CoreData features."
   spec.homepage     = "https://github.com/indieSoftware/INCoreData"
   spec.author       = { "Sven Korset" => "sven.korset@indie-software.com" }

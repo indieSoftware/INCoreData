@@ -2,7 +2,7 @@ import CoreData
 @testable import INCoreData
 import XCTest
 
-class CoreDataManagerTests: XCTestCase {
+class CoreDataManagerIntegrationTests: XCTestCase {
 	var coreDataManager: CoreDataManagerLogic!
 	var persistentContainerMock: PersistentContainerMock!
 
@@ -14,10 +14,13 @@ class CoreDataManagerTests: XCTestCase {
 	}
 
 	override func tearDownWithError() throws {
-		try super.tearDownWithError()
-
 		persistentContainerMock = nil
 		coreDataManager = nil
+
+		// Prevents flaky tests
+		yieldProcess()
+
+		try super.tearDownWithError()
 	}
 
 	// MARK: - Tests

@@ -13,7 +13,7 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 		try super.setUpWithError()
 		subscriptions.removeAll()
 
-		coreDataManager = try CoreDataManagerLogic(
+		coreDataManager = CoreDataManagerLogic(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -25,22 +25,37 @@ class CoreDataManager_PublisherManagedObject_ObjectChangedTests: XCTestCase {
 
 			// Add initial object to the main context.
 			try await self.coreDataManager.performTask { context in
-				self.context = context
 				let newObject = Foo(context: context)
 				newObject.title = UUID().uuidString
 				newObject.number = 1
 				context.insert(newObject)
+
 				self.fooObject = newObject
+				self.context = context
 			}
 		}
 	}
 
-	override func tearDown() {
+	override func tearDownWithError() throws {
+		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakContainer: NSPersistentContainer? = coreDataManager.container
+		weak var weakFooObject: Foo? = fooObject
+		weak var weakContext: NSManagedObjectContext? = context
+
 		subscriptions.removeAll()
-		coreDataManager = nil
 		fooObject = nil
+		coreDataManager = nil
 		context = nil
-		super.tearDown()
+
+		// Prevents flaky tests
+		yieldProcess()
+
+		XCTAssertNil(weakManager)
+		XCTAssertNil(weakFooObject)
+		XCTAssertNil(weakContainer)
+		XCTAssertNil(weakContext)
+
+		try super.tearDownWithError()
 	}
 
 	// MARK: - updated

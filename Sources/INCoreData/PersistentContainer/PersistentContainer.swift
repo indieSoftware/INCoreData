@@ -1,18 +1,25 @@
 import CoreData
 
-public class PersistentContainer: NSPersistentContainer {
+/**
+ The underlying persistent container which derives from `NSPersistentCloudKitContainer` to support iCloud sharing.
+ */
+public class PersistentContainer: NSPersistentCloudKitContainer {
 	/// The directory's name of the persistent store, where the SQLite DB has to be written to.
 	/// Any provided name will be treated as a relative path from the app's document folder.
 	/// When `nil` then the default path will be used which is directly the app's document folder.
 	/// Has to be set before calling `loadPersistentStores()`.
 	static var persistentStoreDirectoryName: String?
 
+	/// Returns the location of the directory that contains the persistent stores.
 	override open class func defaultDirectoryURL() -> URL {
 		guard let pathComponent = persistentStoreDirectoryName else {
 			return super.defaultDirectoryURL()
 		}
 		return super.defaultDirectoryURL().appendingPathComponent(pathComponent)
 	}
+
+	/// Flag to sync the scheme with CloudKit during loading the persistent store.
+	private let syncSchemeWithCloudKit: Bool
 
 	/**
 	 Initializes the container.
@@ -25,15 +32,25 @@ public class PersistentContainer: NSPersistentContainer {
 	 - parameter bundle: The bundle where the data model can be found, defaults to the main bundle.
 	 - parameter inMemory: Set to `true` when an in-memory store should be used, e.g. for UnitTests.
 	 Defaults to `false` to have a persistent SQLite store in the app's document folder.
-	 - throws: An `PersistentContainerError` when initializing the container failed.
+	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme
+	 with CloutKit during loading the persistent store.
+	 Will only be respected in a debug build for a non-in-memory store.
+	 Defaults to `false`.
+	 - throws: A `CoreDataManagerError` when initializing the container failed.
 	 */
-	public init(name: String, bundle: Bundle = .main, inMemory: Bool = false) throws {
+	public init(
+		name: String,
+		bundle: Bundle = .main,
+		inMemory: Bool = false,
+		syncSchemeWithCloudKit: Bool = false
+	) throws {
 		guard let modelUrl = bundle.url(forResource: name, withExtension: "momd") else {
-			throw PersistentContainerError.modelNotFound
+			throw CoreDataManagerError.modelNotFound
 		}
 		guard let model = NSManagedObjectModel(contentsOf: modelUrl) else {
-			throw PersistentContainerError.modelNotReadable
+			throw CoreDataManagerError.modelNotReadable
 		}
+		self.syncSchemeWithCloudKit = inMemory ? false : syncSchemeWithCloudKit
 		super.init(name: name, managedObjectModel: model)
 
 		try configureStoreDescriptions(inMemory: inMemory)
@@ -46,7 +63,7 @@ public class PersistentContainer: NSPersistentContainer {
 	 */
 	private func configureStoreDescriptions(inMemory: Bool) throws {
 		guard let storeDescription = persistentStoreDescriptions.first else {
-			throw PersistentContainerError.noDefaultStoreConfigurationFound
+			throw CoreDataManagerError.noDefaultStoreConfigurationFound
 		}
 
 		if inMemory {
@@ -74,10 +91,33 @@ public class PersistentContainer: NSPersistentContainer {
 		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
 			self.loadPersistentStores { (description: NSPersistentStoreDescription, error: Error?) in
 				if let error = error {
+					/*
+					 Typical reasons for an error here include:
+					 - The parent directory does not exist, cannot be created, or disallows writing.
+					 - The persistent store is not accessible, due to permissions or data protection when the device is locked.
+					 - The device is out of space.
+					 - The store could not be migrated to the current model version.
+
+					 Check the error message to determine what the actual problem was.
+					 */
 					continuation
-						.resume(throwing: PersistentContainerError.loadingPersistentStoreFailed(description, error))
+						.resume(throwing: CoreDataManagerError.loadingPersistentStoreFailed(description, error))
 					return
 				}
+				// Make sure the local stack gets updated when any changes in iCloud happens.
+				self.viewContext.automaticallyMergesChangesFromParent = true
+#if DEBUG
+				if self.syncSchemeWithCloudKit {
+					do {
+						// Initialize the development schema (debug build only).
+						try self.initializeCloudKitSchema(options: [])
+					} catch {
+						continuation
+							.resume(throwing: CoreDataManagerError.initializeCloudKitSchemaFailed(error))
+						return
+					}
+				}
+#endif
 				continuation.resume(with: Result.success(()))
 			}
 		}

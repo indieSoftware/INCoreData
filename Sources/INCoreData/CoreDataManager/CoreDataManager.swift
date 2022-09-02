@@ -6,13 +6,22 @@ import Foundation
 
  Usually `CoreDataManagerLogic` should be instantiated as an implementation of this protocol.
 
- The wrapped `PersistentContainer` is a `NSPersistentContainer` with some
+ The wrapped `PersistentContainer` is a `NSPersistentCloudKitContainer` with some
  additional functionalities to streamline the usage of Core Data with this manager.
  The protocol makes it possible to inject the manager to all dependents and replace it with
  a mocked version for unit tests and SwiftUI previews.
  For this only methods provided by this manager should be used instead of the underlying container.
  */
 public protocol CoreDataManager {
+	/**
+	 Loads the persistent store.
+
+	 Has to be called once as part of the set up before interacting with the Core Data stack.
+
+	 - throws: A `CoreDataManagerError` when loading the container failed.
+	 */
+	func loadStore() async throws
+
 	/**
 	 A reference to the `viewContext` for tasks on the main context.
 

@@ -3,9 +3,17 @@ import CoreData
 import XCTest
 
 class CoreDataManager_performTaskTests: XCTestCase {
+	override func tearDown() {
+		// Prevents flaky tests
+		yieldProcess()
+	}
+
 	func testPerformTaskRequestsFromContainerAndPerformsTask() throws {
 		// Create the persistent container mock.
 		let persistentContainerMock = try XCTUnwrap(PersistentContainerMock())
+		persistentContainerMock.viewContextMock = {
+			persistentContainerMock.viewContextSuper
+		}
 		let containerExpectation = expectation(description: "containerExpectation")
 		Task {
 			try await persistentContainerMock.loadPersistentStoreSuper()

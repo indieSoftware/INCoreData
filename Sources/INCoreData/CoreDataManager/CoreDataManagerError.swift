@@ -1,7 +1,9 @@
 import CoreData
 
-/// Programmer errors which can be thrown while creating a `PersistentContainer`.
-public enum PersistentContainerError: Error {
+/// Programmer errors which can be thrown while creating a `CoreDataManager` or `PersistentContainer`.
+public enum CoreDataManagerError: Error {
+	/// An invalid state of the manager caused by multiple calls of `loadStore()`.
+	case multipleLoadStoreCalls
 	/// The model's "momd" resource couldn't be found in the bundle.
 	/// Probably the "xcdatamodel" file hasn't been added to the project.
 	case modelNotFound
@@ -15,4 +17,6 @@ public enum PersistentContainerError: Error {
 	/// This happens by the underlying `loadPersistentStores(completionHandler:)` call
 	/// and contains the return values by that method.
 	case loadingPersistentStoreFailed(_ description: NSPersistentStoreDescription, _ error: Error)
+	/// Creating the CloudKit schema failed during set up of the persistent store.
+	case initializeCloudKitSchemaFailed(_ error: Error)
 }

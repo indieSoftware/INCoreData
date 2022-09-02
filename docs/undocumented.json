@@ -2,7 +2,7 @@
   "warnings": [
     {
       "file": "/Users/sven/Work/Git/indieSoftware/ios-tools/INCoreData/Sources/INCoreData/CoreDataManager/CoreDataManagerLogic.swift",
-      "line": 5,
+      "line": 4,
       "symbol": "CoreDataManagerLogic",
       "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"

@@ -2,26 +2,29 @@ import INCommons
 import INCoreData
 import SwiftUI
 
-struct UsageView<ViewModel: UsageViewModel>: View {
+struct UsageView: View {
 	/// Use an injected view model for this view which handles all core data requests.
-	@StateObject var viewModel: ViewModel
+	@StateObject var viewModel: UsageViewModel
 
 	var body: some View {
 		VStack {
-			List {
-				ForEach(viewModel.items) { item in
-					Text("\(item.timestamp)")
+			Group {
+				switch viewModel.items {
+				case .empty:
+					emptyContent
+				case let .data(items):
+					listContent(items)
+				case let .error(message):
+					errorContent(message)
 				}
-				.onDelete(perform: viewModel.deleteItems)
 			}
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
 					HStack {
-						Button(action: viewModel.addItem) {
+						Button(action: {
+							viewModel.addItem()
+						}) {
 							Label("Add Item", systemImage: "plus")
-						}
-						Button(action: viewModel.persistItems) {
-							Label("Add Item", systemImage: "square.and.arrow.down")
 						}
 					}
 				}
@@ -29,13 +32,34 @@ struct UsageView<ViewModel: UsageViewModel>: View {
 		}
 		.navigationTitle("Usage Example")
 	}
+
+	private func listContent(_ items: [ItemViewModel]) -> some View {
+		List {
+			ForEach(items) { item in
+				Text("\(item.timestamp)")
+			}
+			.onDelete {
+				viewModel.deleteItems(offsets: $0)
+			}
+		}
+	}
+
+	private var emptyContent: some View {
+		Text("No content")
+	}
+
+	private func errorContent(_ message: String) -> some View {
+		Text(message)
+	}
 }
 
 struct UsageView_Previews: PreviewProvider {
 	static var previews: some View {
-		NavigationView {
-			// Inject a view model mock so we don't have to mess around with Core Data here.
-			UsageView(viewModel: UsageViewModelMock())
+		// Use a preview container to inject the manager into the view.
+		CoreDataPreview(PreviewData.managerWithSomeElements) { manager in
+			NavigationView {
+				UsageView(viewModel: UsageViewModel(manager: manager))
+			}
 		}
 	}
 }
