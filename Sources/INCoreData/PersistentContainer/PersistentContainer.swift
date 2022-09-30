@@ -8,9 +8,11 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 	/// Any provided name will be treated as a relative path from the app's document folder.
 	/// When `nil` then the default path will be used which is directly the app's document folder.
 	/// Has to be set before calling `loadPersistentStores()`.
+	@MainActor
 	static var persistentStoreDirectoryName: String?
 
 	/// Returns the location of the directory that contains the persistent stores.
+	@MainActor
 	override open class func defaultDirectoryURL() -> URL {
 		guard let pathComponent = persistentStoreDirectoryName else {
 			return super.defaultDirectoryURL()
@@ -101,7 +103,10 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 					 Check the error message to determine what the actual problem was.
 					 */
 					continuation
-						.resume(throwing: CoreDataManagerError.loadingPersistentStoreFailed(description, error))
+						.resume(
+							throwing: CoreDataManagerError
+								.loadingPersistentStoreFailed(description.description, error)
+						)
 					return
 				}
 				// Make sure the local stack gets updated when any changes in iCloud happens.

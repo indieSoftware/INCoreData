@@ -16,7 +16,7 @@ public enum CoreDataManagerError: Error {
 	/// Loading the persistent store failed.
 	/// This happens by the underlying `loadPersistentStores(completionHandler:)` call
 	/// and contains the return values by that method.
-	case loadingPersistentStoreFailed(_ description: NSPersistentStoreDescription, _ error: Error)
+	case loadingPersistentStoreFailed(_ description: String, _ error: Error)
 	/// Creating the CloudKit schema failed during set up of the persistent store.
 	case initializeCloudKitSchemaFailed(_ error: Error)
 }

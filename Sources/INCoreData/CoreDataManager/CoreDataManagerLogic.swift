@@ -1,7 +1,7 @@
 import CoreData
 import Foundation
 
-public class CoreDataManagerLogic: CoreDataManager {
+public final class CoreDataManagerLogic: CoreDataManager, Sendable {
 	/// The default name of a data model in the bundle, equals to "DataModel".
 	public static let defaultDataModelName = "DataModel"
 
@@ -52,7 +52,11 @@ public class CoreDataManagerLogic: CoreDataManager {
 		inMemory: Bool = false,
 		syncSchemeWithCloudKit: Bool = false
 	) {
-		PersistentContainer.persistentStoreDirectoryName = storeDirectoryName
+		Task {
+			await MainActor.run {
+				PersistentContainer.persistentStoreDirectoryName = storeDirectoryName
+			}
+		}
 		persistentContainerParameter = PersistentContainerParameter(
 			modelName: name,
 			modelBundle: bundle,
