@@ -3,12 +3,12 @@ import INCoreData
 import XCTest
 
 final class ManagedObjectWrappingModel_ContextTests: XCTestCase {
-	var coreDataManager: CoreDataManagerLogic!
+	var coreDataManager: CoreDataManager!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
-		coreDataManager = CoreDataManagerLogic(
+		coreDataManager = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -26,7 +26,8 @@ final class ManagedObjectWrappingModel_ContextTests: XCTestCase {
 
 	func testModelInContext() {
 		let title = UUID().uuidString
-		var foo: FooModel?
+
+		let fooHolder = ObjectHolder<FooModel>()
 
 		performAsyncThrow {
 			try await self.coreDataManager.performTask { context in
@@ -34,15 +35,15 @@ final class ManagedObjectWrappingModel_ContextTests: XCTestCase {
 				model.title = title
 				model.number = 1
 				model.addToContext()
-				foo = model
+				fooHolder.object = model
 			}
 		}
-		XCTAssertNotNil(foo)
+		XCTAssertNotNil(fooHolder.object)
 
 		let taskExpectation = expectation(description: "taskExpectation")
 		performAsyncThrow {
 			try await self.coreDataManager.performTask { context in
-				let model = try XCTUnwrap(foo?.inContext(context))
+				let model = try XCTUnwrap(fooHolder.object?.inContext(context))
 				XCTAssertEqual(model.title, title)
 				XCTAssertEqual(model.number, 1)
 				taskExpectation.fulfill()

@@ -9,7 +9,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 	}
 
 	func testLoadStore() {
-		var coreDataManager: CoreDataManagerLogic! = CoreDataManagerLogic(
+		var coreDataManager: CoreDataManager! = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -19,7 +19,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 			try await coreDataManager.loadStore()
 		}
 
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakManager: CoreDataManager? = coreDataManager
 		weak var weakContainer: NSPersistentContainer? = coreDataManager.container
 		weak var weakContext: NSManagedObjectContext? = coreDataManager.mainContext
 
@@ -31,7 +31,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 	}
 
 	func testNewBackgroundContextGetsReleased() {
-		var coreDataManager: CoreDataManagerLogic! = CoreDataManagerLogic(
+		var coreDataManager: CoreDataManager! = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -43,7 +43,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 
 		var context: NSManagedObjectContext! = coreDataManager.createNewContext()
 
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakManager: CoreDataManager? = coreDataManager
 		weak var weakContext: NSManagedObjectContext? = context
 
 		coreDataManager = nil
@@ -56,7 +56,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 	// MARK: - Unexpected Core Data issues with Xcode 13 which were fixed with Xcode 14
 
 	func testMainContextGetsRetainedWhenPerformIsCalled() {
-		var coreDataManager: CoreDataManagerLogic! = CoreDataManagerLogic(
+		var coreDataManager: CoreDataManager! = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -74,7 +74,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 		}
 		wait(for: [taskExpectation], timeout: 1.0)
 
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakManager: CoreDataManager? = coreDataManager
 		weak var weakContainer: NSPersistentContainer? = coreDataManager.container
 		weak var weakContext: NSManagedObjectContext? = coreDataManager.mainContext
 
@@ -86,7 +86,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 	}
 
 	func testBackgroundContextGetsRetainedWhenPerformIsCalled() {
-		var coreDataManager: CoreDataManagerLogic! = CoreDataManagerLogic(
+		var coreDataManager: CoreDataManager! = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -106,7 +106,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 		}
 		wait(for: [taskExpectation], timeout: 1.0)
 
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakManager: CoreDataManager? = coreDataManager
 		weak var weakContext: NSManagedObjectContext? = context
 
 		coreDataManager = nil
@@ -117,7 +117,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 	}
 
 	func testObjecIsRetainedUntilContextHasBeenQueried() {
-		var coreDataManager: CoreDataManagerLogic! = CoreDataManagerLogic(
+		var coreDataManager: CoreDataManager! = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -127,7 +127,7 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 			try await coreDataManager.loadStore()
 		}
 
-		var foo: Foo!
+		let fooHolder = ObjectHolder<Foo>()
 		performAsyncThrow {
 			try await coreDataManager.performTask { context in
 				let newObject = Foo(context: context)
@@ -135,14 +135,14 @@ class CoreDataManager_MemoryLeakTests: XCTestCase {
 				newObject.number = 1
 				context.insert(newObject)
 
-				foo = newObject // We are holding a reference to this object
+				fooHolder.object = newObject // We are holding a reference to this object
 			}
 		}
 
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
-		weak var weakFoo: Foo? = foo
+		weak var weakManager: CoreDataManager? = coreDataManager
+		weak var weakFoo: Foo? = fooHolder.object
 
-		foo = nil
+		fooHolder.object = nil
 		coreDataManager = nil
 		sleep(1) // For Xcode 14 this is needed, otherwise the test becomes flaky.
 

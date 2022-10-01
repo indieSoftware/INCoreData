@@ -2,12 +2,12 @@
 import XCTest
 
 class NSManagedObject_InContextTests: XCTestCase {
-	var coreDataManager: CoreDataManagerLogic!
+	var coreDataManager: CoreDataManager!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
-		coreDataManager = CoreDataManagerLogic(
+		coreDataManager = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -29,32 +29,33 @@ class NSManagedObject_InContextTests: XCTestCase {
 	// MARK: - Tests
 
 	func testFindObjectInContext() {
-		var newObject: Foo!
+		let newObjectHolder = ObjectHolder<Foo>()
 
 		// Insert new object to the main context.
 		let title = UUID().uuidString
 		performAsyncThrow {
 			try await self.coreDataManager.performTask { context in
-				newObject = Foo(context: context)
+				let newObject = Foo(context: context)
 				newObject.title = title
 				newObject.number = 1
 				context.insert(newObject)
+				newObjectHolder.object = newObject
 			}
 		}
 
 		let context = coreDataManager.mainContext
 
 		performAsyncThrow {
-			await context.perform {
+			try await context.perform {
 				// Method under test.
-				let result = newObject.inContext(context)
+				let result = try XCTUnwrap(newObjectHolder.object?.inContext(context))
 
 				// Verify the object matches the original.
 				XCTAssertTrue(result.isFault)
 				XCTAssertEqual(result.title, title)
 				XCTAssertFalse(result.isFault)
 				XCTAssertIdentical(result.managedObjectContext, context)
-				XCTAssertNotIdentical(result.managedObjectContext, newObject.managedObjectContext)
+				XCTAssertNotIdentical(result.managedObjectContext, newObjectHolder.object?.managedObjectContext)
 			}
 		}
 	}

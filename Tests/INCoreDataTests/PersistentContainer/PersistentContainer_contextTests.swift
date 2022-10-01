@@ -4,6 +4,7 @@ import XCTest
 class PersistentContainer_contextTests: XCTestCase {
 	var container: PersistentContainer!
 
+	@MainActor
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
@@ -16,6 +17,7 @@ class PersistentContainer_contextTests: XCTestCase {
 		}
 	}
 
+	@MainActor
 	override func tearDownWithError() throws {
 		container = nil
 		try deletePersistentDirectory()
@@ -26,6 +28,7 @@ class PersistentContainer_contextTests: XCTestCase {
 		try super.tearDownWithError()
 	}
 
+	@MainActor
 	private func deletePersistentDirectory() throws {
 		let urlPath = PersistentContainer.defaultDirectoryURL().path
 		if FileManager.default.fileExists(atPath: urlPath) {

@@ -4,15 +4,73 @@ import Foundation
 /**
  A manager for CoreData which acts as a facade for the `PersistentContainer`.
 
- Usually `CoreDataManagerLogic` should be instantiated as an implementation of this protocol.
-
  The wrapped `PersistentContainer` is a `NSPersistentCloudKitContainer` with some
  additional functionalities to streamline the usage of Core Data with this manager.
- The protocol makes it possible to inject the manager to all dependents and replace it with
- a mocked version for unit tests and SwiftUI previews.
- For this only methods provided by this manager should be used instead of the underlying container.
  */
-public protocol CoreDataManager {
+public final class CoreDataManager: @unchecked Sendable {
+	/// The default name of a data model in the bundle, equals to "DataModel".
+	public static let defaultDataModelName = "DataModel"
+
+	/// The default folder name of the persistent store in the documents folder, equals to "CoreData".
+	public static let defaultStoreDirectoryName = "CoreData"
+
+	/// The underlying persistent container used.
+	public private(set) var container: PersistentContainer?
+
+	/// The parameters for the persistent container for passing later during the loading rather the init.
+	private let persistentContainerParameter: PersistentContainerParameter?
+
+	/**
+	 Initializes the manager with a persistent container directly, i.e. to use it for unit tests.
+
+	 - parameter persistentContainer: The persistent container to use.
+	 */
+	init(persistentContainer: PersistentContainer) {
+		persistentContainerParameter = nil
+		container = persistentContainer
+	}
+
+	/**
+	 Instantiates the manager.
+
+	 This will set the store directory name `PersistentContainer.persistentStoreDirectoryName`
+	 and instantiate an instance of `PersistentContainer`.
+
+	 To finish the initialization `loadStore()` has to be called once before the manager can be used.
+
+	 - parameter name: The name of the CoreData model which is the file name of the `xcdatamodeld` without extension.
+	 - parameter bundle: The bundle where to find the data model. Defaults to the main bundle.
+	 - parameter storeDirectoryName: The directory's name of the persistent store,
+	 where the SQLite DB has to be written to.
+	 Any provided name will be treated as a relative path from the app's document folder.
+	 When `nil` then the default path will be used which is directly the app's document folder.
+	 - parameter inMemory: Pass true to use an in-memory store suitable for Previews and UnitTests,
+	 rather than a "real" one. Defaults to `false`.
+	 - parameter syncSchemeWithCloudKit: Set to `true` to sync the scheme with CloutKit
+	 during loading the persistent store.
+	 Will only be respected in a debug build for a non-in-memory store.
+	 Defaults to `false`.
+	 */
+	public init(
+		name: String = CoreDataManager.defaultDataModelName,
+		bundle: Bundle = .main,
+		storeDirectoryName: String? = CoreDataManager.defaultStoreDirectoryName,
+		inMemory: Bool = false,
+		syncSchemeWithCloudKit: Bool = false
+	) {
+		Task {
+			await MainActor.run {
+				PersistentContainer.persistentStoreDirectoryName = storeDirectoryName
+			}
+		}
+		persistentContainerParameter = PersistentContainerParameter(
+			modelName: name,
+			modelBundle: bundle,
+			inMemory: inMemory,
+			syncSchemeWithCloudKit: syncSchemeWithCloudKit
+		)
+	}
+
 	/**
 	 Loads the persistent store.
 
@@ -20,7 +78,29 @@ public protocol CoreDataManager {
 
 	 - throws: A `CoreDataManagerError` when loading the container failed.
 	 */
-	func loadStore() async throws
+	public func loadStore() async throws {
+		if let parameter = persistentContainerParameter {
+			guard container == nil else {
+				throw CoreDataManagerError.multipleLoadStoreCalls
+			}
+			// Default state where the public init-method has been called
+			// and this is the first call of `loadStore()`.
+			container = try PersistentContainer(
+				name: parameter.modelName,
+				bundle: parameter.modelBundle,
+				inMemory: parameter.inMemory
+			)
+		} else {
+			precondition(container != nil, "Impossible state")
+			// The internal init-method has been called,
+			// so a container exists already and we can simply proceed.
+		}
+
+		guard let container = container else {
+			preconditionFailure("Impossible state")
+		}
+		try await container.loadPersistentStore()
+	}
 
 	/**
 	 A reference to the `viewContext` for tasks on the main context.
@@ -31,7 +111,12 @@ public protocol CoreDataManager {
 
 	 For this use `createNewContext()` or `performTask(_:)`.
 	 */
-	var mainContext: NSManagedObjectContext { get }
+	public var mainContext: NSManagedObjectContext {
+		guard let container = container else {
+			preconditionFailure("No container, call loadStore() first")
+		}
+		return container.viewContext
+	}
 
 	/**
 	 Creates a new managed object context for background tasks.
@@ -44,7 +129,12 @@ public protocol CoreDataManager {
 
 	 - returns: The new background MOC.
 	 */
-	func createNewContext() -> NSManagedObjectContext
+	public func createNewContext() -> NSManagedObjectContext {
+		guard let container = container else {
+			preconditionFailure("No container, call loadStore() first")
+		}
+		return container.createNewContext()
+	}
 
 	/**
 	 Saves any changes of the main context.
@@ -57,18 +147,23 @@ public protocol CoreDataManager {
 	 Does nothing if the context has no pending changes.
 
 	 ```
-	  let backgroundContext = manager.createNewContext()
-	  try await backgroundContext.perform {
-	    let foo = Foo(context: backgroundContext)
-	    backgroundContext.insert(foo)
-	    try context.save()
-	  }
-	  manager.saveContext()
+	 let backgroundContext = manager.createNewContext()
+	 try await backgroundContext.perform {
+	 let foo = Foo(context: backgroundContext)
+	 backgroundContext.insert(foo)
+	 try context.save()
+	 }
+	 manager.saveContext()
 	 ```
 
 	 Does nothing if the context has no pending changes.
 	 */
-	func persist() async throws
+	public func persist() async throws {
+		guard let container = container else {
+			preconditionFailure("No container, call loadStore() first")
+		}
+		try await container.persist()
+	}
 
 	/**
 	 Executes a task block on a new background context and persists any changes.
@@ -77,5 +172,14 @@ public protocol CoreDataManager {
 	 perform any async changes on it, then save it back to the main context
 	 and performing save on the main context to persist any changes.
 	 */
-	func performTask(_ task: @escaping (NSManagedObjectContext) throws -> Void) async throws
+	public func performTask(_ task: @escaping @Sendable (NSManagedObjectContext) throws -> Void) async throws {
+		let context = createNewContext()
+		try await context.perform {
+			try task(context)
+			if context.hasChanges {
+				try context.save()
+			}
+		}
+		try await persist()
+	}
 }

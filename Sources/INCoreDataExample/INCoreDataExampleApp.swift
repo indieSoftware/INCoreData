@@ -7,7 +7,7 @@ struct INCoreDataExampleApp: App {
 		WindowGroup {
 			NavigationView {
 				// Creating and inject a concrete core data manager instance.
-				let coreDataManager = CoreDataManagerLogic()
+				let coreDataManager = CoreDataManager()
 				StartView(manager: coreDataManager)
 			}
 		}

@@ -4,7 +4,7 @@ import CoreData
 import XCTest
 
 class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
-	private var coreDataManager: CoreDataManagerLogic!
+	private var coreDataManager: CoreDataManager!
 	private var subscriptions = Set<AnyCancellable>()
 	private var fooObject: Foo!
 	private var context: NSManagedObjectContext!
@@ -13,7 +13,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 		try super.setUpWithError()
 		subscriptions.removeAll()
 
-		coreDataManager = CoreDataManagerLogic(
+		coreDataManager = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -37,7 +37,7 @@ class CoreDataManager_PublisherManagedObject_ContextSavedTests: XCTestCase {
 	}
 
 	override func tearDownWithError() throws {
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakManager: CoreDataManager? = coreDataManager
 		weak var weakContainer: NSPersistentContainer? = coreDataManager.container
 		weak var weakFooObject: Foo? = fooObject
 		weak var weakContext: NSManagedObjectContext? = context

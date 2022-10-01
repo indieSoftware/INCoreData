@@ -60,6 +60,6 @@ struct StartView: View {
 struct StartView_Previews: PreviewProvider {
 	static var previews: some View {
 		// Inject an in-memory manager for the preview.
-		StartView(manager: CoreDataManagerLogic(inMemory: true))
+		StartView(manager: CoreDataManager(inMemory: true))
 	}
 }
