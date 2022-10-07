@@ -34,7 +34,7 @@ struct StartView: View {
 						// Load manager.
 						Task {
 							try? await Task.sleep(seconds: 0.5)
-							try! await manager.loadStore()
+							try? await manager.loadStore()
 							state = .initialized
 						}
 					} label: {

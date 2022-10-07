@@ -620,7 +620,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --path \"Sources/INCoreData\" --config \".swiftlint.yml\"\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" lint\n";
 		};
 		26FCE71427D215DD00C229DA /* Extract Swift Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -658,7 +658,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = ". Scripts/swiftFormatCodePaths.sh\n\"Pods/SwiftFormat/CommandLineTool/swiftformat\" ${swiftFormatCodePaths[*]} --exclude **/Generated\n";
+			shellScript = ". config.sh\n\"Pods/SwiftFormat/CommandLineTool/swiftformat\" ${SWIFT_FORMAT_CODE_PATHS[*]} --exclude ${SWIFT_FORMAT_EXCLUDE_PATHS}\n";
 		};
 		37BF3F21F4322B6E0EEEC86F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
