@@ -22,7 +22,7 @@ class CoreDataManager_performTaskTests: XCTestCase {
 		waitForExpectations()
 
 		// Inject the mock into the mananger.
-		let coreDataManager = CoreDataManagerLogic(persistentContainer: persistentContainerMock)
+		let coreDataManager = CoreDataManager(persistentContainer: persistentContainerMock)
 
 		// Test that a new background context will be requested.
 		let newContextExpectation = expectation(description: "newContextExpectation")
@@ -36,7 +36,7 @@ class CoreDataManager_performTaskTests: XCTestCase {
 		// Test task will be executed with the new context as its parameter.
 		let title = UUID().uuidString
 		let taskExpectation = expectation(description: "taskExpectation")
-		let task: (NSManagedObjectContext) throws -> Void = { passedContext in
+		let task: @Sendable (NSManagedObjectContext) throws -> Void = { passedContext in
 			XCTAssertEqual(passedContext.name, "New background context")
 
 			// Create new object to check if save is really called.

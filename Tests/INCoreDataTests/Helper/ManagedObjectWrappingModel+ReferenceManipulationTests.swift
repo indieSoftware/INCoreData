@@ -3,12 +3,12 @@ import INCoreData
 import XCTest
 
 final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
-	private var coreDataManager: CoreDataManagerLogic!
+	private var coreDataManager: CoreDataManager!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
-		coreDataManager = CoreDataManagerLogic(
+		coreDataManager = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
@@ -21,7 +21,7 @@ final class ManagedObjectWrappingModel_ReferenceManipulationTests: XCTestCase {
 	}
 
 	override func tearDownWithError() throws {
-		weak var weakManager: CoreDataManagerLogic? = coreDataManager
+		weak var weakManager: CoreDataManager? = coreDataManager
 
 		coreDataManager = nil
 

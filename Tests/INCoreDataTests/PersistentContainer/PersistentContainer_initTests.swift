@@ -1,6 +1,7 @@
 @testable import INCoreData
 import XCTest
 
+@MainActor
 class PersistentContainer_initTests: XCTestCase {
 	override func setUpWithError() throws {
 		try super.setUpWithError()

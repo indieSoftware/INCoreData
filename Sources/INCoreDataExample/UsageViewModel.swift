@@ -57,10 +57,12 @@ final class UsageViewModel: ObservableObject {
 					// A Published property has to be set on the UI thread,
 					// therefore, initiate a new Task from within this context.
 					Task {
-						if items.isEmpty {
-							self.items = .empty
-						} else {
-							self.items = .data(items)
+						await MainActor.run {
+							if items.isEmpty {
+								self.items = .empty
+							} else {
+								self.items = .data(items)
+							}
 						}
 					}
 				}

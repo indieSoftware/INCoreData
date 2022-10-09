@@ -3,14 +3,14 @@ import CoreData
 import XCTest
 
 class CoreDataManagerIntegrationTests: XCTestCase {
-	var coreDataManager: CoreDataManagerLogic!
+	var coreDataManager: CoreDataManager!
 	var persistentContainerMock: PersistentContainerMock!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
 		persistentContainerMock = try XCTUnwrap(PersistentContainerMock())
-		coreDataManager = CoreDataManagerLogic(persistentContainer: persistentContainerMock)
+		coreDataManager = CoreDataManager(persistentContainer: persistentContainerMock)
 	}
 
 	override func tearDownWithError() throws {

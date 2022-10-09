@@ -8,7 +8,7 @@ Create an instance of the manager:
 ```
 import INCoreData
 
-let manager: CoreDataManager = CoreDataManagerLogic()
+let manager = CoreDataManager()
 ```
 
 This will use the data model named "DataModel" from the main bundle and use the path "CoreData" inside of the documents folder to persist the Core Data stack.
@@ -16,7 +16,7 @@ This will use the data model named "DataModel" from the main bundle and use the 
 If the "xcdatamodelId" file differes, is not in the main bundle or a different folder name in the documents folder should be used then provide those information to the init method.
 
 ```
-let manager: CoreDataManager = CoreDataManagerLogic(
+let manager = CoreDataManager(
 	name: "MyModel", 
 	bundle: Bundle(for: Model.self), 
 	storeDirectoryName: "DataStack"
@@ -38,13 +38,13 @@ When using the CoreDataManager for UnitTests or Previews then a lighter in-memor
 
 ```
 class MyTests: XCTestCase {
-	private var coreDataManager: CoreDataManagerLogic!
+	private var coreDataManager: CoreDataManager!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
 		// Create in-memory manager.
-		coreDataManager = CoreDataManagerLogic(inMemory: true)
+		coreDataManager = CoreDataManager(inMemory: true)
 
 		let asyncExpectation = expectation(description: "asyncExpectation")
 		Task {
@@ -75,7 +75,7 @@ enum PreviewData {
 	static func managerWithSomeElements() async -> CoreDataManager {
 		do {
 			// Initialize an in-memory manager.
-			let manager = CoreDataManagerLogic(inMemory: true)
+			let manager = CoreDataManager(inMemory: true)
 			try await manager.loadStore()
 			
 			// Pre-fill it with some example data.

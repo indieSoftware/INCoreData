@@ -5,7 +5,7 @@ enum PreviewData {
 	/// Creates an empty Core Data manager.
 	static func manager() async -> CoreDataManager {
 		do {
-			let manager = CoreDataManagerLogic(inMemory: true)
+			let manager = CoreDataManager(inMemory: true)
 			try await manager.loadStore()
 			return manager
 		} catch {

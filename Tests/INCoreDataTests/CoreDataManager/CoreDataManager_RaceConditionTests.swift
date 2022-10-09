@@ -3,12 +3,12 @@ import CoreData
 import XCTest
 
 class CoreDataManager_RaceConditionTests: XCTestCase {
-	private var coreDataManager: CoreDataManagerLogic!
+	private var coreDataManager: CoreDataManager!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
-		coreDataManager = CoreDataManagerLogic(
+		coreDataManager = CoreDataManager(
 			name: TestModel.name,
 			bundle: Bundle(for: Self.self),
 			inMemory: true
