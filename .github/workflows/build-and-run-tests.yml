@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: macos-latest
     concurrency:
-      group: ${{ github.ref }}
+      group: ${{ github.workflow }}
       cancel-in-progress: true
     steps:
       - name: Checkout code
