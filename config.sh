@@ -7,7 +7,7 @@ SWIFT_FORMAT_CODE_PATHS=("Sources" "Tests")
 SWIFT_FORMAT_EXCLUDE_PATHS="*/Generated,*/*/*/Generated"
 
 # Set to "false" when this project's repository is a private repository and "true" when it's a public project.
-IS_PUBLIC_REPO=false
+IS_PUBLIC_REPO=true
 # Set to "true" when this project is a library/framework, otherwise to "false" when this is an app project.
 IS_LIB_PROJECT=true
 # The name of the podspec file. Only used when this project is a library, not an app (IS_LIB_PROJECT == true).
