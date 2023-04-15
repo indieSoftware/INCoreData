@@ -53,7 +53,7 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+                <a class="nav-group-task-link" href="Classes/CoreDataManager.html">CoreDataManager</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/PersistentContainer.html">PersistentContainer</a>
@@ -75,10 +75,10 @@
             <a class="nav-group-name-link" href="Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/Array.html">Array</a>
+                <a class="nav-group-task-link" href="Extensions/NSManagedObject.html">NSManagedObject</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/NSManagedObject.html">NSManagedObject</a>
+                <a class="nav-group-task-link" href="Extensions/%5BManagedObjectChangeType%5D.html">[ManagedObjectChangeType]</a>
               </li>
             </ul>
           </li>
@@ -86,7 +86,10 @@
             <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/CoreDataManager.html">CoreDataManager</a>
+                <a class="nav-group-task-link" href="Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ManagedObjectWrappingModel.html">ManagedObjectWrappingModel</a>
               </li>
             </ul>
           </li>
@@ -114,22 +117,30 @@
         <section class="section">
           <div class="section-content top-matter">
             
-            <h1 id='incoredata' class='heading'>INCoreData</h1>
+            <p><img src="https://img.shields.io/badge/iOS-16.0+-brightgreen" alt="iOS Version"> <a href="https://indiesoftware.github.io/INCoreData"><img src="https://indiesoftware.github.io/INCoreData/badge.svg" alt="Documentation Coverage"></a>
+<a href="https://github.com/indieSoftware/INCoreData/blob/master/LICENSE"><img src="https://img.shields.io/github/license/indieSoftware/INCoreData" alt="License"></a>
+<a href="https://github.com/indieSoftware/INCoreData"><img src="https://img.shields.io/github/v/tag/indieSoftware/INCoreData?label=version" alt="GitHub Tag"></a>
+<a href="https://github.com/apple/swift-package-manager"><img src="https://img.shields.io/badge/SPM-compatible-success.svg" alt="SPM compatible"></a></p>
+
+<p><a href="https://github.com/indieSoftware/INCoreData">GitHub Page</a></p>
+
+<p><a href="https://indiesoftware.github.io/INCoreData">Documentation</a></p>
+<h1 id='incoredata' class='heading'>INCoreData</h1>
 
 <p>A helper library to work with CoreData.</p>
+<h2 id='overview' class='heading'>Overview</h2>
 
-<p>Good resources for the general usage of CoreData:</p>
+<p>The main class is <code><a href="Classes/CoreDataManager.html">CoreDataManager</a></code> which provides a manager as a fascade to the underlying <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> which simplifies the correct usage of Core Data in an application.
+The <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> is deriving from <code>NSPersistentCloudKitContainer</code> and thus <code><a href="Classes/CoreDataManager.html">CoreDataManager</a></code> supports Core Data in the iCloud.</p>
+<h2 id='installation' class='heading'>Installation</h2>
+<h3 id='spm' class='heading'>SPM</h3>
 
-<ul>
-<li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html</a></li>
-<li><a href="https://developer.apple.com/documentation/coredata">https://developer.apple.com/documentation/coredata</a></li>
-<li><a href="https://www.advancedswift.com/core-data-background-fetch-save-create">https://www.advancedswift.com/core-data-background-fetch-save-create</a></li>
-<li><a href="https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/">https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/</a></li>
-</ul>
-<h2 id='feature-overview' class='heading'>Feature overview</h2>
+<p>To include via <a href="https://swift.org/package-manager">SwiftPackageManager</a> add the repository:</p>
+<pre class="highlight plaintext"><code>https://github.com/indieSoftware/INCoreData.git
+</code></pre>
+<h2 id='usage' class='heading'>Usage</h2>
 
-<p>The main class is <code><a href="Protocols/CoreDataManager.html">CoreDataManager</a></code> which provides a manager as a fascade to the underlying <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> which simplifies the correct usage of Core Data in an application.
-The <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> is deriving from <code>NSPersistentCloudKitContainer</code> and thus <code><a href="Protocols/CoreDataManager.html">CoreDataManager</a></code> supports Core Data in the iCloud.</p>
+<p>How to use INCoreData: <a href="https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md">Usage</a></p>
 <h2 id='advices' class='heading'>Advices</h2>
 <h3 id='debug-flag' class='heading'>Debug flag</h3>
 
@@ -141,9 +152,17 @@ The <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></co
 <p>However, even with Xcode 14 and Swift 5.7 be aware that tests might become flaky, that means they might sometimes pass and sometimes fail because a context or object is not released in time. For the objects to get released it&rsquo;s necessary to yield the main queue to give the system the chance to clean up those release pools. For that the lib&rsquo;s project uses a <code>XCTestCase.yieldProcess()</code> method which just sleeps for one nanosecond. </p>
 
 <p>Just keep that in mind for own app tests when using Core Data.</p>
-<h2 id='example-of-usage' class='heading'>Example of usage</h2>
+<h2 id='further-documentation' class='heading'>Further documentation</h2>
 
-<p><a href="https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md">Examples how to use INCoreData</a></p>
+<p>Good resources for the general usage of CoreData:</p>
+
+<ul>
+<li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html</a></li>
+<li><a href="https://developer.apple.com/documentation/coredata">https://developer.apple.com/documentation/coredata</a></li>
+<li><a href="https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/creating_a_core_data_model_for_cloudkit">https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/creating_a_core_data_model_for_cloudkit</a></li>
+<li><a href="https://www.advancedswift.com/core-data-background-fetch-save-create">https://www.advancedswift.com/core-data-background-fetch-save-create</a></li>
+<li><a href="https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/">https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/</a></li>
+</ul>
 
           </div>
         </section>
@@ -152,8 +171,8 @@ The <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></co
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-07-30)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>&copy; 2023 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2023-04-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>

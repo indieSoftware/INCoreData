@@ -1,20 +1,34 @@
+![iOS Version](https://img.shields.io/badge/iOS-16.0+-brightgreen) [![Documentation Coverage](https://indiesoftware.github.io/INCoreData/badge.svg)](https://indiesoftware.github.io/INCoreData)
+[![License](https://img.shields.io/github/license/indieSoftware/INCoreData)](https://github.com/indieSoftware/INCoreData/blob/master/LICENSE)
+[![GitHub Tag](https://img.shields.io/github/v/tag/indieSoftware/INCoreData?label=version)](https://github.com/indieSoftware/INCoreData)
+[![SPM compatible](https://img.shields.io/badge/SPM-compatible-success.svg)](https://github.com/apple/swift-package-manager)
+
+[GitHub Page](https://github.com/indieSoftware/INCoreData)
+
+[Documentation](https://indiesoftware.github.io/INCoreData)
+
 # INCoreData
 
 A helper library to work with CoreData.
 
-Good resources for the general usage of CoreData:
-
-- [https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html)
-- [https://developer.apple.com/documentation/coredata](https://developer.apple.com/documentation/coredata)
-- [https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/creating_a_core_data_model_for_cloudkit](https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/creating_a_core_data_model_for_cloudkit)
-- [https://www.advancedswift.com/core-data-background-fetch-save-create](https://www.advancedswift.com/core-data-background-fetch-save-create)
-- [https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/](https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/)
-
-## Feature overview
+## Overview
 
 The main class is `CoreDataManager` which provides a manager as a fascade to the underlying `PersistentContainer` which simplifies the correct usage of Core Data in an application.
 The `PersistentContainer` is deriving from `NSPersistentCloudKitContainer` and thus `CoreDataManager` supports Core Data in the iCloud.
 
+## Installation
+
+### SPM
+
+To include via [SwiftPackageManager](https://swift.org/package-manager) add the repository:
+
+```
+https://github.com/indieSoftware/INCoreData.git
+```
+
+## Usage
+
+How to use INCoreData: [Usage](https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md)
 
 ## Advices
 
@@ -30,7 +44,12 @@ However, even with Xcode 14 and Swift 5.7 be aware that tests might become flaky
 
 Just keep that in mind for own app tests when using Core Data.
 
-## Example of usage
+## Further documentation
 
-[Examples how to use INCoreData](https://github.com/indieSoftware/INCoreData/blob/master/docu/UsageExamples.md)
+Good resources for the general usage of CoreData:
 
+- [https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html)
+- [https://developer.apple.com/documentation/coredata](https://developer.apple.com/documentation/coredata)
+- [https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/creating_a_core_data_model_for_cloudkit](https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/creating_a_core_data_model_for_cloudkit)
+- [https://www.advancedswift.com/core-data-background-fetch-save-create](https://www.advancedswift.com/core-data-background-fetch-save-create)
+- [https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/](https://cocoacasts.com/building-the-perfect-core-data-stack-with-nspersistentcontainer/)

@@ -96,7 +96,7 @@ public final class CoreDataManager: @unchecked Sendable {
 			// so a container exists already and we can simply proceed.
 		}
 
-		guard let container = container else {
+		guard let container else {
 			preconditionFailure("Impossible state")
 		}
 		try await container.loadPersistentStore()
@@ -112,7 +112,7 @@ public final class CoreDataManager: @unchecked Sendable {
 	 For this use `createNewContext()` or `performTask(_:)`.
 	 */
 	public var mainContext: NSManagedObjectContext {
-		guard let container = container else {
+		guard let container else {
 			preconditionFailure("No container, call loadStore() first")
 		}
 		return container.viewContext
@@ -130,7 +130,7 @@ public final class CoreDataManager: @unchecked Sendable {
 	 - returns: The new background MOC.
 	 */
 	public func createNewContext() -> NSManagedObjectContext {
-		guard let container = container else {
+		guard let container else {
 			preconditionFailure("No container, call loadStore() first")
 		}
 		return container.createNewContext()
@@ -159,7 +159,7 @@ public final class CoreDataManager: @unchecked Sendable {
 	 Does nothing if the context has no pending changes.
 	 */
 	public func persist() async throws {
-		guard let container = container else {
+		guard let container else {
 			preconditionFailure("No container, call loadStore() first")
 		}
 		try await container.persist()

@@ -92,7 +92,7 @@ public class PersistentContainer: NSPersistentCloudKitContainer {
 	func loadPersistentStore() async throws {
 		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
 			self.loadPersistentStores { (description: NSPersistentStoreDescription, error: Error?) in
-				if let error = error {
+				if let error {
 					/*
 					 Typical reasons for an error here include:
 					 - The parent directory does not exist, cannot be created, or disallows writing.

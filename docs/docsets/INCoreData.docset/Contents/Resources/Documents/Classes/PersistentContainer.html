@@ -54,7 +54,7 @@
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+                <a class="nav-group-task-link" href="../Classes/CoreDataManager.html">CoreDataManager</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/PersistentContainer.html">PersistentContainer</a>
@@ -76,10 +76,10 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+                <a class="nav-group-task-link" href="../Extensions/NSManagedObject.html">NSManagedObject</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/NSManagedObject.html">NSManagedObject</a>
+                <a class="nav-group-task-link" href="../Extensions/%5BManagedObjectChangeType%5D.html">[ManagedObjectChangeType]</a>
               </li>
             </ul>
           </li>
@@ -87,7 +87,10 @@
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/CoreDataManager.html">CoreDataManager</a>
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectWrappingModel.html">ManagedObjectWrappingModel</a>
               </li>
             </ul>
           </li>
@@ -151,7 +154,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">open</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">defaultDirectoryURL</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">URL</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">override</span> <span class="kd">open</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">defaultDirectoryURL</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">URL</span></code></pre>
 
                         </div>
                       </div>
@@ -161,9 +165,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10INCoreData19PersistentContainerC4name6bundle8inMemoryACSS_So8NSBundleCSbtKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(name:bundle:inMemory:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10INCoreData19PersistentContainerC4name6bundle8inMemoryACSS_So8NSBundleCSbtKcfc">init(name:<wbr>bundle:<wbr>inMemory:<wbr>)</a>
+                    <a name="/s:10INCoreData19PersistentContainerC4name6bundle8inMemory22syncSchemeWithCloudKitACSS_So8NSBundleCS2btKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(name:bundle:inMemory:syncSchemeWithCloudKit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData19PersistentContainerC4name6bundle8inMemory22syncSchemeWithCloudKitACSS_So8NSBundleCS2btKcfc">init(name:<wbr>bundle:<wbr>inMemory:<wbr>syncSchemeWithCloudKit:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -187,7 +191,12 @@ To finalize the container&rsquo;s setup call <code>try await loadPersistentStore
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">inMemory</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
+	<span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+	<span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span>
+	<span class="nv">inMemory</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+	<span class="nv">syncSchemeWithCloudKit</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span>
+<span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -232,6 +241,21 @@ Defaults to <code>false</code> to have a persistent SQLite store in the app&rsqu
                                 </div>
                               </td>
                             </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>syncSchemeWithCloudKit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Set to <code>true</code> to sync the scheme
+with CloutKit during loading the persistent store.
+Will only be respected in a debug build for a non-in-memory store.
+Defaults to <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -246,8 +270,8 @@ Defaults to <code>false</code> to have a persistent SQLite store in the app&rsqu
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-07-30)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>&copy; 2023 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2023-04-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>

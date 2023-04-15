@@ -54,7 +54,7 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+                <a class="nav-group-task-link" href="Classes/CoreDataManager.html">CoreDataManager</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/PersistentContainer.html">PersistentContainer</a>
@@ -76,10 +76,10 @@
             <a class="nav-group-name-link" href="Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/Array.html">Array</a>
+                <a class="nav-group-task-link" href="Extensions/NSManagedObject.html">NSManagedObject</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/NSManagedObject.html">NSManagedObject</a>
+                <a class="nav-group-task-link" href="Extensions/%5BManagedObjectChangeType%5D.html">[ManagedObjectChangeType]</a>
               </li>
             </ul>
           </li>
@@ -87,7 +87,10 @@
             <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/CoreDataManager.html">CoreDataManager</a>
+                <a class="nav-group-task-link" href="Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ManagedObjectWrappingModel.html">ManagedObjectWrappingModel</a>
               </li>
             </ul>
           </li>
@@ -127,9 +130,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10INCoreData04CoreB7ManagerP"></a>
-                    <a name="//apple_ref/swift/Protocol/CoreDataManager" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerP">CoreDataManager</a>
+                    <a name="/s:10INCoreData26ManagedObjectModelWrappingP"></a>
+                    <a name="//apple_ref/swift/Protocol/ManagedObjectModelWrapping" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectModelWrappingP">ManagedObjectModelWrapping</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -137,23 +140,46 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A manager for CoreData which acts as a facade for the <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code>.</p>
+                        <p>Extend a managed object to conform to this protocol to get an automatic wrapping model for it.</p>
 
-<p>Usually <code><a href="Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a></code> should be instantiated as an implementation of this protocol.</p>
-
-<p>The wrapped <code><a href="Classes/PersistentContainer.html">PersistentContainer</a></code> is a <code>NSPersistentCloudKitContainer</code> with some
-additional functionalities to streamline the usage of Core Data with this manager.
-The protocol makes it possible to inject the manager to all dependents and replace it with
-a mocked version for unit tests and SwiftUI previews.
-For this only methods provided by this manager should be used instead of the underlying container.</p>
-
-                        <a href="Protocols/CoreDataManager.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/ManagedObjectModelWrapping.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CoreDataManager</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ManagedObjectModelWrapping</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelP"></a>
+                    <a name="//apple_ref/swift/Protocol/ManagedObjectWrappingModel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelP">ManagedObjectWrappingModel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A protocol to mark <code>Model</code>s so that they can be used by a managed object
+which conforms to <code><a href="Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a></code> to automatically wrap them.
+A model should conform to this protocol to act as a facade for the wrapped managed object.
+The idea is to provide a better and type-safe interface with a model to the managed object.</p>
+
+                        <a href="Protocols/ManagedObjectWrappingModel.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ManagedObjectWrappingModel</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -168,8 +194,8 @@ For this only methods provided by this manager should be used instead of the und
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-07-30)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>&copy; 2023 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2023-04-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>

@@ -42,7 +42,7 @@ public struct CoreDataPreview<Content: View>: View {
 				Task {
 					let manager = await factory()
 					await MainActor.run {
-						self.coreDataManager = manager
+						coreDataManager = manager
 					}
 				}
 			} label: {

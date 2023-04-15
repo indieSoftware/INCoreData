@@ -23,9 +23,9 @@ struct UsageView: View {
 					HStack {
 						Button(action: {
 							viewModel.addItem()
-						}) {
+						}, label: {
 							Label("Add Item", systemImage: "plus")
-						}
+						})
 					}
 				}
 			}

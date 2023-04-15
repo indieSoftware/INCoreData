@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CoreDataManager Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/CoreDataManager" class="dashAnchor"></a>
+
+    <a title="CoreDataManager Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          INCoreData
+        </a>
+         (95% documented)
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/indieSoftware/INCoreData">
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">INCoreData Reference</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      CoreDataManager Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CoreDataManager.html">CoreDataManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PersistentContainer.html">PersistentContainer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CoreDataManagerError.html">CoreDataManagerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSManagedObject.html">NSManagedObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/%5BManagedObjectChangeType%5D.html">[ManagedObjectChangeType]</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectWrappingModel.html">ManagedObjectWrappingModel</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CoreDataPreview.html">CoreDataPreview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ManagedNotification.html">ManagedNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ManagedObjectChange.html">ManagedObjectChange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ManagedObjectsChange.html">ManagedObjectsChange</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>CoreDataManager</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">CoreDataManager</span> <span class="p">:</span> <span class="kd">@unchecked</span> <span class="kt">Sendable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A manager for CoreData which acts as a facade for the <code><a href="../Classes/PersistentContainer.html">PersistentContainer</a></code>.</p>
+
+<p>The wrapped <code><a href="../Classes/PersistentContainer.html">PersistentContainer</a></code> is a <code>NSPersistentCloudKitContainer</code> with some
+additional functionalities to streamline the usage of Core Data with this manager.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC07defaultB9ModelNameSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/defaultDataModelName" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC07defaultB9ModelNameSSvpZ">defaultDataModelName</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default name of a data model in the bundle, equals to &ldquo;DataModel&rdquo;.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">defaultDataModelName</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC25defaultStoreDirectoryNameSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/defaultStoreDirectoryName" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC25defaultStoreDirectoryNameSSvpZ">defaultStoreDirectoryName</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default folder name of the persistent store in the documents folder, equals to &ldquo;CoreData&rdquo;.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">defaultStoreDirectoryName</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC9containerAA19PersistentContainerCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/container" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC9containerAA19PersistentContainerCSgvp">container</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The underlying persistent container used.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">container</span><span class="p">:</span> <span class="kt"><a href="../Classes/PersistentContainer.html">PersistentContainer</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC4name6bundle18storeDirectoryName8inMemory22syncSchemeWithCloudKitACSS_So8NSBundleCSSSgS2btcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(name:bundle:storeDirectoryName:inMemory:syncSchemeWithCloudKit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC4name6bundle18storeDirectoryName8inMemory22syncSchemeWithCloudKitACSS_So8NSBundleCSSSgS2btcfc">init(name:<wbr>bundle:<wbr>storeDirectoryName:<wbr>inMemory:<wbr>syncSchemeWithCloudKit:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Instantiates the manager.</p>
+
+<p>This will set the store directory name <code>PersistentContainer.persistentStoreDirectoryName</code>
+and instantiate an instance of <code><a href="../Classes/PersistentContainer.html">PersistentContainer</a></code>.</p>
+
+<p>To finish the initialization <code><a href="../Classes/CoreDataManager.html#/s:10INCoreData04CoreB7ManagerC9loadStoreyyYaKF">loadStore()</a></code> has to be called once before the manager can be used.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
+	<span class="nv">name</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kt">CoreDataManager</span><span class="o">.</span><span class="n"><a href="../Classes/CoreDataManager.html#/s:10INCoreData04CoreB7ManagerC07defaultB9ModelNameSSvpZ">defaultDataModelName</a></span><span class="p">,</span>
+	<span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span>
+	<span class="nv">storeDirectoryName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">CoreDataManager</span><span class="o">.</span><span class="n"><a href="../Classes/CoreDataManager.html#/s:10INCoreData04CoreB7ManagerC25defaultStoreDirectoryNameSSvpZ">defaultStoreDirectoryName</a></span><span class="p">,</span>
+	<span class="nv">inMemory</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+	<span class="nv">syncSchemeWithCloudKit</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span>
+<span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the CoreData model which is the file name of the <code>xcdatamodeld</code> without extension.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bundle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The bundle where to find the data model. Defaults to the main bundle.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>storeDirectoryName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The directory&rsquo;s name of the persistent store,
+where the SQLite DB has to be written to.
+Any provided name will be treated as a relative path from the app&rsquo;s document folder.
+When <code>nil</code> then the default path will be used which is directly the app&rsquo;s document folder.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inMemory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Pass true to use an in-memory store suitable for Previews and UnitTests,
+rather than a &ldquo;real&rdquo; one. Defaults to <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>syncSchemeWithCloudKit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Set to <code>true</code> to sync the scheme with CloutKit
+during loading the persistent store.
+Will only be respected in a debug build for a non-in-memory store.
+Defaults to <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC9loadStoreyyYaKF"></a>
+                    <a name="//apple_ref/swift/Method/loadStore()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC9loadStoreyyYaKF">loadStore()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Asynchronous
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Loads the persistent store.</p>
+
+<p>Has to be called once as part of the set up before interacting with the Core Data stack.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    A <code><a href="../Enums/CoreDataManagerError.html">CoreDataManagerError</a></code> when loading the container failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">loadStore</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC11mainContextSo015NSManagedObjectF0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/mainContext" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC11mainContextSo015NSManagedObjectF0Cvp">mainContext</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A reference to the <code>viewContext</code> for tasks on the main context.</p>
+
+<p>This context acts on the main thread and thus is also used by the UI.
+Keep any operations on this one as few as possible
+and consider applying them on a new background context instead if possible.</p>
+
+<p>For this use <code><a href="../Classes/CoreDataManager.html#/s:10INCoreData04CoreB7ManagerC16createNewContextSo015NSManagedObjectG0CyF">createNewContext()</a></code> or <code><a href="../Classes/CoreDataManager.html#/s:10INCoreData04CoreB7ManagerC11performTaskyyySo22NSManagedObjectContextCYbKcYaKF">performTask(_:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">mainContext</span><span class="p">:</span> <span class="kt">NSManagedObjectContext</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC16createNewContextSo015NSManagedObjectG0CyF"></a>
+                    <a name="//apple_ref/swift/Method/createNewContext()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC16createNewContextSo015NSManagedObjectG0CyF">createNewContext()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new managed object context for background tasks.</p>
+
+<p>The new MOC is intended to be used on a background thread
+and has its parent set to be the main context.</p>
+
+<p>To save any changes back to the main context just call <code>save</code> directly on the new context.
+Use  <code>saveContext(_:)</code> on the main context to persist any previously saved changes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">createNewContext</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">NSManagedObjectContext</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The new background MOC.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC7persistyyYaKF"></a>
+                    <a name="//apple_ref/swift/Method/persist()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC7persistyyYaKF">persist()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Asynchronous
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Saves any changes of the main context.</p>
+
+<p>The save is wrapped by an async <code>perform(_:)</code> call on the main context.
+Use this method to save a context which received some changes from a child context&rsquo;s save.
+Usually saving a background context leads to unsaved changes on the main context, thus,
+to persist those changes either call <code>save</code> on the main context or use this method.</p>
+
+<p>Does nothing if the context has no pending changes.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">backgroundContext</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="nf">createNewContext</span><span class="p">()</span>
+<span class="k">try</span> <span class="k">await</span> <span class="n">backgroundContext</span><span class="o">.</span><span class="n">perform</span> <span class="p">{</span>
+<span class="k">let</span> <span class="nv">foo</span> <span class="o">=</span> <span class="kt">Foo</span><span class="p">(</span><span class="nv">context</span><span class="p">:</span> <span class="n">backgroundContext</span><span class="p">)</span>
+<span class="n">backgroundContext</span><span class="o">.</span><span class="nf">insert</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">context</span><span class="o">.</span><span class="nf">save</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="n">manager</span><span class="o">.</span><span class="nf">saveContext</span><span class="p">()</span>
+</code></pre>
+
+<p>Does nothing if the context has no pending changes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">persist</span><span class="p">()</span> <span class="k">async</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC11performTaskyyySo22NSManagedObjectContextCYbKcYaKF"></a>
+                    <a name="//apple_ref/swift/Method/performTask(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC11performTaskyyySo22NSManagedObjectContextCYbKcYaKF">performTask(_:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Asynchronous
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Executes a task block on a new background context and persists any changes.</p>
+
+<p>This is a shorthand convenience method to create a new background context,
+perform any async changes on it, then save it back to the main context
+and performing save on the main context to persist any changes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">performTask</span><span class="p">(</span><span class="n">_</span> <span class="nv">task</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kd">@Sendable</span> <span class="p">(</span><span class="kt">NSManagedObjectContext</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">async</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC9publisher13managedObject16notificationType11changeTypes7Combine12AnyPublisherVyAA07ManagedG6ChangeVyxGs5NeverOGx_AA0O12NotificationVSayAA0ogpI0OGtSo09NSManagedG0CRbzlF"></a>
+                    <a name="//apple_ref/swift/Method/publisher(managedObject:notificationType:changeTypes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC9publisher13managedObject16notificationType11changeTypes7Combine12AnyPublisherVyAA07ManagedG6ChangeVyxGs5NeverOGx_AA0O12NotificationVSayAA0ogpI0OGtSo09NSManagedG0CRbzlF">publisher(managedObject:<wbr>notificationType:<wbr>changeTypes:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a publisher which emits events for changes on a managed object.</p>
+
+<p>For example, when registered for changes on object instance A then
+an event is triggered either when a change on the instance A has been performed or
+after A&rsquo;s context has been saved, depending on the notification type provided.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">publisher</span><span class="o">&lt;</span><span class="kt">ManagedObjectType</span><span class="p">:</span> <span class="kt">NSManagedObject</span><span class="o">&gt;</span><span class="p">(</span>
+	<span class="nv">managedObject</span><span class="p">:</span> <span class="kt">ManagedObjectType</span><span class="p">,</span>
+	<span class="nv">notificationType</span><span class="p">:</span> <span class="kt"><a href="../Structs/ManagedNotification.html">ManagedNotification</a></span><span class="p">,</span>
+	<span class="nv">changeTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/ManagedObjectChange.html">ManagedObjectChange</a></span><span class="o">&lt;</span><span class="kt">ManagedObjectType</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>managedObject</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object for which to listen for changes.
+The managed objects must have a managed object context assigned.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>notificationType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of notification (change or save) to listen for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>changeTypes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of change (insert, delete, update) to listen for,
+e.g. &ldquo;<code>ManagedObjectChangeType.allCases</code>&rdquo;.
+Only changes matching the provided types will trigger a published event.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The publisher.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC9publisher17managedObjectType7context012notificationH011changeTypes7Combine12AnyPublisherVyAA20ManagedObjectsChangeVyxGs5NeverOGxm_So09NSManagedG7ContextCAA0P12NotificationVSayAA0pgrH0OGtSo0tG0CRbzlF"></a>
+                    <a name="//apple_ref/swift/Method/publisher(managedObjectType:context:notificationType:changeTypes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC9publisher17managedObjectType7context012notificationH011changeTypes7Combine12AnyPublisherVyAA20ManagedObjectsChangeVyxGs5NeverOGxm_So09NSManagedG7ContextCAA0P12NotificationVSayAA0pgrH0OGtSo0tG0CRbzlF">publisher(managedObjectType:<wbr>context:<wbr>notificationType:<wbr>changeTypes:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a publisher which emits events for changes on any object
+of a specifc type of a managed object inside of a given context.</p>
+
+<p>Each change type will trigger a seperate event, but an event may contain multiple changes of the same type.</p>
+
+<p>For example, when registered for changes on any object instance of type A then
+an event is triggered either when a change on an instance of A has been performed or
+after the context has been saved, depending on the notification type provided.
+However, when also listening for insertions or deletions then they will emit their own events,
+so one event only has one type of change.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">publisher</span><span class="o">&lt;</span><span class="kt">ManagedObjectType</span><span class="p">:</span> <span class="kt">NSManagedObject</span><span class="o">&gt;</span><span class="p">(</span>
+	<span class="n">managedObjectType</span> <span class="nv">_</span><span class="p">:</span> <span class="kt">ManagedObjectType</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
+	<span class="nv">context</span><span class="p">:</span> <span class="kt">NSManagedObjectContext</span><span class="p">,</span>
+	<span class="nv">notificationType</span><span class="p">:</span> <span class="kt"><a href="../Structs/ManagedNotification.html">ManagedNotification</a></span><span class="p">,</span>
+	<span class="nv">changeTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/ManagedObjectsChange.html">ManagedObjectsChange</a></span><span class="o">&lt;</span><span class="kt">ManagedObjectType</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>managedObjectType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of the managed object for which to listen for changes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The context on which to listen for the changes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>notificationType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of notification (change or save) to listen for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>changeTypes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of change (insert, delete, update) to listen for,
+e.g. &ldquo;<code>ManagedObjectChangeType.allCases</code>&rdquo;.
+Only changes matching the provided types will trigger a published event.
+The provided order is repsected when emitting new events when multiple change types are applied at once,
+i.e. when using <code><a href="../Structs/ManagedNotification.html#/s:10INCoreData19ManagedNotificationV12contextSavedACvpZ">ManagedNotification.contextSaved</a></code> as the notification type.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The publisher.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC9publisher17managedObjectType7context11changeTypes7Combine12AnyPublisherVySayAA20ManagedObjectsChangeVyxGGs5NeverOGxm_So09NSManagedG7ContextCSayAA0ogqH0OGtSo0sG0CRbzlF"></a>
+                    <a name="//apple_ref/swift/Method/publisher(managedObjectType:context:changeTypes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC9publisher17managedObjectType7context11changeTypes7Combine12AnyPublisherVySayAA20ManagedObjectsChangeVyxGGs5NeverOGxm_So09NSManagedG7ContextCSayAA0ogqH0OGtSo0sG0CRbzlF">publisher(managedObjectType:<wbr>context:<wbr>changeTypes:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a publisher which emits events for changes on any object
+of a specifc type of a managed object inside of a given context.</p>
+
+<p>Each notification will result in a single event emitted, even when multiple different types of changes have applied.
+Only events of the notification type <code>contextSaved</code> are published.</p>
+
+<p>This is similar to <code>publisher(managedObjectType:, context:, notificationType:, changeTypes:)</code>,
+but here the notification type is always <code>contextSaved</code> and all changes will be summarized into a single event.
+That means when new instances have been inserted and others have been deleted,
+then this will lead to only one event which contains all changes for both,
+the insertions and deletions.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">publisher</span><span class="o">&lt;</span><span class="kt">ManagedObjectType</span><span class="p">:</span> <span class="kt">NSManagedObject</span><span class="o">&gt;</span><span class="p">(</span>
+	<span class="n">managedObjectType</span> <span class="nv">_</span><span class="p">:</span> <span class="kt">ManagedObjectType</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
+	<span class="nv">context</span><span class="p">:</span> <span class="kt">NSManagedObjectContext</span><span class="p">,</span>
+	<span class="nv">changeTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/ManagedObjectsChange.html">ManagedObjectsChange</a></span><span class="o">&lt;</span><span class="kt">ManagedObjectType</span><span class="o">&gt;</span><span class="p">],</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>managedObjectType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of the managed object for which to listen for changes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The context on which to listen for the changes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>changeTypes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of change (insert, delete, update) to listen for,
+e.g. &ldquo;<code>ManagedObjectChangeType.allCases</code>&rdquo;.
+Only changes matching the provided types will be passed to the published event.
+The provided order is repsected when emitting new events when multiple change types are applied at once.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The publisher.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData04CoreB7ManagerC9publisher7context11changeTypes7Combine12AnyPublisherVySayAA20ManagedObjectsChangeVyxGGs5NeverOGSo22NSManagedObjectContextC_SayAA0lqN4TypeOGtSo0pQ0CRbzlF"></a>
+                    <a name="//apple_ref/swift/Method/publisher(context:changeTypes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7ManagerC9publisher7context11changeTypes7Combine12AnyPublisherVySayAA20ManagedObjectsChangeVyxGGs5NeverOGSo22NSManagedObjectContextC_SayAA0lqN4TypeOGtSo0pQ0CRbzlF">publisher(context:<wbr>changeTypes:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a publisher which emits events for changes on a context when saved.</p>
+
+<p>This is independent on a specific type or instance, therefore, any change
+on save will trigger a new published event.
+This might be useful to log any changes on the main context.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">publisher</span><span class="o">&lt;</span><span class="kt">NSManagedObject</span><span class="o">&gt;</span><span class="p">(</span>
+	<span class="nv">context</span><span class="p">:</span> <span class="kt">NSManagedObjectContext</span><span class="p">,</span>
+	<span class="nv">changeTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/ManagedObjectsChange.html">ManagedObjectsChange</a></span><span class="o">&lt;</span><span class="kt">NSManagedObject</span><span class="o">&gt;</span><span class="p">],</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The context on which to listen for the changes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>changeTypes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of change (insert, delete, update) to listen for,
+e.g. &ldquo;<code>ManagedObjectChangeType.allCases</code>&rdquo;.
+Only changes matching the provided types will be passed to the published event.
+The provided order is repsected when emitting new events when multiple change types are applied at once.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The publisher.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2023-04-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>

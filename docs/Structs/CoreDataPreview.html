@@ -54,7 +54,7 @@
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/CoreDataManagerLogic.html">CoreDataManagerLogic</a>
+                <a class="nav-group-task-link" href="../Classes/CoreDataManager.html">CoreDataManager</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/PersistentContainer.html">PersistentContainer</a>
@@ -76,10 +76,10 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+                <a class="nav-group-task-link" href="../Extensions/NSManagedObject.html">NSManagedObject</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/NSManagedObject.html">NSManagedObject</a>
+                <a class="nav-group-task-link" href="../Extensions/%5BManagedObjectChangeType%5D.html">[ManagedObjectChangeType]</a>
               </li>
             </ul>
           </li>
@@ -87,7 +87,10 @@
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/CoreDataManager.html">CoreDataManager</a>
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectWrappingModel.html">ManagedObjectWrappingModel</a>
               </li>
             </ul>
           </li>
@@ -122,9 +125,9 @@
 
                 </div>
               </div>
-            <p>A view which wraps any view which is depending ona <code><a href="../Protocols/CoreDataManager.html">CoreDataManager</a></code> instance
+            <p>A view which wraps any view which is depending ona <code><a href="../Classes/CoreDataManager.html">CoreDataManager</a></code> instance
 to render in a SwiftUI preview.
-A <code><a href="../Protocols/CoreDataManager.html">CoreDataManager</a></code> instance needs to be loaded asynchronously before
+A <code><a href="../Classes/CoreDataManager.html">CoreDataManager</a></code> instance needs to be loaded asynchronously before
 it can be used in a preview, but the preview is static and can&rsquo;t wait.
 Therefore, this view wraps and delays the creation of the depending view
 until the manager has been created and then swaps the placeholder with the
@@ -142,9 +145,9 @@ in the placeholder view has to be pressed to initiate the factory call.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10INCoreData04CoreB7PreviewV_7contentACyxGAA0cB7Manager_pyYac_xAaF_pctcfc"></a>
+                    <a name="/s:10INCoreData04CoreB7PreviewV_7contentACyxGAA0cB7ManagerCyYac_xAGctcfc"></a>
                     <a name="//apple_ref/swift/Method/init(_:content:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10INCoreData04CoreB7PreviewV_7contentACyxGAA0cB7Manager_pyYac_xAaF_pctcfc">init(_:<wbr>content:<wbr>)</a>
+                    <a class="token" href="#/s:10INCoreData04CoreB7PreviewV_7contentACyxGAA0cB7ManagerCyYac_xAGctcfc">init(_:<wbr>content:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -160,8 +163,8 @@ in the placeholder view has to be pressed to initiate the factory call.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
-	<span class="n">_</span> <span class="nv">coreDataManagerFactory</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/CoreDataManager.html">CoreDataManager</a></span><span class="p">,</span>
-	<span class="kd">@ViewBuilder</span> <span class="nv">content</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Protocols/CoreDataManager.html">CoreDataManager</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Content</span>
+	<span class="n">_</span> <span class="nv">coreDataManagerFactory</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/CoreDataManager.html">CoreDataManager</a></span><span class="p">,</span>
+	<span class="kd">@ViewBuilder</span> <span class="nv">content</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Classes/CoreDataManager.html">CoreDataManager</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Content</span>
 <span class="p">)</span></code></pre>
 
                         </div>
@@ -178,7 +181,7 @@ in the placeholder view has to be pressed to initiate the factory call.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The factory closure which creates the <code><a href="../Protocols/CoreDataManager.html">CoreDataManager</a></code>.
+                                  <p>The factory closure which creates the <code><a href="../Classes/CoreDataManager.html">CoreDataManager</a></code>.
 The factory method will be run asynchronously so it can also be filled with example data.</p>
                                 </div>
                               </td>
@@ -236,8 +239,8 @@ This view will be shown after the factory has returned a manager which then will
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2022-07-30)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>&copy; 2023 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2023-04-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>

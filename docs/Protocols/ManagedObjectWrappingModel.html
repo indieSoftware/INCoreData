@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ManagedObjectWrappingModel Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/ManagedObjectWrappingModel" class="dashAnchor"></a>
+
+    <a title="ManagedObjectWrappingModel Protocol Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          INCoreData
+        </a>
+         (95% documented)
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/indieSoftware/INCoreData">
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">INCoreData Reference</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      ManagedObjectWrappingModel Protocol Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CoreDataManager.html">CoreDataManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PersistentContainer.html">PersistentContainer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CoreDataManagerError.html">CoreDataManagerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ManagedObjectChangeType.html">ManagedObjectChangeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSManagedObject.html">NSManagedObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/%5BManagedObjectChangeType%5D.html">[ManagedObjectChangeType]</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ManagedObjectWrappingModel.html">ManagedObjectWrappingModel</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CoreDataPreview.html">CoreDataPreview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ManagedNotification.html">ManagedNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ManagedObjectChange.html">ManagedObjectChange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ManagedObjectsChange.html">ManagedObjectsChange</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>ManagedObjectWrappingModel</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ManagedObjectWrappingModel</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A protocol to mark <code>Model</code>s so that they can be used by a managed object
+which conforms to <code><a href="../Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a></code> to automatically wrap them.
+A model should conform to this protocol to act as a facade for the wrapped managed object.
+The idea is to provide a better and type-safe interface with a model to the managed object.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelP0cD0Qa"></a>
+                    <a name="//apple_ref/swift/Alias/ManagedObject" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelP0cD0Qa">ManagedObject</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ManagedObject</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="../Protocols/ManagedObjectModelWrapping.html">ManagedObjectModelWrapping</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelP07managedD00cD0Qzvp"></a>
+                    <a name="//apple_ref/swift/Property/managedObject" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelP07managedD00cD0Qzvp">managedObject</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The reference property pointing to the wrapped managed object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">managedObject</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ManagedObjectWrappingModel.html#/s:10INCoreData26ManagedObjectWrappingModelP0cD0Qa">ManagedObject</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelP07managedD0x0cD0Qz_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(managedObject:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelP07managedD0x0cD0Qz_tcfc">init(managedObject:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An initializer which takes the matching managed object and assigns it to the reference property.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">managedObject</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ManagedObjectWrappingModel.html#/s:10INCoreData26ManagedObjectWrappingModelP0cD0Qa">ManagedObject</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelPAAE2eeoiySbx_xtFZ"></a>
+                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelPAAE2eeoiySbx_xtFZ">==(_:<wbr>_:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns true if the objectID of the wrapped managed objects
+of the two wrapping models are the same, otherwise false.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="k">Self</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Available%20where%20%60ManagedObject.Model%60%20%3D%3D%20%60Self%60"></a>
+                <a name="//apple_ref/swift/Section/Available where `ManagedObject.Model` == `Self`" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Available%20where%20%60ManagedObject.Model%60%20%3D%3D%20%60Self%60"></a>
+                  <h3 class="section-name"><span>Available where <code>ManagedObject.Model</code> == <code>Self</code></span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE9inContextyxSo09NSManageddH0CF"></a>
+                    <a name="//apple_ref/swift/Method/inContext(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE9inContextyxSo09NSManageddH0CF">inContext(_:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a new model with the wrapped managed object retrieved from the given context.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">inContext</span><span class="p">(</span><span class="n">_</span> <span class="nv">context</span><span class="p">:</span> <span class="kt">NSManagedObjectContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The context in which to retrieve the model&rsquo;s managed object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The new model for the new managed object.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE12addToContextyyF"></a>
+                    <a name="//apple_ref/swift/Method/addToContext()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE12addToContextyyF">addToContext()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Inserts the model&rsquo;s wrapped managed object into its persist store on save.
+The managed object must have a context assigned.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addToContext</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE17removeFromContextyyF"></a>
+                    <a name="//apple_ref/swift/Method/removeFromContext()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE17removeFromContextyyF">removeFromContext()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Deletes the model&rsquo;s wrapped manager object from its persistent store on save.
+The managed object must have a context assigned.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeFromContext</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Available%20where%20%60Self%60%20%3D%3D%20%60ManagedObject.Model%60"></a>
+                <a name="//apple_ref/swift/Section/Available where `Self` == `ManagedObject.Model`" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Available%20where%20%60Self%60%20%3D%3D%20%60ManagedObject.Model%60"></a>
+                  <h3 class="section-name"><span>Available where <code>Self</code> == <code>ManagedObject.Model</code></span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE11removeIndex10fromModels12indexKeyPath0K6SetterySayxG_s0lM0CyxSiGySiKcxXEtKF"></a>
+                    <a name="//apple_ref/swift/Method/removeIndex(fromModels:indexKeyPath:indexSetter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE11removeIndex10fromModels12indexKeyPath0K6SetterySayxG_s0lM0CyxSiGySiKcxXEtKF">removeIndex(fromModels:<wbr>indexKeyPath:<wbr>indexSetter:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a model&rsquo;s index by decrementing the index of all following models.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>This doesn&rsquo;t remove the model from the list nor deletes it,
+this has to be done manually after calling this method.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeIndex</span><span class="p">(</span>
+	<span class="n">fromModels</span> <span class="nv">models</span><span class="p">:</span> <span class="p">[</span><span class="k">Self</span><span class="p">],</span>
+	<span class="nv">indexKeyPath</span><span class="p">:</span> <span class="kt">KeyPath</span><span class="o">&lt;</span><span class="k">Self</span><span class="p">,</span> <span class="kt">Int</span><span class="o">&gt;</span><span class="p">,</span>
+	<span class="nv">indexSetter</span><span class="p">:</span> <span class="p">(</span><span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
+<span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>models</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The list of models which contains this model and where
+the other model&rsquo;s index has to be decremented.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexKeyPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A key-path to the model&rsquo;s index value.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexSetter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A setter method which to call to set the new index on a model.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE11insertIndex5index10intoModels0I7KeyPath0I6SetterySi_SayxGs0lM0CyxSiGySiKcxXEtKF"></a>
+                    <a name="//apple_ref/swift/Method/insertIndex(index:intoModels:indexKeyPath:indexSetter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10INCoreData26ManagedObjectWrappingModelPAA0cD0_0F0QZRszrlE11insertIndex5index10intoModels0I7KeyPath0I6SetterySi_SayxGs0lM0CyxSiGySiKcxXEtKF">insertIndex(index:<wbr>intoModels:<wbr>indexKeyPath:<wbr>indexSetter:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Inserts a new model&rsquo;s index into the list of models.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>The object needs to be added to the relationship manually before calling this method.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">insertIndex</span><span class="p">(</span>
+	<span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+	<span class="n">intoModels</span> <span class="nv">models</span><span class="p">:</span> <span class="p">[</span><span class="k">Self</span><span class="p">],</span>
+	<span class="nv">indexKeyPath</span><span class="p">:</span> <span class="kt">KeyPath</span><span class="o">&lt;</span><span class="k">Self</span><span class="p">,</span> <span class="kt">Int</span><span class="o">&gt;</span><span class="p">,</span>
+	<span class="nv">indexSetter</span><span class="p">:</span> <span class="p">(</span><span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
+<span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The zero-based index at which position to add the model.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>models</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The list of models which also contains this object, but where the index has to be updated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexKeyPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A key-path to the model&rsquo;s index value.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexSetter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A setter method which to call to set the new index on a model.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://github.com/indieSoftware/INCoreData" target="_blank" rel="external noopener">indie-Software</a>. All rights reserved. (Last updated: 2023-04-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>

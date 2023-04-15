@@ -1,17 +1,24 @@
 {
   "warnings": [
     {
-      "file": "/Users/sven/Work/Git/indieSoftware/ios-tools/INCoreData/Sources/INCoreData/CoreDataManager/CoreDataManagerLogic.swift",
-      "line": 4,
-      "symbol": "CoreDataManagerLogic",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/sven/Work/Git/indieSoftware/ios-tools/INCoreData/Sources/INCoreData/Helper/ManagedObjectChangeType.swift",
       "line": 10,
       "symbol": "ManagedObjectChangeType",
       "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/sven/Work/Git/indieSoftware/ios-tools/INCoreData/Sources/INCoreData/Helper/ManagedObjectModelWrapping.swift",
+      "line": 5,
+      "symbol": "ManagedObjectModelWrapping.Model",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/sven/Work/Git/indieSoftware/ios-tools/INCoreData/Sources/INCoreData/Helper/ManagedObjectWrappingModel.swift",
+      "line": 8,
+      "symbol": "ManagedObjectWrappingModel.ManagedObject",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
       "warning": "undocumented"
     }
   ],
