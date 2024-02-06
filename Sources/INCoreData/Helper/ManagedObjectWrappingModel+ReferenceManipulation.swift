@@ -17,7 +17,7 @@ public extension ManagedObjectWrappingModel where Self == ManagedObject.Model {
 		indexKeyPath: KeyPath<Self, Int>,
 		indexSetter: (Self) -> (Int) throws -> Void
 	) throws {
-		try models.forEach { model in
+		for model in models {
 			let objectIndex = model[keyPath: indexKeyPath]
 			if objectIndex > self[keyPath: indexKeyPath] {
 				try indexSetter(model)(objectIndex - 1)
@@ -42,7 +42,7 @@ public extension ManagedObjectWrappingModel where Self == ManagedObject.Model {
 		indexSetter: (Self) -> (Int) throws -> Void
 	) throws {
 		try indexSetter(self)(index)
-		try models.forEach { model in
+		for model in models {
 			let objectIndex = model[keyPath: indexKeyPath]
 			if model[keyPath: indexKeyPath] >= index, model != self {
 				try indexSetter(model)(objectIndex + 1)
