@@ -20,11 +20,11 @@ public enum ManagedObjectChangeType: Equatable, CaseIterable {
 	var notificationKey: String {
 		switch self {
 		case .inserted:
-			return NSManagedObjectContext.NotificationKey.insertedObjects.rawValue
+			NSManagedObjectContext.NotificationKey.insertedObjects.rawValue
 		case .deleted:
-			return NSManagedObjectContext.NotificationKey.deletedObjects.rawValue
+			NSManagedObjectContext.NotificationKey.deletedObjects.rawValue
 		case .updated:
-			return NSManagedObjectContext.NotificationKey.updatedObjects.rawValue
+			NSManagedObjectContext.NotificationKey.updatedObjects.rawValue
 		}
 	}
 }
