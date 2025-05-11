@@ -7,6 +7,10 @@
 
 [Documentation](https://indiesoftware.github.io/INCoreData)
 
+**Deprecated: Not maintained anymore**
+
+Because of too many concurrency issues this library is not maintained anymore and will be removed soon.
+
 # INCoreData
 
 A helper library to work with CoreData.

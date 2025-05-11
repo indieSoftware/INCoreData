@@ -1,8 +1,8 @@
 # Changelog
 
-### 2.0.0 (Work in progress)
+### 1.1.1
 
-Refactored the whole library to follow the Core Data guidelines and preventing concurrency issues and memory leaks.
+- Fixed a Swift 6 compatibility issue.
 
 ### 1.1.0
 

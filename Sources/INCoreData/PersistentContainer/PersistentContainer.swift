@@ -3,16 +3,14 @@ import CoreData
 /**
  The underlying persistent container which derives from `NSPersistentCloudKitContainer` to support iCloud sharing.
  */
-public class PersistentContainer: NSPersistentCloudKitContainer {
+public class PersistentContainer: NSPersistentCloudKitContainer, @unchecked Sendable {
 	/// The directory's name of the persistent store, where the SQLite DB has to be written to.
 	/// Any provided name will be treated as a relative path from the app's document folder.
 	/// When `nil` then the default path will be used which is directly the app's document folder.
 	/// Has to be set before calling `loadPersistentStores()`.
-	@MainActor
-	static var persistentStoreDirectoryName: String?
+	nonisolated(unsafe) static var persistentStoreDirectoryName: String?
 
 	/// Returns the location of the directory that contains the persistent stores.
-	@MainActor
 	override open class func defaultDirectoryURL() -> URL {
 		guard let pathComponent = persistentStoreDirectoryName else {
 			return super.defaultDirectoryURL()

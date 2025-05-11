@@ -18,13 +18,7 @@ struct StartView: View {
 	private let storeFolder = FileManager.documentsDirectory.appendingPathComponent("model")
 
 	var body: some View {
-		ZStack {
-			NavigationLink(isActive: $usageViewShown) {
-				UsageView(viewModel: UsageViewModel(manager: manager))
-			} label: {
-				EmptyView()
-			}
-
+		NavigationStack {
 			VStack {
 				switch state {
 				case .uninitialized:
@@ -53,6 +47,9 @@ struct StartView: View {
 				}
 			}
 			.navigationTitle("StartView")
+			.navigationDestination(isPresented: $usageViewShown) {
+				UsageView(viewModel: UsageViewModel(manager: manager))
+			}
 		}
 	}
 }
